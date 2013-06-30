@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/net/loyin/util/exception
+END
+BizException.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/net/loyin/util/exception/BizException.java
+END
+SystemRunException.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/net/loyin/util/exception/SystemRunException.java
+END
+ImageRuntimeException.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/net/loyin/util/exception/ImageRuntimeException.java
+END

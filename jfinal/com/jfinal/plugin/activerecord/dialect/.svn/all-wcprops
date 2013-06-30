@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/dialect
+END
+Sqlite3Dialect.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/dialect/Sqlite3Dialect.java
+END
+AnsiSqlDialect.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/dialect/AnsiSqlDialect.java
+END
+OracleDialect.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/dialect/OracleDialect.java
+END
+Dialect.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/dialect/Dialect.java
+END
+MysqlDialect.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/dialect/MysqlDialect.java
+END
+PostgreSqlDialect.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/dialect/PostgreSqlDialect.java
+END

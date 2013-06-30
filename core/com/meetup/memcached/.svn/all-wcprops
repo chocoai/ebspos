@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/com/meetup/memcached
+END
+Logger.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/com/meetup/memcached/Logger.java
+END
+ContextObjectInputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/com/meetup/memcached/ContextObjectInputStream.java
+END
+ByteBufArrayInputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/com/meetup/memcached/ByteBufArrayInputStream.java
+END
+SockIOPool.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/com/meetup/memcached/SockIOPool.java
+END
+LineInputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/com/meetup/memcached/LineInputStream.java
+END
+NativeHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/com/meetup/memcached/NativeHandler.java
+END
+MemcachedClient.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/com/meetup/memcached/MemcachedClient.java
+END
+ErrorHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/com/meetup/memcached/ErrorHandler.java
+END
+NestedIOException.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/com/meetup/memcached/NestedIOException.java
+END

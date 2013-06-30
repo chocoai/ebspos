@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/ehcache
+END
+CacheName.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/ehcache/CacheName.java
+END
+IDataLoader.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/ehcache/IDataLoader.java
+END
+CacheKit.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/ehcache/CacheKit.java
+END
+CacheInterceptor.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/ehcache/CacheInterceptor.java
+END
+EhCachePlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/ehcache/EhCachePlugin.java
+END

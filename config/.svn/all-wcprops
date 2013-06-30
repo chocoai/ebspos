@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/config
+END
+log4j.properties
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/config/log4j.properties
+END
+sql.xml
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/config/sql.xml
+END
+ehcache.xml
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/config/ehcache.xml
+END
+ui.properties
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/config/ui.properties
+END
+config.properties
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/config/config.properties
+END

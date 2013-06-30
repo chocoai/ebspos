@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/loyin/!svn/ver/69/JFOA/src/JFOA/core/net/loyin/util
+END
+ShortUrlGenerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/net/loyin/util/ShortUrlGenerator.java
+END
+TextUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/net/loyin/util/TextUtil.java
+END
+TimeUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/net/loyin/util/TimeUtil.java
+END
+PinyinUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/net/loyin/util/PinyinUtil.java
+END
+PropertiesContent.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/net/loyin/util/PropertiesContent.java
+END
+UnicodeTool.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/loyin/!svn/ver/69/JFOA/src/JFOA/core/net/loyin/util/UnicodeTool.java
+END
+FileTool.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/net/loyin/util/FileTool.java
+END
+ValidateCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/loyin/!svn/ver/67/JFOA/src/JFOA/core/net/loyin/util/ValidateCode.java
+END
+ResourceUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/loyin/!svn/ver/14/JFOA/src/JFOA/core/net/loyin/util/ResourceUtils.java
+END

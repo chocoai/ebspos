@@ -1,0 +1,131 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/loyin/!svn/ver/27/JFOA/src/JFOA/jfinal/com/jfinal/render
+END
+Redirect301Render.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/Redirect301Render.java
+END
+Error404Render.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/loyin/!svn/ver/27/JFOA/src/JFOA/jfinal/com/jfinal/render/Error404Render.java
+END
+JavascriptRender.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/JavascriptRender.java
+END
+Error500Render.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/loyin/!svn/ver/27/JFOA/src/JFOA/jfinal/com/jfinal/render/Error500Render.java
+END
+TextRender.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/TextRender.java
+END
+Error500Exception.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/Error500Exception.java
+END
+HtmlRender.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/HtmlRender.java
+END
+Error404Exception.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/Error404Exception.java
+END
+ViewType.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/ViewType.java
+END
+JsonRender.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/JsonRender.java
+END
+NullRender.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/NullRender.java
+END
+JspRender.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/JspRender.java
+END
+CPI.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/CPI.java
+END
+FreeMarkerRender.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/FreeMarkerRender.java
+END
+RenderException.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/RenderException.java
+END
+Render.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/Render.java
+END
+RenderFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/RenderFactory.java
+END
+VelocityRender.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/VelocityRender.java
+END
+RedirectRender.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/RedirectRender.java
+END
+FileRender.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/FileRender.java
+END
+IMainRenderFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/render/IMainRenderFactory.java
+END

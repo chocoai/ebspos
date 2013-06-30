@@ -1,0 +1,38 @@
+<#assign path="${root!}">
+<div class="accordion" fillSpace="sidebar">
+<#--目录迭代-->
+<#macro menuList list_ pid_>
+<#list menuChild as menu1>
+<#if (menu1.pid!0)==pid_>
+<li>
+	<#if menu1.url??&&menu1.type==1>
+	<a href="javascript:void(0);" url="${path}/${menu1.url}" target="<#if menu1.target??&& menu1.target==1>dialog<#else>navTab</#if>" rel="${menu1.rel!(menu1.url!)}">${menu1.name!}</a>
+	</#if>
+	<#if (!menu1.url??)>
+		<a>${menu1.name }</a>
+		<ul>
+		<@menuList list_=list_ pid_=menu1.id/>
+		</ul>
+	</#if>
+</li>
+</#if>
+</#list>
+</#macro>
+
+<#--权限菜单-->
+<#list menuChild as menu0>
+<#if (menu0.pid==pid!0)>
+	<div class="accordionHeader">
+	<h2><span>Folder</span>${menu0.name }</h2>
+	</div>
+	<div class="accordionContent">
+	<ul class="tree treeFolder">
+	<@menuList list_=menuChild pid_=menu0.id/>
+<li>
+</li>
+	</ul>
+	</div>
+</#if>
+</#list>
+<a href="javascript:void(0);" url="/employee" target="navTab"  rel="employee">员工资料</a>
+</div>

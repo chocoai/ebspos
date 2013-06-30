@@ -1,0 +1,137 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/loyin/!svn/ver/27/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord
+END
+Page.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/Page.java
+END
+SqlReporter.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/SqlReporter.java
+END
+CaseInsensitiveMapFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/CaseInsensitiveMapFactory.java
+END
+ICallback.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/ICallback.java
+END
+RecordBuilder.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/RecordBuilder.java
+END
+CaseInsensitiveContainerFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/loyin/!svn/ver/27/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/CaseInsensitiveContainerFactory.java
+END
+ActiveRecordPlugin.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/ActiveRecordPlugin.java
+END
+Model.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/Model.java
+END
+OneConnectionPerThread.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/OneConnectionPerThread.java
+END
+TableInfoBuilder.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/TableInfoBuilder.java
+END
+IDataSourceProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/IDataSourceProvider.java
+END
+Db.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/Db.java
+END
+TableInfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/loyin/!svn/ver/27/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/TableInfo.java
+END
+CPI.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/CPI.java
+END
+IAtom.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/IAtom.java
+END
+ActiveRecordException.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/ActiveRecordException.java
+END
+DbKit.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/DbKit.java
+END
+IMapFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/IMapFactory.java
+END
+ModelBuilder.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/ModelBuilder.java
+END
+TableInfoMapping.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/TableInfoMapping.java
+END
+IContainerFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/IContainerFactory.java
+END
+Record.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/plugin/activerecord/Record.java
+END

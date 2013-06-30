@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sqlGroup name="webadmin">
+	<!-- 通过用户id查找权限菜单 -->
+	<sql id="getpower">
+ select distinct m.* from menu m join powermenu pm join employee e join userrole ur on
+ m.id =pm.menuid and e.id=? and ((e.id=pm.objid and
+ pm.type=0)or(pm.type=1 and ur.userid=e.id and
+ ur.roleid=pm.objid)or(pm.type=2 and e.dep_no=pm.objid)) order by m.menulevel asc, m.ordernum asc
+	</sql>
+	<sql id="login">
+ select e.id as id, usr_name, usr_no,gender,e.dep_no as partid, part.dep_name as partname from Employee e 
+left  join Partment part on e.dep_no=part.id  where e.usr_no=? and pwd=?
+	</sql>
+</sqlGroup>

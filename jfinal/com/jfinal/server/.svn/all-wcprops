@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/server
+END
+Run_Configurations.txt
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/server/Run_Configurations.txt
+END
+IServer.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/server/IServer.java
+END
+ServerFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/server/ServerFactory.java
+END
+JettyServer.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/loyin/!svn/ver/15/JFOA/src/JFOA/jfinal/com/jfinal/server/JettyServer.java
+END
