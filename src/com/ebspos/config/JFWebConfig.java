@@ -12,6 +12,7 @@ import net.loyin.memcache.MemcacheTool;
 import net.loyin.util.PropertiesContent;
 
 import com.alibaba.druid.filter.stat.StatFilter;
+import com.ebspos.handler.ApiHandler;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -101,6 +102,7 @@ public class JFWebConfig extends JFinalConfig {
 			}
 		});
 		me.add(dvh);
+		me.add(new ApiHandler("/api/"));
 	}
 	/**
 	 * 建议使用 JFinal 手册推荐的方式启动项目

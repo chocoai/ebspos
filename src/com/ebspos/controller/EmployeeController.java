@@ -1,6 +1,8 @@
 package com.ebspos.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.loyin.jFinal.anatation.PowerBind;
@@ -58,8 +60,8 @@ public class EmployeeController extends BaseController {
 			whee.append(" and p.id = ?");
 			param.add(pid);
 		}
-		setAttr("usrname", usr_name);
-		setAttr("usrno", usr_no);
+		setAttr("usr_name", usr_name);
+		setAttr("usr_no", usr_no);
 		setAttr("partid", pid);
 //		if (orgid != 0) {
 //			whee.append(" and p.orgid = ?");
@@ -72,7 +74,7 @@ public class EmployeeController extends BaseController {
 						getParaToInt("pageNum", 1),
 						getParaToInt("numPerPage", 20),
 						"select e.id,usr_no 编号,usr_name 姓名, e.gender 性别,phone_no 手机电话,usr_type 状态 ",
-						" from  Employee e left join partment p on p.id=e.dep_no "
+						" from  Employee e join partment p on p.id=e.dep_no "
 								+ whee.toString() + " order by e.id ",
 						param.toArray()));
 		setAttr("collist", new String[] { "编号", "姓名", "性别", "手机电话", "状态" });
@@ -123,9 +125,11 @@ public class EmployeeController extends BaseController {
 		try {
 			Employee m = getModel(Employee.class);
 			if (m.getLong("id") != null) {
+				m.set("upd_time",new Timestamp((new Date()).getTime()));
 				m.update();
 			} else {
 				m.set("pwd",MD5.getMD5ofStr("123456"));
+				m.set("upd_time",new Timestamp((new Date()).getTime()));
 				m.save();
 			}
 //			 Db.update("update employee e set e.orgid=(select p.orgid from partment p where p.id=e.partmentid)");
@@ -206,4 +210,5 @@ public class EmployeeController extends BaseController {
 			toDwzJson(300, "保存异常！");
 		}
 	}
+	
 }
