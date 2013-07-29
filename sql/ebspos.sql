@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50145
 File Encoding         : 65001
 
-Date: 2013-07-27 14:11:57
+Date: 2013-07-29 16:21:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -61,7 +61,7 @@ INSERT INTO `employee` VALUES ('3', 'wcc', '吴春明', 'e10adc3949ba59abbe56e05
 -- ----------------------------
 DROP TABLE IF EXISTS `jbgoods`;
 CREATE TABLE `jbgoods` (
-  `GoodsNo` varchar(255) DEFAULT NULL,
+  `GoodsNo` varchar(255) NOT NULL DEFAULT '',
   `GoodsCode` varchar(255) DEFAULT NULL,
   `GoodsName` varchar(255) DEFAULT NULL,
   `GoodsTypeNo` varchar(255) DEFAULT NULL,
@@ -114,7 +114,8 @@ CREATE TABLE `jbgoods` (
   `SGroupNo` varchar(255) DEFAULT NULL,
   `Season` varchar(255) DEFAULT NULL,
   `YearBy` varchar(255) DEFAULT NULL,
-  `IsGift` smallint(6) DEFAULT NULL
+  `IsGift` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`GoodsNo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -139,55 +140,22 @@ CREATE TABLE `menu` (
   `rel` varchar(30) DEFAULT NULL,
   `enable` smallint(6) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1015 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
-INSERT INTO `menu` VALUES ('2', '系统管理', null, '0', '0', null, '10', null, '0', '0', null, '1');
-INSERT INTO `menu` VALUES ('3', '人力资源', null, '0', '0', null, '9', null, '0', '0', null, '1');
-INSERT INTO `menu` VALUES ('4', '计划', null, '0', '0', null, '8', null, '0', '0', null, '1');
-INSERT INTO `menu` VALUES ('5', '财务', null, '0', '0', null, '7', null, '0', '0', null, '1');
-INSERT INTO `menu` VALUES ('24', '任务', null, '0', '0', null, '4', null, '0', '0', null, '1');
-INSERT INTO `menu` VALUES ('22', '流程', null, '0', '0', null, '2', null, '0', '0', null, '1');
-INSERT INTO `menu` VALUES ('21', '文档', null, '0', '0', null, '1', null, '0', '0', null, '1');
-INSERT INTO `menu` VALUES ('20', '员工信息', 'employee', '1', '2', null, '1', null, '15', '0', null, '1');
-INSERT INTO `menu` VALUES ('10', '功能菜单', 'menu', '1', '2', null, '0', null, '32', '0', null, '1');
-INSERT INTO `menu` VALUES ('11', '角色', 'role', '1', '2', null, '1', null, '33', '0', null, '1');
-INSERT INTO `menu` VALUES ('12', '部门', 'partment', '1', '2', null, '2', null, '33', '0', null, '1');
-INSERT INTO `menu` VALUES ('13', '参数设置', 'systemparam', '1', '2', null, '3', null, '32', '0', null, '1');
-INSERT INTO `menu` VALUES ('14', '机构', 'organization', '1', '2', null, '4', null, '33', '0', null, '1');
-INSERT INTO `menu` VALUES ('15', '人员管理', null, '1', '1', null, '1', null, '3', '0', null, '1');
-INSERT INTO `menu` VALUES ('16', '权限配置', 'power', '1', '2', null, '5', 'employee', '32', '0', null, '1');
-INSERT INTO `menu` VALUES ('31', '流程管理', null, '1', '1', null, '1', null, '2', '0', null, '1');
-INSERT INTO `menu` VALUES ('18', '员工工资发放', 'wagepay', '1', '1', null, '1', 'wagepay', '5', '0', null, '1');
-INSERT INTO `menu` VALUES ('25', '日程', null, '0', '0', null, '5', null, '0', '0', null, '1');
-INSERT INTO `menu` VALUES ('26', '我的日程', null, '1', '1', null, '1', null, '25', '0', null, '1');
-INSERT INTO `menu` VALUES ('27', '我的日程管理', 'calender', '1', '2', null, '1', null, '26', '0', null, '1');
-INSERT INTO `menu` VALUES ('28', '考勤管理', null, '1', '1', null, '1', null, '3', '0', null, '1');
-INSERT INTO `menu` VALUES ('29', '我的考勤', null, '1', '2', null, '1', null, '28', '0', null, '1');
-INSERT INTO `menu` VALUES ('30', '考勤统计', null, '1', '2', null, '2', null, '28', '0', null, '1');
-INSERT INTO `menu` VALUES ('32', '系统设置', null, '1', '1', null, '0', null, '2', '0', null, '1');
-INSERT INTO `menu` VALUES ('33', '组织设置', null, '1', '1', null, '1', null, '2', '0', null, '1');
-INSERT INTO `menu` VALUES ('34', '流程分类', 'flowcate', '1', '2', null, '1', null, '31', '0', null, '1');
-INSERT INTO `menu` VALUES ('35', '流程部署', 'flowdeploy', '1', '2', null, '0', null, '31', '0', null, '1');
-INSERT INTO `menu` VALUES ('36', '我的流程', null, '1', '1', null, '0', null, '22', '0', null, '1');
-INSERT INTO `menu` VALUES ('37', '发布流程', null, '1', '1', null, '0', null, '22', '0', null, '1');
-INSERT INTO `menu` VALUES ('38', '我的任务', null, '1', '1', null, '1', null, '24', '0', null, '1');
-INSERT INTO `menu` VALUES ('39', '发布任务', null, '1', '1', null, '0', null, '24', '1', null, '1');
-INSERT INTO `menu` VALUES ('43', '发布文档', null, '1', '2', null, '1', null, '42', '1', null, '1');
-INSERT INTO `menu` VALUES ('41', '公共文档', null, '1', '1', null, '1', null, '21', '0', null, '1');
-INSERT INTO `menu` VALUES ('42', '我的文档', null, '1', '1', null, '0', null, '21', '0', null, '1');
-INSERT INTO `menu` VALUES ('44', '文档管理', null, '1', '2', null, '0', null, '42', '0', null, '1');
-INSERT INTO `menu` VALUES ('45', '发布文档', null, '1', '2', null, '1', null, '41', '0', null, '1');
-INSERT INTO `menu` VALUES ('46', '文档管理', null, '1', '2', null, '2', null, '41', '0', null, '1');
-INSERT INTO `menu` VALUES ('47', '平台设置', 'platform/set', '1', '2', null, '0', null, '32', '0', null, '1');
-INSERT INTO `menu` VALUES ('48', '流程管理', null, '1', '1', null, '0', null, '22', '0', null, '1');
-INSERT INTO `menu` VALUES ('49', '流程分类', null, '1', '2', null, '0', null, '48', '0', null, '1');
-INSERT INTO `menu` VALUES ('50', '流程发布', null, '1', '2', null, '0', null, '48', '0', null, '1');
-INSERT INTO `menu` VALUES ('51', '资产', null, '0', '0', null, '2', null, '0', '0', null, '1');
-INSERT INTO `menu` VALUES ('52', '会议管理', null, '1', '1', null, '0', null, '25', '0', null, '1');
-INSERT INTO `menu` VALUES ('53', '证件', null, '0', '0', null, '1', null, '0', '0', null, '1');
+INSERT INTO `menu` VALUES ('1', '资料管理', null, '0', '0', null, '1', null, '0', '0', null, '1');
+INSERT INTO `menu` VALUES ('2', '采购管理', null, '0', '0', null, '2', null, '0', '0', null, '1');
+INSERT INTO `menu` VALUES ('3', '销售管理', null, '0', '0', null, '3', null, '0', '0', null, '1');
+INSERT INTO `menu` VALUES ('4', '仓库管理', null, '0', '0', null, '4', null, '0', '0', null, '1');
+INSERT INTO `menu` VALUES ('5', '财务管理', null, '0', '0', null, '5', null, '0', '0', null, '1');
+INSERT INTO `menu` VALUES ('6', '报表统计', null, '0', '0', null, '6', null, '0', '0', null, '1');
+INSERT INTO `menu` VALUES ('114', '员工资料', 'employee', '1', '2', null, '4', null, '11', '0', null, '1');
+INSERT INTO `menu` VALUES ('113', '商品资料', '#', '1', '2', null, '3', null, '11', '0', null, '1');
+INSERT INTO `menu` VALUES ('11', '资料管理', null, '1', '1', null, '1', null, '1', '0', null, '1');
+INSERT INTO `menu` VALUES ('111', '供应商资料', '#', '1', '2', null, '1', null, '11', '0', null, '1');
+INSERT INTO `menu` VALUES ('112', '客户资料', '#', '1', '2', null, '2', null, '11', '0', null, '1');
 
 -- ----------------------------
 -- Table structure for `partment`
@@ -217,50 +185,17 @@ CREATE TABLE `powermenu` (
 -- ----------------------------
 -- Records of powermenu
 -- ----------------------------
-INSERT INTO `powermenu` VALUES ('2', '1', '0');
-INSERT INTO `powermenu` VALUES ('3', '1', '0');
-INSERT INTO `powermenu` VALUES ('4', '1', '0');
+INSERT INTO `powermenu` VALUES ('6', '1', '0');
 INSERT INTO `powermenu` VALUES ('5', '1', '0');
-INSERT INTO `powermenu` VALUES ('10', '1', '0');
+INSERT INTO `powermenu` VALUES ('4', '1', '0');
+INSERT INTO `powermenu` VALUES ('3', '1', '0');
+INSERT INTO `powermenu` VALUES ('2', '1', '0');
+INSERT INTO `powermenu` VALUES ('1', '1', '0');
 INSERT INTO `powermenu` VALUES ('11', '1', '0');
-INSERT INTO `powermenu` VALUES ('12', '1', '0');
-INSERT INTO `powermenu` VALUES ('13', '1', '0');
-INSERT INTO `powermenu` VALUES ('14', '1', '0');
-INSERT INTO `powermenu` VALUES ('15', '1', '0');
-INSERT INTO `powermenu` VALUES ('16', '1', '0');
-INSERT INTO `powermenu` VALUES ('18', '1', '0');
-INSERT INTO `powermenu` VALUES ('20', '1', '0');
-INSERT INTO `powermenu` VALUES ('21', '1', '0');
-INSERT INTO `powermenu` VALUES ('22', '1', '0');
-INSERT INTO `powermenu` VALUES ('24', '1', '0');
-INSERT INTO `powermenu` VALUES ('25', '1', '0');
-INSERT INTO `powermenu` VALUES ('26', '1', '0');
-INSERT INTO `powermenu` VALUES ('27', '1', '0');
-INSERT INTO `powermenu` VALUES ('28', '1', '0');
-INSERT INTO `powermenu` VALUES ('29', '1', '0');
-INSERT INTO `powermenu` VALUES ('30', '1', '0');
-INSERT INTO `powermenu` VALUES ('31', '1', '0');
-INSERT INTO `powermenu` VALUES ('32', '1', '0');
-INSERT INTO `powermenu` VALUES ('33', '1', '0');
-INSERT INTO `powermenu` VALUES ('34', '1', '0');
-INSERT INTO `powermenu` VALUES ('35', '1', '0');
-INSERT INTO `powermenu` VALUES ('36', '1', '0');
-INSERT INTO `powermenu` VALUES ('37', '1', '0');
-INSERT INTO `powermenu` VALUES ('38', '1', '0');
-INSERT INTO `powermenu` VALUES ('39', '1', '0');
-INSERT INTO `powermenu` VALUES ('41', '1', '0');
-INSERT INTO `powermenu` VALUES ('42', '1', '0');
-INSERT INTO `powermenu` VALUES ('43', '1', '0');
-INSERT INTO `powermenu` VALUES ('44', '1', '0');
-INSERT INTO `powermenu` VALUES ('45', '1', '0');
-INSERT INTO `powermenu` VALUES ('46', '1', '0');
-INSERT INTO `powermenu` VALUES ('47', '1', '0');
-INSERT INTO `powermenu` VALUES ('48', '1', '0');
-INSERT INTO `powermenu` VALUES ('49', '1', '0');
-INSERT INTO `powermenu` VALUES ('50', '1', '0');
-INSERT INTO `powermenu` VALUES ('51', '1', '0');
-INSERT INTO `powermenu` VALUES ('52', '1', '0');
-INSERT INTO `powermenu` VALUES ('53', '1', '0');
+INSERT INTO `powermenu` VALUES ('111', '1', '0');
+INSERT INTO `powermenu` VALUES ('112', '1', '0');
+INSERT INTO `powermenu` VALUES ('113', '1', '0');
+INSERT INTO `powermenu` VALUES ('114', '1', '0');
 
 -- ----------------------------
 -- Table structure for `role`
