@@ -24,7 +24,7 @@ import com.jfinal.util.PathUtil;
  */
 public class ServerFactory {
 	
-	private static final int DEFAULT_PORT = 80;
+	private static final int DEFAULT_PORT = 8090;
 	private static final int DEFAULT_SCANINTERVALSECONDS = 5;
 	
 	private ServerFactory() {
