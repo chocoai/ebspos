@@ -8,7 +8,7 @@
  ur.roleid=pm.objid)or(pm.type=2 and e.dep_no=pm.objid)) order by m.menulevel asc, m.ordernum asc
 	</sql>
 	<sql id="login">
- select e.id as id, usr_name, usr_no,gender,e.dep_no as partid, part.dep_name as partname from Employee e 
+ select e.id as id, usr_name, usr_no,gender,e.dep_no as partid, part.name as partname from Employee e 
 left  join Partment part on e.dep_no=part.id  where e.usr_no=? and pwd=?
 	</sql>
 </sqlGroup>

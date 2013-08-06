@@ -13,7 +13,7 @@ import com.ebspos.ftl.OrgSelectTarget;
 import com.ebspos.ftl.PartmentSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
 import com.ebspos.model.Employee;
-//import com.ebspos.model.Organization;
+import com.ebspos.model.Organization;
 import com.ebspos.model.Partment;
 import com.ebspos.model.Role;
 import com.jfinal.aop.Before;
@@ -36,14 +36,14 @@ public class EmployeeController extends BaseController {
 	public void index() {
 		f = true;
 		list();
-//		setAttr("org",Organization.dao.find("select id, name,num from Organization order by id"));
-		setAttr("part",Partment.dao.find("select id, dep_name from Partment order by id"));
+		setAttr("org",Organization.dao.find("select id, name,num from Organization order by id"));
+		setAttr("part",Partment.dao.find("select id, name from Partment order by id"));
 		render("index.html");
 	}
 
 	public void list() {
 		Long pid = getParaToLong(0, 0L);
-//		Long orgid = getParaToLong(0, 0L);
+		Long orgid = getParaToLong(0, 0L);
 		StringBuffer whee = new StringBuffer();
 		List<Object> param = new ArrayList<Object>();
 		String usr_name = getPara("usr_name");

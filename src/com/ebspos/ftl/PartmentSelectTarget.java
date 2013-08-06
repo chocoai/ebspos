@@ -26,14 +26,14 @@ public class PartmentSelectTarget extends BaseTarget {
 	public void execute(Environment env, Map args, TemplateModel[] arg2,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
 //		List<Organization> orglist=Organization.dao.find("select id,name,num from Organization");
-		List<Partment> list= Partment.dao.find("select id,dep_name from Partment");
+		List<Partment> list= Partment.dao.find("select id,name from Partment");
 		Writer out= env.getOut();
 //		for(Organization org:orglist){
 //			out.append("<optgroup label='"+org.getStr("name")+"["+org.getStr("num")+"]'>");
 			for(Partment o:list){
 //				if(org.getLong("id")==o.getLong("orgid")){
 					out.append("<option value='"+o.getInt("id")+"'>");
-					out.append(o.getStr("dep_name"));
+					out.append(o.getStr("name"));
 					out.append("</option>");
 //				}
 			}
