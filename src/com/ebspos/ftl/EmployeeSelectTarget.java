@@ -23,11 +23,11 @@ public class EmployeeSelectTarget extends BaseTarget {
 	@Override
 	public void execute(Environment env, Map args, TemplateModel[] arg2,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
-		List<Employee> list= Employee.dao.find("select id,fullname,userno from employee ");
+		List<Employee> list= Employee.dao.find("select id,usr_name,usr_no from employee ");
 		Writer out= env.getOut();
 		for(Employee o:list){
 			out.append("<option value='"+o.getLong("id")+"'>");
-			out.append(o.getStr("fullname")+"["+o.getStr("userno")+"]");
+			out.append(o.getStr("usr_name")+"["+o.getStr("usr_no")+"]");
 			out.append("</option>");
 		}
 	}

@@ -12,9 +12,19 @@ style="float: left; overflow: auto; width: 200px; border: solid 1px #CCC; line-h
 <ul class="tree treeFolder" id="org_part_tree">
 <li><a href="javascript:void(0);">机构</a>
 <ul>
-<#list part as p>
-<li><a href="javascript:void(0);" url="${path}/employee/list/${p.id!}" target="ajax" rel="empbox">${p.dep_name!}</a>
-</li>
+<#list org as o>
+<li><a href="javascript:void(0);" url="${path}/employee/list/${o.id!}" target="ajax" rel="empbox">${o.name!}[${o.num!}]</a>
+<ul>
+<#list part as p><#if !p.pid??>
+<li><a href="javascript:void(0);" url="${path}/employee/list/${o.id!}-${p.id!}" target="ajax" rel="empbox">${p.name!}[${p.num!}]</a>
+<ul>
+<#list part as p1><#if p1.pid??&&p1.pid=p.id>
+<li><a href="javascript:void(0);" url="${path}/employee/list/${o.id!}-${p.id!}-${p1.id!}" target="ajax"
+rel="empbox">${p1.name!}[${p1.num!}]</a></li> </#if> </#list>
+</ul></li>
+</#if>
+</#list>
+</ul></li>
 </#list>
 </ul>
 </li>

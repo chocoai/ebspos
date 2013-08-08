@@ -42,7 +42,7 @@ public class EmployeeController extends BaseController {
 	}
 
 	public void list() {
-		Long pid = getParaToLong(0, 0L);
+		Long pid = getParaToLong(1, 0L);
 		Long orgid = getParaToLong(0, 0L);
 		StringBuffer whee = new StringBuffer();
 		List<Object> param = new ArrayList<Object>();
@@ -62,12 +62,12 @@ public class EmployeeController extends BaseController {
 		}
 		setAttr("usr_name", usr_name);
 		setAttr("usr_no", usr_no);
-		setAttr("partid", pid);
-//		if (orgid != 0) {
-//			whee.append(" and p.orgid = ?");
-//			param.add(orgid);
-//		}
-//		setAttr("orgid", orgid);
+		setAttr("dept_no", pid);
+		if (orgid != 0) {
+			whee.append(" and p.orgid = ?");
+			param.add(orgid);
+		}
+	setAttr("orgid", orgid);
 		setAttr("pid", pid);
 		setAttr("page",
 				Db.paginate(
@@ -101,13 +101,13 @@ public class EmployeeController extends BaseController {
 		Employee pojo = new Employee();
 		Long id = getParaToLong(1, 0L);
 		Long pid = getParaToLong(0, 0L);
-//		Long orgid = getParaToLong(0, 0L);
+		//Long orgid = getParaToLong(0, 0L);
 		pojo.set("dep_no", pid);
-//		pojo.set("orgid", orgid);
+		//pojo.set("orgid", orgid);
 		if (id != 0) {
 			pojo = Employee.dao.findById(id);
 		}
-//		setAttr(OrgSelectTarget.targetName, new OrgSelectTarget());
+		setAttr(OrgSelectTarget.targetName, new OrgSelectTarget());
 		setAttr(PartmentSelectTarget.targetName, new PartmentSelectTarget());
 		setAttr("pojo", pojo);
 		render("add.html");

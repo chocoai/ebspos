@@ -6,7 +6,7 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
-//import com.ebspos.model.Organization;
+import com.ebspos.model.Organization;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
@@ -24,12 +24,12 @@ public class OrgSelectTarget extends BaseTarget {
 	@Override
 	public void execute(Environment env, Map args, TemplateModel[] arg2,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
-//		List<Organization> list= Organization.dao.find("select id,name,num from Organization order by sortnum asc");
-//		Writer out= env.getOut();
-//		for(Organization o:list){
-//			out.append("<option value='"+o.getLong("id")+"'>");
-//			out.append(o.getStr("name")+"["+o.getStr("num")+"]");
-//			out.append("</option>");
-//		}
+		List<Organization> list= Organization.dao.find("select id,name,num from Organization order by sortnum asc");
+		Writer out= env.getOut();
+		for(Organization o:list){
+			out.append("<option value='"+o.getLong("id")+"'>");
+			out.append(o.getStr("name")+"["+o.getStr("num")+"]");
+			out.append("</option>");
+		}
 	}
 }
