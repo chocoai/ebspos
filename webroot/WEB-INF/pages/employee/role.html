@@ -9,7 +9,7 @@ $("[name='roles'][value='${ur.roleid!}']").attr("checked","true");
 		<form method="post" action="${root!}/employee/saveRole/${id!}" id="articlefrom" class="pageForm required-validate"onsubmit="return validateCallback(this, dialogAjaxDone);">
 			<div class="pageFormContent" id="articleSave" layoutH="55">
 				<p>
-				员工：${pojo.fullname}[${pojo.userno}]
+				员工：${pojo.usr_name}[${pojo.usr_no}]
 				</p>
 				<p>
 				角色：
