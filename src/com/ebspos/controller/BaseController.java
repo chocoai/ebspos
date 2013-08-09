@@ -8,6 +8,7 @@ import net.loyin.memcache.MemcacheTool;
 
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.ehcache.CacheKit;
 
 /**
  * 基础Controller
@@ -24,7 +25,8 @@ public abstract class BaseController extends Controller {
 	/**获取当前系统操作人*/
 	public Record getCurrentUser(){
 		String user_token=getCookie("user_token");
-		return (Record)MemcacheTool.mcc.get(user_token);
+//		return (Record)MemcacheTool.mcc.get(user_token);
+		return (Record)CacheKit.get("mcc", user_token);
 	}
 	/**
 	 * 转换dwz json格式输出

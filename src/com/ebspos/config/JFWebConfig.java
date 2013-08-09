@@ -23,6 +23,8 @@ import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.druid.DruidStatViewHandler;
 import com.jfinal.plugin.druid.IDruidStatViewAuth;
+import com.jfinal.plugin.ehcache.CacheKit;
+import com.jfinal.plugin.ehcache.EhCachePlugin;
 /**
  * API引导式配置
  */
@@ -46,7 +48,8 @@ public class JFWebConfig extends JFinalConfig {
 	 */
 	public void configRoute(Routes me) {
 		MyRoutesUtil.add(me);
-		MemcacheTool.mcc.flushAll();//刷新所有的memcache
+//		MemcacheTool.mcc.flushAll();//刷新所有的memcache
+//		CacheKit.getCacheManager().clearAll();
 	}
 	
 	/**
@@ -63,6 +66,7 @@ public class JFWebConfig extends JFinalConfig {
 //		druidPlugin.addFilter(wall);
 		druidPlugin.addFilter(new StatFilter());
 		me.add(druidPlugin);
+		me.add(new EhCachePlugin());
 		// 配置ActiveRecord插件
 		/**
 		ActiveRecordPlugin arp = new ActiveRecordPlugin(druidPlugin);

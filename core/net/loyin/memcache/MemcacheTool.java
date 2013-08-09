@@ -25,7 +25,7 @@ public class MemcacheTool {
 		pool.setNagle(false);
 		pool.setSocketTO(3000);
 		pool.setAliveCheck(true);
-		pool.initialize();
-		mcc = new MemcachedClient();
+//		pool.initialize();
+//		mcc = new MemcachedClient();
 	}
 }

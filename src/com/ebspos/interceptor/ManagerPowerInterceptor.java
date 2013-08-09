@@ -11,6 +11,7 @@ import com.jfinal.aop.Interceptor;
 import com.jfinal.core.ActionInvocation;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.ehcache.CacheKit;
 /**
  * 管理用户后台登录状态及权限验证拦截器
  * @author 刘声凤
@@ -23,7 +24,8 @@ public class ManagerPowerInterceptor implements Interceptor {
 		ctrl.setAttr("root",ctrl.getRequest().getContextPath());
 		ctrl.setAttr("StaticCfg", new StaticCfg());
 		String user_token=ctrl.getCookie("user_token");
-		Record po=(Record)MemcacheTool.mcc.get(user_token);
+//		Record po=(Record)MemcacheTool.mcc.get(user_token);
+		Record po =(Record) CacheKit.get("mcc", user_token);
 		if(po==null){
 			/*String ckey=ai.getControllerKey();
 			if(ckey.contains("webadmin")){

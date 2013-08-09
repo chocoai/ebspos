@@ -14,6 +14,18 @@
            timeToLiveSeconds="60">
     </defaultCache>
 
+    <cache name="mcc"
+           maxEntriesLocalHeap="10000"
+           maxEntriesLocalDisk="1000"
+           eternal="false"
+           overflowToDisk="true"
+           diskSpoolBufferSizeMB="20"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off"
+            />
+
     <!--
     Sample cache named sampleCache1
     This cache contains a maximum in memory of 10000 elements, and will expire

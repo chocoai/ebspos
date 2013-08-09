@@ -12,6 +12,9 @@ import javax.servlet.http.HttpSessionActivationListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.ehcache.CacheKit;
+
 import net.loyin.memcache.MemcacheTool;
 
 /**
@@ -33,40 +36,53 @@ public class SessionListener implements HttpSessionListener,
 	public void sessionCreated(HttpSessionEvent ev) {
 		String sessionid = ev.getSession().getId();
 		String ip = request.getRemoteAddr();
-		Set<String> clientSet = (Set<String>) MemcacheTool.mcc.get(clientSetkey);
+//		Set<String> clientSet = (Set<String>) MemcacheTool.mcc.get(clientSetkey);
+		Set<String> clientSet =(Set<String>) CacheKit.get("mcc", clientSetkey);
 		if (clientSet == null) {
 			clientSet = new HashSet<String>();
-			MemcacheTool.mcc.set(clientSetkey, clientSet,new Date(new Date().getTime()+timelong));
+//			MemcacheTool.mcc.set(clientSetkey, clientSet,new Date(new Date().getTime()+timelong));
+			CacheKit.put("mcc", clientSetkey, clientSet);
 		}
 		clientSet.add(sessionid);
-		MemcacheTool.mcc.set(clientSetkey, clientSet,new Date(new Date().getTime()+timelong));
-		Set<String> teSet = (Set<String>) MemcacheTool.mcc.get(teSetkey);
+//		MemcacheTool.mcc.set(clientSetkey, clientSet,new Date(new Date().getTime()+timelong));
+		CacheKit.put("mcc", clientSetkey, clientSet);
+//		Set<String> teSet = (Set<String>) MemcacheTool.mcc.get(teSetkey);
+		Set<String> teSet = (Set<String>) CacheKit.get("mcc", teSetkey);
 		if (teSet == null) {
 			teSet = new HashSet<String>();
-			MemcacheTool.mcc.set(teSetkey, teSet,new Date(new Date().getTime()+timelong));
+//			MemcacheTool.mcc.set(teSetkey, teSet,new Date(new Date().getTime()+timelong));
+			CacheKit.put("mcc", teSetkey, teSet);
 		}
 		teSet.add(ip);
-		MemcacheTool.mcc.set(teSetkey, teSet,new Date(new Date().getTime()+timelong));
+//		MemcacheTool.mcc.set(teSetkey, teSet,new Date(new Date().getTime()+timelong));
+		CacheKit.put("mcc", teSetkey, teSet);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void sessionDestroyed(HttpSessionEvent ev) {
 		String sessionid = ev.getSession().getId();
-		Set<String> clientSet = (Set<String>) MemcacheTool.mcc.get(clientSetkey);
+//		Set<String> clientSet = (Set<String>) MemcacheTool.mcc.get(clientSetkey);
+		Set<String> clientSet = (Set<String>) CacheKit.get("mcc", clientSetkey);
 		if (clientSet != null && clientSet.isEmpty() == false) {
 			clientSet.remove(sessionid);
-			MemcacheTool.mcc.set(clientSetkey, clientSet,new Date(new Date().getTime()+timelong));
+//			MemcacheTool.mcc.set(clientSetkey, clientSet,new Date(new Date().getTime()+timelong));
+			CacheKit.put("mcc", clientSetkey, clientSet);
 		}
-		Set<String> teSet = (Set<String>) MemcacheTool.mcc.get(teSetkey);
+//		Set<String> teSet = (Set<String>) MemcacheTool.mcc.get(teSetkey);
+		Set<String> teSet = (Set<String>) CacheKit.get("mcc", teSetkey);
 		if (teSet != null && teSet.isEmpty() == false) {
 			String ip = request.getRemoteAddr();
 			teSet.remove(ip);
-			MemcacheTool.mcc.set(teSetkey, teSet,new Date(new Date().getTime()+timelong));
+//			MemcacheTool.mcc.set(teSetkey, teSet,new Date(new Date().getTime()+timelong));
+			CacheKit.put("mcc", teSetkey, teSet);
 		}
-		MemcacheTool.mcc.delete(sessionid);
-		MemcacheTool.mcc.delete("menu"+sessionid);
-		MemcacheTool.mcc.delete("powersafecodelist"+sessionid);
+//		MemcacheTool.mcc.delete(sessionid);
+//		MemcacheTool.mcc.delete("menu"+sessionid);
+//		MemcacheTool.mcc.delete("powersafecodelist"+sessionid);
+		CacheKit.remove("mcc", sessionid);
+		CacheKit.remove("mcc", "menu"+sessionid);
+		CacheKit.remove("mcc", "powersafecodelist"+sessionid);
 	}
 
 	@Override

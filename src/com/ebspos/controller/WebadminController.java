@@ -28,6 +28,7 @@ import com.ebspos.interceptor.ManagerPowerInterceptor;
 import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.ehcache.CacheKit;
 
 /**
  * 后台管理
@@ -70,12 +71,14 @@ public class WebadminController extends BaseController {
 	}
 	@SuppressWarnings("unchecked")
 	private List<Record> fetchMenu(String user_token,Long userid){
-		List<Record> menus=(List<Record>)MemcacheTool.mcc.get("menu"+user_token);
+//		List<Record> menus=(List<Record>)MemcacheTool.mcc.get("menu"+user_token);
+		List<Record> menus=(List<Record>)CacheKit.get("mcc", "menu"+user_token);
 		if(menus==null||menus.isEmpty())
 			menus=Db.find(SqlManager.sql("webadmin.getpower"),userid);
 		if(menus!=null&&menus.isEmpty()==false){
 			//将菜单放置memcache
-			MemcacheTool.mcc.set("menu"+user_token,menus,new Date(new Date().getTime()+86400000));
+//			MemcacheTool.mcc.set("menu"+user_token,menus,new Date(new Date().getTime()+86400000));
+			CacheKit.put("mcc", "menu"+user_token, menus);
 			List<String> powersafecodelist=new ArrayList<String>();
 			for(Record menu:menus){
 				int menuType=Integer.valueOf(menu.get("type").toString());
@@ -87,7 +90,8 @@ public class WebadminController extends BaseController {
 				}
 			}
 			//将按钮放置memcache
-			MemcacheTool.mcc.set("powersafecodelist"+user_token,powersafecodelist,new Date(new Date().getTime()+86400000));
+//			MemcacheTool.mcc.set("powersafecodelist"+user_token,powersafecodelist,new Date(new Date().getTime()+86400000));
+			CacheKit.put("mcc", "powersafecodelist"+user_token, powersafecodelist);
 		}
 		return menus;
 	}
@@ -120,23 +124,29 @@ public class WebadminController extends BaseController {
 				 * 第三步 对应的session进行超时操作,删除user_token对应的缓存*/
 				boolean single="1".equals(StaticCfg.get("single").get("value"))?true:false;
 				if(single){
-					Set<String>sessionSet=(Set<String>)MemcacheTool.mcc.get("clientSet");
+//					Set<String>sessionSet=(Set<String>)MemcacheTool.mcc.get("clientSet");
+					Set<String>sessionSet=(Set<String>)CacheKit.get("mcc", "clientSet");
 					if(sessionSet!=null&&sessionSet.isEmpty()==false){
 						Iterator<String> it= sessionSet.iterator();
 						while(it.hasNext()){
 							String user_token=it.next();
-							Record r=(Record) MemcacheTool.mcc.get(user_token);
+//							Record r=(Record) MemcacheTool.mcc.get(user_token);
+							Record r=(Record) CacheKit.get("mcc", user_token);
 							if(r!=null)
 							if(!user_token.equals(nowuser_token)&&r.get("userno").equals(m.get("userno"))){
-								MemcacheTool.mcc.delete(user_token);
-								MemcacheTool.mcc.delete("menu"+user_token);
-								MemcacheTool.mcc.delete("btn"+user_token);
+//								MemcacheTool.mcc.delete(user_token);
+//								MemcacheTool.mcc.delete("menu"+user_token);
+//								MemcacheTool.mcc.delete("btn"+user_token);
+								CacheKit.remove("mcc", user_token);
+								CacheKit.remove("mcc", "menu"+user_token);
+								CacheKit.remove("mcc", "btn"+user_token);
 							}
 						}
 					}
 				}
 				/**唯一登录结束*/
-				MemcacheTool.mcc.set(nowuser_token, m,new Date(new Date().getTime()+86400000));
+//				MemcacheTool.mcc.set(nowuser_token, m,new Date(new Date().getTime()+86400000));
+				CacheKit.put("mcc", nowuser_token, m);
 				fetchMenu(nowuser_token,m.getLong("id"));
 				this.toDwzJson(200, "登录成功");
 			}else{
@@ -147,9 +157,12 @@ public class WebadminController extends BaseController {
 	@PowerBind
 	public void logout(){
 		String user_token=this.getCookie("user_token");
-		MemcacheTool.mcc.delete(user_token);
-		MemcacheTool.mcc.delete("menu"+user_token);
-		MemcacheTool.mcc.delete("powersafecodelist"+user_token);
+//		MemcacheTool.mcc.delete(user_token);
+//		MemcacheTool.mcc.delete("menu"+user_token);
+//		MemcacheTool.mcc.delete("powersafecodelist"+user_token);
+		CacheKit.remove("mcc", user_token);
+		CacheKit.remove("mcc", "menu"+user_token);
+		CacheKit.remove("mcc", "powersafecodelist"+user_token);
 		this.setCookie("user_token",null, 0,"/");
 		this.redirect("/");
 	}
