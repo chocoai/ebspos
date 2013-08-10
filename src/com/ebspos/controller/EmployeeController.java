@@ -37,7 +37,7 @@ public class EmployeeController extends BaseController {
 		f = true;
 		list();
 		setAttr("org",Organization.dao.find("select id, name,num from Organization order by id"));
-		setAttr("part",Partment.dao.find("select id, name from Partment order by id"));
+		setAttr("part",Partment.dao.find("select id, name,num from Partment order by id"));
 		render("index.html");
 	}
 
