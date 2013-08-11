@@ -10,9 +10,9 @@ if ($ul.text() == "\n")$ul.remove();
 <div layoutH="2"
 style="float: left; overflow: auto; width: 200px; border: solid 1px #CCC; line-height: 21px;">
 <ul class="tree treeFolder" id="org_part_tree">
-<li><a href="javascript:void(0);">商品类别</a>
+<li><a href="javascript:void(0);" url="${path}/goodstype/list/0">商品类别</a>
 <ul>
-<#list goodstype as p><#if !p.pid??>
+<#list goodstype as p><#if p.pid=0>
 <li><a href="javascript:void(0);" url="${path}/goodstype/list/${p.id!}" target="ajax" rel="goodstype">${p.name!}[${p.num!}]</a>
 </li>
 </#if>

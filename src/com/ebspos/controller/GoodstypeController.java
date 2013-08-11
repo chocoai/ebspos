@@ -2,17 +2,17 @@ package com.ebspos.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-//import com.ebspos.ftl.OrgSelectTarget;
-//import com.ebspos.ftl.PartmentSelectTarget;
-import com.ebspos.ftl.OrgSelectTarget;
-import com.ebspos.ftl.PartmentSelectTarget;
+import com.ebspos.ftl.GoodstypepSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
 import com.ebspos.model.Employee;
 import com.ebspos.model.Goodstype;
 import net.loyin.jFinal.anatation.RouteBind;
+import net.loyin.util.safe.MD5;
+
 import com.jfinal.aop.Before;
 import com.jfinal.log.Logger;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 
 /**
  * 商品类别
@@ -66,16 +66,42 @@ public class GoodstypeController extends BaseController {
 			render("list.html");		
 	}
 	public void add() {
-		Goodstype gt = new Goodstype();		
-		Long pid = getParaToLong(0, 0L);		
-		gt.set("pid", pid);		
-		//if (id != 0) {
-		//	pojo = Employee.dao.findById(id);
-		//}
-		//setAttr(OrgSelectTarget.targetName, new OrgSelectTarget());
+		Goodstype gtt = new Goodstype();		
+		Long pid = getParaToLong(0, 0L);
+		Long id = getParaToLong(1, 0L);				
+		if (id != 0) {  //修改
+			gtt = Goodstype.dao.findById(id);
+		}else {gtt.set("pid", pid);}  //新增
+		setAttr(GoodstypepSelectTarget.targetName, new GoodstypepSelectTarget());
 		//setAttr(PartmentSelectTarget.targetName, new PartmentSelectTarget());
-		setAttr("gt", gt);
+		setAttr("gtt", gtt);
 		render("add.html");
+	}
+	public void save() {
+		try {
+			Goodstype m = getModel(Goodstype.class);
+			if (m.getLong("id") != null) {
+				m.update();
+			} else {
+				//m.set("pwd",MD5.getMD5ofStr("123456"));
+				m.save();
+			}
+			
+			toDwzJson(200, "保存成功！", navTabId);
+		} catch (Exception e) {
+			log.error("保存员工异常", e);
+			toDwzJson(300, "保存异常！");
+		}
+	}
+	public void del() {
+		Long id = getParaToLong(0, 0L);		
+		try{
+		
+			Goodstype.dao.deleteById(id);
+			toDwzJson(200, "删除成功！", navTabId);
+		}catch(Exception e) {
+			toDwzJson(300, "删除失败！");
+		}
 	}
 	
 	
