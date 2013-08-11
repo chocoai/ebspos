@@ -67,7 +67,7 @@ public class EmployeeController extends BaseController {
 			whee.append(" and p.orgid = ?");
 			param.add(orgid);
 		}
-	setAttr("orgid", orgid);
+		setAttr("orgid", orgid); 
 		setAttr("pid", pid);
 		setAttr("page",
 				Db.paginate(
@@ -130,6 +130,7 @@ public class EmployeeController extends BaseController {
 			} else {
 				m.set("pwd",MD5.getMD5ofStr("123456"));
 				m.set("upd_time",new Timestamp((new Date()).getTime()));
+				m.set("usr_type",1);
 				m.save();
 			}
 //			 Db.update("update employee e set e.orgid=(select p.orgid from partment p where p.id=e.partmentid)");

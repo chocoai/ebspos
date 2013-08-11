@@ -1,0 +1,41 @@
+<#include "../inc/_layout.html"/>
+<@layout>
+<div class="pageHeader">
+		<form action="${path}/goodstype/list" method="post" id="pagerForm"
+			onsubmit="return divSearch(this,'goodstype')">
+			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> <input
+				type="hidden" name="numPerPage" value="${page.pageSize!}" />
+			<div class="searchBar">
+				<ul class="searchContent">
+					<li>
+						<label>编号</label>
+						<input type="text" name="usr_no" value="${num!}">
+					</li>
+					<li>
+						<label>名称</label>
+						<input type="text" name="usr_name" value="${name!}">
+					</li>
+				</ul>
+				<@searchBar/>
+			</div>
+		</form>
+	</div>
+	<div class="pageContent">
+		<div class="panelBar">
+			<ul class="toolBar">
+			<@btnPower safecode="empaed">
+				<li><a class="add" href="javascript:void(0);" url="${path}/goodstype/add/${pid!0}" title="添加商品类别"
+					target="dialog" rel="newemployee" height="500"><span>添加</span></a></li>
+				<li><a class="edit" href="javascript:void(0);" url="${path}/goodstype/add/${partid!0}-{sid_key}"
+					title="修改商品类别" target="dialog" height="500" rel="1"><span>修改</span>
+				<li><a class="delete" href="javascript:void(0);" url="${path}/goodstype/del/{sid_key}"
+					title="确定要删除商品类别吗？" target="ajaxTodo"><span>删除</span> </a></li>
+				<li class="line">line</li>
+			</@btnPower>
+			
+			</ul>
+		</div>
+		<@table layouth="137" tid="tablegoodstype"/>
+	</div>
+<@paginate rel="goodstype"/>
+</@layout>

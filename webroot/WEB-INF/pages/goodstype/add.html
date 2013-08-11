@@ -1,0 +1,78 @@
+<#include "../inc/_layout.html"/>
+<#include "../inc/_nation.html"/>
+<@layout>
+<script type="text/javascript">
+initQueryForm(); 
+</script>
+<div class="pageContent">
+	<form method="post" action="${root!}/goodstype/save" id="goodstypeform"
+		class="pageForm required-validate"
+		onsubmit="return validateCallback(this, dialogAjaxDone);">
+		<input name="goodstype.id" type="hidden" value="${gt.id!}">
+		<div class="pageFormContent" id="articleSave" layoutH="55">
+			<table class="mytablecls" width="98%">
+				<tr>
+					<th>员工编号：</th><td><input class="required" value="${pojo.usr_no!}" name="employee.usr_no"/></td>
+					<th>员工名称：</th><td><input class="required" name="employee.usr_name" value="${pojo.usr_name!}"></td>
+				</tr>
+				<tr>
+					<th>部门：</th><td><select name="employee.dep_no" class="combox"  val="${pojo.dep_no!}"><@partSelect/></select></td>
+					<th>学历：</th>
+					<td><select name="employee.edu_bg" class="combox" val="${pojo.edu_bg!}">
+					<option value="高中">高中</option>
+					<option value="本科">本科</option>
+					<option value="硕士">硕士</option></select></td>
+				</tr>
+				<tr>
+					<th>年龄：</th><td><input type="text" name="employee.age" value="${pojo.age!}"></td>
+					<th>出生日期：</th><td><input type="text" name="employee.birthday" class="date" value="${pojo.birthday!}"><a class="inputDateButton" href="javascript:;">选择</a></td>
+				</tr>
+				<tr>
+					<th>性别：</th><td><input type="radio" name="employee.gender" <#if pojo.gender??&&pojo.gender=='男'>checked="checked"</#if> value="男">男<input type="radio" name="employee.gender" <#if pojo.gender??&&pojo.gender=='女'>checked="checked"</#if> value="女">女</td>
+					<th>入职日期：</th><td><input type="text" name="employee.entry_date" class="date" value="${pojo.entry_date!}"><a class="inputDateButton" href="javascript:;">选择</a></td>
+				</tr>
+				<tr>
+					<th>职位：</th><td><select name="employee.position" class="combox" val="${pojo.position!}">
+					<option value="业务员">业务员</option>
+					<option value="导购员">导购员</option>
+					</td>
+					<th>工资：</th><td><input type="text" name="employee.salary" value="${pojo.salary!}">(元/月)</td>
+				</tr>
+				<tr>
+					<th>身份证：</th><td><input type="text" name="employee.id_card_no" class="required" value="${pojo.id_card_no!}"></td>
+					<th>提成率(%)：</th><td><input type="text" name="employee.royalty_rate" value="${pojo.royalty_rate!}"></td>
+				</tr>
+				<tr>
+					<th>手机：</th><td><input type="text" name="employee.phone_no" value="${pojo.phone_no!}"></td>
+					<th>传真：</th><td><input type="text" name="employee.fax_no" value="${pojo.fax_no!}"></td>
+				</tr>
+				<tr>
+					<th>Email：</th><td><input type="text" name="employee.email" value="${pojo.email!}"></td>
+				</tr>
+				<tr>
+					<th>地址：</th><td colspan="3"><input type="text" name="employee.address" style="width:99%;" value="${pojo.address!}"></td>
+				</tr>
+				<tr>
+					<th>备注：</th><td colspan="3"><textarea name="employee.remarks" style="width:99%;height:50px;">${pojo.remarks!}</textarea></td>
+				</tr>
+			</table>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive">
+						<div class="buttonContent">
+							<button type="submit">保存</button>
+						</div>
+					</div></li>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="Button" class="close">关闭</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+</@layout>
