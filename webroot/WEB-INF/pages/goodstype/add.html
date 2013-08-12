@@ -1,0 +1,44 @@
+<#include "../inc/_layout.html"/>
+<@layout>
+<script type="text/javascript">
+initQueryForm(); 
+</script>
+<div class="pageContent">
+	<form method="post" action="${root!}/goodstype/save" id="goodstypeform"
+		class="pageForm required-validate"
+		onsubmit="return validateCallback(this, dialogAjaxDone);">
+		<input name="goodstype.id" type="hidden" value="${gtt.id!}"/>
+		<div class="pageFormContent" id="goodstypeSave" layoutH="55">
+			<table class="mytablecls" width="98%">
+				<tr>
+					<th>类别编号：</th><td><input class="required" value="${gtt.num!}" name="goodstype.num"/></td>
+					<th>类别名称：</th><td><input class="required" name="goodstype.name" value="${gtt.name!}"></td>
+				</tr>
+				<tr>
+					<th>上级类别：</th><td colspan="3"><select name="goodstype.pid" class="combox"  val="${gtt.pid!}"><@goodstypepSelect/></select></td>
+					
+				</tr>				
+				<tr>
+					<th>备注：</th><td colspan="3"><textarea name="goodstype.remark" style="width:99%;height:50px;">${gtt.remark!}</textarea></td>
+				</tr>
+			</table>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive">
+						<div class="buttonContent">
+							<button type="submit">保存</button>
+						</div>
+					</div></li>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="Button" class="close">关闭</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+</@layout>

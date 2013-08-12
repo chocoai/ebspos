@@ -4,7 +4,7 @@
 		<div class="pageFormContent" id="articleSave" layoutH="55">
 			<table class="mytablecls"width="98%">
 				<tr>
-					<th>部门：</th><td colspan="2">${part.name!}[${part.id!}]</td>
+					<th>部门：</th><td colspan="2">${part.dep_name!}[${part.id!}]</td>
 					<!--  
 					<td colspan="2" rowspan="4" align="center" valign="middle">
 					<img height="110px" id="avatarImg" src="<#if pojo.photo??>${pojo.photo!}<#else>${root}/image/man.gif</#if>"/>

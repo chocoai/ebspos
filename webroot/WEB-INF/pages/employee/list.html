@@ -30,9 +30,9 @@ $("#tableemp tr td:nth-child(6)").each(function(r,td){
 		<div class="panelBar">
 			<ul class="toolBar">
 			<@btnPower safecode="empaed">
-				<li><a class="add" href="javascript:void(0);" url="${path}/employee/add/${partid!0}" title="添加员工信息"
+				<li><a class="add" href="javascript:void(0);" url="${path}/employee/add/${dept_no!0}" title="添加员工信息"
 					target="dialog" rel="newemployee" height="500"><span>添加</span></a></li>
-				<li><a class="edit" href="javascript:void(0);" url="${path}/employee/add/${partid!0}-{sid_key}"
+				<li><a class="edit" href="javascript:void(0);" url="${path}/employee/add/${dept_no!0}-{sid_key}"
 					title="修改员工信息" target="dialog" height="500" rel="1"><span>修改</span>
 				<li><a class="delete" href="javascript:void(0);" url="${path}/employee/del/{sid_key}"
 					title="确定要删除该员工吗？" target="ajaxTodo"><span>删除</span> </a></li>
