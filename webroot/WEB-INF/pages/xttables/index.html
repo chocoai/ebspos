@@ -1,0 +1,40 @@
+<#include "../inc/_layout.html"/>
+<@layout>
+<script type="text/javascript">
+initQueryForm();
+</script>
+<div class="pageHeader">
+		<form action="${root!}/xttables" method="post" id="xttablespagerForm"
+			onsubmit="return navTabSearch(this)">
+			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> <input type="hidden" name="numPerPage" value="${page.pageSize!}" />
+			<div class="searchBar">
+				<ul class="searchContent">
+					<li>
+						<label>
+							表名称
+						</label>
+						<input type="text" name="xttables" val="${tablename!}" />
+					</li>					
+				</ul>
+				<@searchBar/>
+			</div>
+		</form>
+	</div>
+	<div class="pageContent">
+		<div class="panelBar">
+			<ul class="toolBar">
+			<@btnPower safecode="partctrl">
+				<li><a class="add" href="javascript:void(0);" url="${root!}/xttables/add" title="添加部门"
+					target="dialog" height="300" width="600"><span>添加</span> </a></li>
+					
+				<li><a class="edit" href="javascript:void(0);" url="${root!}/xttables/add/{sid_key}"
+					title="修改部门" target="dialog" height="300" width="600"><span>修改</span>
+				</a></li>
+				<li><a class="delete" href="javascript:void(0);" url="${root!}/xttables/del/{sid_key}" title="确定要删除该部门吗？" target="ajaxTodo"><span>删除</span> </a></li>
+				</@btnPower>
+			</ul>
+		</div>
+		<@table layouth="137" tid="xttables_table"/>
+	</div>
+<@paginate/>
+</@layout>
