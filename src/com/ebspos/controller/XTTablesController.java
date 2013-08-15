@@ -3,7 +3,11 @@ package com.ebspos.controller;
 import java.util.ArrayList;
 import java.util.List;
 import net.loyin.jFinal.anatation.RouteBind;
+
+import com.ebspos.ftl.EmployeeSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
+import com.ebspos.model.Jbstore;
+import com.ebspos.model.XTTables;
 import com.jfinal.aop.Before;
 import com.jfinal.log.Logger;
 import com.jfinal.plugin.activerecord.Db;
@@ -36,6 +40,32 @@ public class XTTablesController extends BaseController {
 		setAttr("collist", new String[]{"表英文名","类别","级别","表中文名","备注"});
 		render("index.html");
 
+	}
+	public void add() {
+		XTTables xtts = new XTTables();
+		Long id = getParaToLong(0, 0L);
+		if (id != 0) { // 修改
+			xtts = XTTables.dao.findById(id);
+		}
+        //	setAttr(StoretypeSelectTarget.targetName, new StoretypeSelectTarget());
+		// setAttr(PartmentSelectTarget.targetName, new PartmentSelectTarget());
+		 //setAttr(EmployeeSelectTarget.targetName, new EmployeeSelectTarget());
+		setAttr("xtts", xtts);
+		render("add.html");
+	}
+	public void save() {
+		try {
+			XTTables m = getModel(XTTables.class);
+			if (m.getLong("id") != null) {
+				m.update();
+			} else {
+				m.save();
+			}
+			toDwzJson(200, "保存成功！", navTabId);
+		} catch (Exception e) {
+			log.error("保存系统表信息异常", e);
+			toDwzJson(300, "保存异常！");
+		}
 	}
 
 }
