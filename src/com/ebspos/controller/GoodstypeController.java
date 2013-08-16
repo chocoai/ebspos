@@ -32,7 +32,7 @@ public class GoodstypeController extends BaseController {
 		setAttr("goodstype",Goodstype.dao.find("select id, name,num ,pid from goodstype order by id"));
 		render("index.html");
 	}
-	public void list() {		
+	public void list() {
 		Long goodstypeid = getParaToLong(0, 0L);
 		StringBuffer whee=new StringBuffer();
 		List<Object> param=new ArrayList<Object>();

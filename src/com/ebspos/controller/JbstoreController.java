@@ -33,12 +33,9 @@ public class JbstoreController extends BaseController {
 	private boolean f;
 	
 	@Override
-	public void index(){
+	public void index() {
 		f = true;
 		list();
-//		setAttr("jbstore",
-//				Jbstore.dao
-//						.find("select id,StoreNo,StoreCode,StoreName,TypeNo,LAndHeight,Place,EmployeeNo,CountQuantity,PriceType,StopFlag,Memo,RetailSTFlag,OtherFlag,MrpFlag,DownLogNo,PriceLevel from jbstore order by id"));
 		render("index.html");
 	}
 	
