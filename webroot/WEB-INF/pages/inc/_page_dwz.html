@@ -2,7 +2,7 @@
 <div class="panelBar">
 <div class="pages">
 <span>显示</span>
-<select name="pageSize" onchange="navTabPageBreak({numPerPage:this.value}<#if rel??&&rel!=''>,'${rel!}'</#if>)">
+<select name="pageSize" onchange="navTabPageBreak({numPerPage:this.value,pageNum:${page.pageNumber!}}<#if rel??&&rel!=''>,'${rel!}'</#if>)">
 <option value="${page.pageSize!}" selected="selected">${page.pageSize!}</option>
 <option value="20">20</option>
 <option value="50">50</option>
@@ -10,6 +10,6 @@
 </select>
 <span>条，共${page.totalRow!}条/${page.totalPage!}页&nbsp;</span>
 </div>
-<div class="pagination" ><#if rel??&&rel!=''>rel="${rel!}"</#if> targetType="navTab" totalCount="${page.totalRow!}" numPerPage="${page.pageSize!}" pageNumShown="5" currentPage="${page.pageNumber!}"></div>
+<div class="pagination"  <#if rel??&&rel!=''>rel="${rel!}"</#if> targetType="navTab" totalCount="${page.totalRow!}" numPerPage="${page.pageSize!}" pageNumShown="10" currentPage="${page.pageNumber!}" ></div>
 </div>
 </#macro>
