@@ -13,18 +13,8 @@ $(function (){
 	           <tr>
 	              <th>商品编码</th><td><input type="text" name="jbgoods.goodscode" value="${xtts.goodscode!}" class="required"/></td>	                     
 	              <th>商品名称</th><td><input type="text" name="jbgoods.goodsname" value="${xtts.goodsname!}" class="required"/></td>
-	           </tr>
-	           <tr>
-	              <th>规格</th><td><input type="text" name="jbgoods.model" value="${xtts.model!}" class="required"/></td>	                     
-	              <th>条码</th><td><input type="text" name="jbgoods.barcode" value="${xtts.barcode!}" /></td>
-	           </tr>
-	           <tr>
-	              <th>计量单位</th><td><input type="text" name="jbgoods.baseunit" value="${xtts.baseunit!}" class="required"/></td>	                     
-	              <th>品牌</th><td><input type="text" name="jbgoods.brandno" value="${xtts.brandno!}" class="required"/></td>
-	           </tr>
-	           <tr>
-	              <th>产地</th><td><input type="text" name="jbgoods.ProduceArea" value="${xtts.ProduceArea!}" /></td>	                     
-	              <th>生产厂家</th><td><input type="text" name="jbgoods.ProduceName" value="${xtts.ProduceName!}" /></td>
+	              <th>规格</th><td><input type="text" name="jbgoods.model" value="${xtts.model!}" /></td>                     
+	              
 	           </tr>
 	           <tr>
 	              <th>大类</th><td><input type="text" name="jbgoods.GoodsTypeNo" value="${xtts.GoodsTypeNo!}" /></td>	                     
@@ -32,7 +22,33 @@ $(function (){
 	              <th>小类</th><td><input type="text" name="jbgoods.smallgoodstypeno" value="${xtts.smallgoodstypeno!}" /></td>
 	           </tr>
 	           <tr>
-	              <th>备注</th><td><textarea name="jbgoods.remark" style="width:99%;height:50px;">${xtts.remark!}</textarea></td>
+	              <th>计量单位</th><td><input type="text" name="jbgoods.baseunit" value="${xtts.baseunit!}" /></td>	                     
+	              <th>品牌</th><td><input type="text" name="jbgoods.brandno" value="${xtts.brandno!}" /></td>
+	              <th>条码</th><td><input type="text" name="jbgoods.barcode" value="${xtts.barcode!}" /></td>
+	              
+	           </tr>
+	           <tr>
+	              <th>产地</th><td><input type="text" name="jbgoods.ProduceArea" value="${xtts.ProduceArea!}" /></td>	                     
+	              <th>生产厂家</th><td><input type="text" name="jbgoods.ProduceName" value="${xtts.ProduceName!}" /></td>
+	           </tr>
+	           <tr>
+	              <th>季度</th><td>
+	              <select name="jbgoods.Season" val="${xtts.Season!}" class="combox">
+	              <option value="1">春季</option>
+	              <option value="2">夏季</option>
+	              <option value="3">秋季</option>
+	              <option value="4">冬季</option>
+	              </select></td>	                     
+	              <th>年份</th><td><input type="text" name="jbgoods.YearBy" value="${xtts.YearBy!}" /></td>
+	              
+	           </tr>
+	           <tr>
+	              <th>成本价</th><td><input type="text" name="jbgoods.CostPrice" value="${xtts.CostPrice!}"  class="number"/></td>	                     
+	              <th>参考进价</th><td><input type="text" name="jbgoods.BRefPrice" value="${xtts.BRefPrice!}" class="number" /></td>
+	              <th>参考售价</th><td><input type="text" name="jbgoods.SRefPrice" value="${xtts.SRefPrice!}" class="number"/></td>	              
+	           </tr>
+	           <tr>
+	              <th>备注</th><td colspan="5"  ><textarea name="jbgoods.remark" style="width:99%;height:50px;">${xtts.remark!}</textarea></td>
 	           </tr>
 			
 	</table>

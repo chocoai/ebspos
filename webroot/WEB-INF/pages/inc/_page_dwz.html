@@ -10,6 +10,6 @@
 </select>
 <span>条，共${page.totalRow!}条/${page.totalPage!}页&nbsp;</span>
 </div>
-<div class="pagination" ><#if rel??&&rel!=''>rel="${rel!}"</#if> targetType="navTab" totalCount="${page.totalRow!}" numPerPage="${page.pageSize!}" pageNumShown="10" currentPage="${pageNumber!}"></div>
+<div class="pagination" ><#if rel??&&rel!=''>rel="${rel!}"</#if> targetType="navTab" totalCount="${page.totalRow!}" numPerPage="${page.pageSize!}" pageNumShown="5" currentPage="${page.pageNumber!}"></div>
 </div>
 </#macro>
