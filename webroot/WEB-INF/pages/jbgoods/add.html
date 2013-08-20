@@ -1,0 +1,59 @@
+<#include "../inc/_layout.html"/>
+<@layout>
+<script>
+$(function (){
+	initQueryForm();
+});
+</script>
+<div class="pageContent">
+		<form method="post" action="${root!}/jbgoods/save" id="jbgoodsform" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+			<input name="jbgoods.id" type="hidden" value="${xtts.id!}">
+			<div class="pageFormContent" id="jbgoodsSave" layoutH="55">
+			<table class="mytablecls">
+	           <tr>
+	              <th>商品编码</th><td><input type="text" name="jbgoods.goodscode" value="${xtts.goodscode!}" class="required"/></td>	                     
+	              <th>商品名称</th><td><input type="text" name="jbgoods.goodsname" value="${xtts.goodsname!}" class="required"/></td>
+	           </tr>
+	           <tr>
+	              <th>规格</th><td><input type="text" name="jbgoods.model" value="${xtts.model!}" class="required"/></td>	                     
+	              <th>条码</th><td><input type="text" name="jbgoods.barcode" value="${xtts.barcode!}" /></td>
+	           </tr>
+	           <tr>
+	              <th>计量单位</th><td><input type="text" name="jbgoods.baseunit" value="${xtts.baseunit!}" class="required"/></td>	                     
+	              <th>品牌</th><td><input type="text" name="jbgoods.brandno" value="${xtts.brandno!}" class="required"/></td>
+	           </tr>
+	           <tr>
+	              <th>产地</th><td><input type="text" name="jbgoods.ProduceArea" value="${xtts.ProduceArea!}" /></td>	                     
+	              <th>生产厂家</th><td><input type="text" name="jbgoods.ProduceName" value="${xtts.ProduceName!}" /></td>
+	           </tr>
+	           <tr>
+	              <th>大类</th><td><input type="text" name="jbgoods.GoodsTypeNo" value="${xtts.GoodsTypeNo!}" /></td>	                     
+	              <th>中类</th><td><input type="text" name="jbgoods.subgoodstypeno" value="${xtts.subgoodstypeno!}" /></td>
+	              <th>小类</th><td><input type="text" name="jbgoods.smallgoodstypeno" value="${xtts.smallgoodstypeno!}" /></td>
+	           </tr>
+	           <tr>
+	              <th>备注</th><td><textarea name="jbgoods.remark" style="width:99%;height:50px;">${xtts.remark!}</textarea></td>
+	           </tr>
+			
+	</table>
+			</div>
+			<div class="formBar">
+				<ul>
+					<@btnPower safecode="partsave">
+					<li><div class="buttonActive">
+							<div class="buttonContent">
+								<button type="submit">保存</button>
+							</div>
+						</div></li>
+					</@btnPower>
+					<li>
+						<div class="button">
+							<div class="buttonContent">
+								<button type="Button" class="close">关闭</button>
+							</div>
+						</div></li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</@layout>

@@ -4,17 +4,19 @@
 initQueryForm();
 </script>
 <div class="pageHeader">
-		<form action="${root!}/xttables" method="post" id="xttables_pagerForm"
+		<form action="${root!}/jbgoods" method="post" id="jbgoods_pagerForm"
 			onsubmit=" return navTabSearch(this)">
 			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> 
 			<input type="hidden" name="numPerPage" value="${page.pageSize!}" />
 			<div class="searchBar">
 				<ul class="searchContent">
 					<li>
-						<label>
-							表名称
-						</label>
-						<input type="text" name="tablename" val="${tablename!}" />
+						<label>商品编码</label>
+						<input type="text" name="jbgoods" val="${goodscode!}" />
+					</li>
+					<li>
+						<label>商品名称</label>
+						<input type="text" name="jbgoods" val="${goodsname!}" />
 					</li>					
 				</ul>
 				<@searchBar/>
@@ -25,17 +27,17 @@ initQueryForm();
 		<div class="panelBar">
 			<ul class="toolBar">
 			<@btnPower safecode="partctrl">
-				<li><a class="add" href="javascript:void(0);" url="${root!}/xttables/add" title="添加部门"
+				<li><a class="add" href="javascript:void(0);" url="${root!}/jbgoods/add" title="添加商品"
 					target="dialog" height="300" width="600"><span>添加</span> </a></li>
 					
-				<li><a class="edit" href="javascript:void(0);" url="${root!}/xttables/add/{sid_key}"
+				<li><a class="edit" href="javascript:void(0);" url="${root!}/jbgoods/add/{sid_key}"
 					title="修改部门" target="dialog" height="300" width="600"><span>修改</span>
 				</a></li>
-				<li><a class="delete" href="javascript:void(0);" url="${root!}/xttables/del/{sid_key}" title="确定要删除该部门吗？" target="ajaxTodo"><span>删除</span> </a></li>
+				<li><a class="delete" href="javascript:void(0);" url="${root!}/jbgoods/del/{sid_key}" title="确定要删除该部门吗？" target="ajaxTodo"><span>删除</span> </a></li>
 				</@btnPower>
 			</ul>
 		</div>
-		<@table layouth="137" tid="xttables_table"/>
+		<@table layouth="137" tid="jbgoods_table"/>
 	</div>
 <@paginate rel="jbsxBox"/>
 </@layout>

@@ -3,9 +3,7 @@ package com.ebspos.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import net.loyin.memcache.MemcacheTool;
-
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.ehcache.CacheKit;
