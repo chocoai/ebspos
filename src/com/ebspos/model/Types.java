@@ -8,8 +8,8 @@ import com.jfinal.plugin.activerecord.Model;
  * @author 湛原红
  *  2013-8-10
  */
-@TableBind(name="goodstype")
-public class Goodstype extends Model<Goodstype> {
+@TableBind(name="types")
+public class Types extends Model<Types> {
 	private static final long serialVersionUID = 800553527430796237L;
-	public static final Goodstype dao=new Goodstype();
+	public static final Types dao=new Types();
 }

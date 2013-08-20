@@ -6,7 +6,7 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
-import com.ebspos.model.Goodstype;
+import com.ebspos.model.Types;
 import com.ebspos.model.Storetype;
 
 import freemarker.core.Environment;

@@ -5,7 +5,7 @@ import java.util.List;
 import net.loyin.jFinal.anatation.RouteBind;
 import com.ebspos.ftl.EmployeeSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
-import com.ebspos.model.Xttables;
+import com.ebspos.model.Jbgoods;
 import com.jfinal.aop.Before;
 import com.jfinal.log.Logger;
 import com.jfinal.plugin.activerecord.Db;
@@ -15,36 +15,35 @@ import com.jfinal.plugin.activerecord.Db;
  * 2013.8.14
  *
  */
-@RouteBind(path="/xttables")
+@RouteBind(path="/jbgoods")
 @Before({ManagerPowerInterceptor.class})
-public class XTTablesController extends BaseController {
+public class JbgoodsController extends BaseController {
 
 	public static Logger log = Logger.getLogger(JbgoodsController.class);
-	private static String navTabId = "xttables";
+	private static String navTabId = "jbgoods";
 	@Override
 	public void index() {
 		StringBuffer whee=new StringBuffer();
 		List<Object> param = new ArrayList<Object>();
-		String tablename=getPara("tablename");
-		if(tablename!=null && !"".equals(tablename.trim())){
-			whee.append(" and p.tablename like ?");
-			param.add("%"+tablename+"%");			
+		String goodscode=getPara("goodscode");
+		if(goodscode!=null && !"".equals(goodscode.trim())){
+			whee.append(" and p.goodscode like ?");
+			param.add("%"+goodscode+"%");			
 		}
-		setAttr("tablename",tablename);
+		setAttr("goodscode",goodscode);
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
-				"select p.id,p.tablename 表英文名,(case p.ttype when 1 then 'JB' when 2 then 'JH'  "+
-				" when 3 then 'XS' when 4 then 'CK' when 5 then 'CW' when 6 then 'XT' else 'QT' end) 类别,"+
-				" p.tlevel 级别,p.ctablename 表中文名,p.remark 备注 ",
-				" from  xttables p  where 1=1  "+whee.toString(),param.toArray()));
-		setAttr("collist", new String[]{"表英文名","类别","级别","表中文名","备注 "});
+				"select p.id,p.goodscode 商品编码, p.goodsname 商品名称,p.model 规格,p.barcode 条码, "+
+				" p.baseunit 计量单位 ,p.remark 备注",
+				" from  jbgoods p  where 1=1  "+whee.toString(),param.toArray()));
+		setAttr("collist", new String[]{"商品编码","商品名称","规格","条码","计量单位","备注"});
 		render("index.html");
 
 	}
 	public void add() {
-		Xttables xtts = new Xttables();
+		Jbgoods xtts = new Jbgoods();
 		Long id = getParaToLong(0, 0L);
 		if (id != 0) { // 修改
-			xtts = Xttables.dao.findById(id);
+			xtts = Jbgoods.dao.findById(id);
 		}
         
 		setAttr("xtts", xtts);
@@ -52,8 +51,8 @@ public class XTTablesController extends BaseController {
 	}
 	public void save() {
 		try {
-			Xttables m = getModel(Xttables.class);
-			if (m.getInt("id") != null) {
+			Jbgoods m = getModel(Jbgoods.class);
+			if (m.getLong("id") != null) {
 				m.update();
 			} else {
 				m.save();
@@ -67,7 +66,7 @@ public class XTTablesController extends BaseController {
 	public void del() {
 		Long id = getParaToLong(0, 0L);
 		try {
-			Xttables.dao.deleteById(id);
+			Jbgoods.dao.deleteById(id);
 			toDwzJson(200, "删除成功！", navTabId);
 		} catch (Exception e) {
 			toDwzJson(300, "删除失败！");
