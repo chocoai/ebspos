@@ -1,7 +1,7 @@
 <#include "../inc/_layout.html"/>
 <@layout>
 <script>
-$("#tablegoodstype tr td:nth-child(11)").each(function(r,td){
+$("#tablejbstore tr td:nth-child(11)").each(function(r,td){
 	var num=(new Number($(td).text()));
 	$(td).html(storeStopFlg[num]);
 });
@@ -41,7 +41,7 @@ $("#tablegoodstype tr td:nth-child(11)").each(function(r,td){
 			
 			</ul>
 		</div>
-		<@table layouth="137" tid="tablegoodstype"/>
+		<@table layouth="137" tid="tablejbstore"/>
 	</div>
-<@paginate rel="goodstype"/>
+<@paginate rel="jbstore"/>
 </@layout>

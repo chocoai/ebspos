@@ -1,0 +1,60 @@
+<#include "../inc/_layout.html"/>
+<@layout>
+<script type="text/javascript">
+initQueryForm(); 
+</script>
+<div class="pageContent">
+	<form method="post" action="${root!}/ckinitstore/save" id="jbstoreform"
+		class="pageForm required-validate"
+		onsubmit="return validateCallback(this, dialogAjaxDone);">
+		<input name="ckinitstore.id" type="hidden" value="${ckt.id!}"/>
+		<div class="pageFormContent" id="ckinitstoreSave" layoutH="55">
+			<table class="mytablecls" width="98%">
+				<tr>
+					<th>票据号：</th><td><input class="required" value="${ckt.billorderno!}" name="ckinitstore.billorderno"/></td>
+					<th>票据日期：</th><td><input type="text"  class="date"  value="${ckt.billorderno!}" name="ckinitstore.billorderno"><a class="inputDateButton" href="javascript:;">选择</a></td>
+				</tr>
+				<tr>
+					<th>仓库：</th><td><select name="ckinitstore.storeno" class="combox"  val="${ckt.storeno!}"><@storetypepSelect/></select></td>
+					<th>部门：</th><td><select name="ckinitstore.DepartmentNo" class="combox"  val="${ckt.DepartmentNo!}"><@partSelect/></select></td>
+				</tr>
+				<tr>
+					<th>业务员：</th><td colspan="3"><select name="ckinitstore.usr_name" class="combox"  val="${ckt.usr_name!}"><@empSelect/></select>
+					</td>
+				</tr>
+				<tr>
+					<th>备注：</th><td colspan="3"><textarea name="ckinitstore.Memo" style="width:99%;height:50px;">${ckt.Memo!}</textarea></td>
+				</tr>
+				<tr>
+					<th>合计商品数量：</th><td><input class="required" value="${ckt.CountQuantity!}" name="ckinitstore.CountQuantity"/></td>
+					<th>计价方式：</th><td><input class="required" name="ckinitstore.PriceType" value="${ckt.PriceType!}"></td>
+				</tr>
+				<tr>
+					<th>数量：</th><td><input class="required" value="${ckt.ckamout!}" name="ckinitstore.ckamout"/></td>
+					<th></th><td></td>
+				</tr>
+				<tr>
+					<th>审核人：</th><td><input class="required" value="${ckt.checkman!}" name="ckinitstore.checkman"/></td>
+					<th>审核日期：</th><td><input type="text"  class="date"  value="${ckt.checkdate!}" name="ckinitstore.checkdate"><a class="inputDateButton" href="javascript:;">选择</a></td>
+				</tr>
+			</table>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive">
+						<div class="buttonContent">
+							<button type="submit">保存</button>
+						</div>
+					</div></li>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="Button" class="close">关闭</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+</@layout>
