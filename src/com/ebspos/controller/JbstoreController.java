@@ -8,7 +8,6 @@ import com.ebspos.ftl.GoodstypepSelectTarget;
 import com.ebspos.ftl.StoretypeSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
 import com.ebspos.model.Employee;
-import com.ebspos.model.Types;
 import com.ebspos.model.Jbstore;
 import com.ebspos.model.Storetype;
 

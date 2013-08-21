@@ -6,7 +6,6 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
-import com.ebspos.model.Types;
 import com.ebspos.model.Storetype;
 
 import freemarker.core.Environment;
@@ -25,7 +24,7 @@ public class StoretypeSelectTarget extends BaseTarget {
 	@Override
 	public void execute(Environment env, Map args, TemplateModel[] arg2,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
-		List<Storetype> list= Storetype.dao.find("select id as id,type_name,type_code as num from storetype where ParentNo=0  order by id asc");
+		List<Storetype> list= Storetype.dao.find("select id as id,type_name,type_code as num from storetype order by id asc");
 		Writer out= env.getOut();
 		out.append("<option value='0'>一级类别</option>");
 		for(Storetype g:list){
