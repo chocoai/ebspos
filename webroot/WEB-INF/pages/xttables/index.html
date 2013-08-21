@@ -4,8 +4,7 @@
 initQueryForm();
 </script>
 <div class="pageHeader">
-		<form action="${root!}/xttables" method="post" id="xttables_pagerForm"
-			onsubmit=" return navTabSearch(this)">
+		<form action="${path}/xttables" method="post" id="pagerForm" onsubmit="return divSearch(this,'jbsxBox')">
 			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> 
 			<input type="hidden" name="numPerPage" value="${page.pageSize!}" />
 			<div class="searchBar">
@@ -37,5 +36,5 @@ initQueryForm();
 		</div>
 		<@table layouth="137" tid="xttables_table"/>
 	</div>
-<@paginate rel="jbsxBox"/>
+<@paginate />
 </@layout>

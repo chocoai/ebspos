@@ -9,8 +9,8 @@ $("#tableemp tr td:nth-child(6)").each(function(r,td){
 <div class="pageHeader">
 		<form action="${path}/employee/list" method="post" id="pagerForm"
 			onsubmit="return divSearch(this,'empbox')">
-			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> <input
-				type="hidden" name="numPerPage" value="${page.pageSize!}" />
+			<input type="hidden" name="pageNum" value="${page.pageNumber!}" />
+			<input type="hidden" name="numPerPage" value="${page.pageSize!}" />
 			<div class="searchBar">
 				<ul class="searchContent">
 					<li>
