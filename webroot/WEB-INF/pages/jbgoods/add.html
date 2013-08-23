@@ -1,4 +1,5 @@
 <#include "../inc/_layout.html"/>
+<#include "../inc/_nation.html"/>
 <@layout>
 <script>
 $(function (){
@@ -39,14 +40,15 @@ $(function (){
 	              <option value="3">秋季</option>
 	              <option value="4">冬季</option>
 	              </select></td>	                     
-	              <th>年份</th><td><input type="text" name="jbgoods.YearBy" value="${xtts.YearBy!}" /></td>
-	              
+	              <th>年份</th><td><select name="jbgoods.yearby" val="${xtts.YearBy!}" class="combox"><@yearSelect/></select></td>	              
 	           </tr>
 	           <tr>
-	              <th>成本价</th><td><input type="text" name="jbgoods.CostPrice" value="${xtts.CostPrice!}"  class="number"/></td>	                     
-	              <th>参考进价</th><td><input type="text" name="jbgoods.BRefPrice" value="${xtts.BRefPrice!}" class="number" /></td>
-	              <th>参考售价</th><td><input type="text" name="jbgoods.SRefPrice" value="${xtts.SRefPrice!}" class="number"/></td>	              
+	              <th>成本价</th><td><input type="number" name="jbgoods.CostPrice" value="${xtts.CostPrice!}"  /></td>	                     
+	              <th>参考进价</th><td><input type="number" name="jbgoods.BRefPrice" value="${xtts.BRefPrice!}"  /></td>
+	              <th>参考售价</th><td><input type="number" name="jbgoods.SRefPrice" value="${xtts.SRefPrice!}" /></td>	              
 	           </tr>
+	           <tr><input type="hidden"   id="StopFlag"   name="jbgoods.StopFlag"  value="${xtts.StopFlag!}"/>
+	           <th>是否停用</th><td><input type="checkbox" id="stopFlgChk"  onclick="if ($('#stopFlgChk').prop('checked')==true) {$('#StopFlag').val(1);} else {$('#StopFlag').val(0);}"  <#if xtts.StopFlag??&&xtts.StopFlag==1> checked="checked"</#if> /></td></tr>
 	           <tr>
 	              <th>备注</th><td colspan="5"  ><textarea name="jbgoods.remark" style="width:99%;height:50px;">${xtts.remark!}</textarea></td>
 	           </tr>

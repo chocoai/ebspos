@@ -2,6 +2,10 @@
 <@layout>
 <script type="text/javascript">
 initQueryForm();
+$("#tablegoodstype tr td:nth-child(12)").each(function(r,td){
+	var num=(new Number($(td).text()));
+	$(td).html(storeStopFlg[num]);
+});
 </script>
 <div class="pageHeader">
 		<form action="${root!}/jbgoods" method="post" id="jbgoods_pagerForm"
@@ -31,7 +35,7 @@ initQueryForm();
 					target="dialog" height="500" width="750"><span>添加</span> </a></li>
 					
 				<li><a class="edit" href="javascript:void(0);" url="${root!}/jbgoods/add/{sid_key}"
-					title="修改部门" target="dialog" height="300" width="600"><span>修改</span>
+					title="修改部门" target="dialog" height="500" width="750"><span>修改</span>
 				</a></li>
 				<li><a class="delete" href="javascript:void(0);" url="${root!}/jbgoods/del/{sid_key}" title="确定要删除该部门吗？" target="ajaxTodo"><span>删除</span> </a></li>
 				</@btnPower>
