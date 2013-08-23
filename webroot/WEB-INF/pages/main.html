@@ -90,7 +90,7 @@ var storeStopFlg=["<span style='color:green;'>否</span>","<span style='color:re
 				<ul>
 				<#list menus as m>
 				<#if (m.menulevel==0)>
-					<li><a href="javascript:;" url="getmenu/${m.id}"><span>${m.name}</span></a></li>
+					<li><a href="javascript:void(0);" url="getmenu/${m.id}"  target="ajax" rel="${m.id}"><span>${m.name}</span></a></li>
 				</#if>
 				</#list>
 				<li><a href="javascript:;" url="commmenu"><span>常用功能</span></a></li>

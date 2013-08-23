@@ -4,9 +4,9 @@
 <span>显示</span>
 <select name="pageSize" onchange="navTabPageBreak({numPerPage:this.value,pageNum:${page.pageNumber!}}<#if rel??&&rel!=''>,'${rel!}'</#if>)">
 <option value="${page.pageSize!}"  selected="selected" >${page.pageSize!}</option>
-<option value="3">3</option>
-<option value="5">5</option>
-<option value="10">10</option>
+<option value="20">20</option>
+<option value="30">30</option>
+<option value="50">50</option>
 </select>
 <span>条，共${page.totalRow!}条/${page.totalPage!}页&nbsp;</span>
 </div>
