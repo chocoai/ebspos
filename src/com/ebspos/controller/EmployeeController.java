@@ -72,7 +72,7 @@ public class EmployeeController extends BaseController {
 		setAttr("page",
 				Db.paginate(
 						getParaToInt("pageNum", 1),
-						getParaToInt("numPerPage", 2),
+						getParaToInt("numPerPage", 20),
 						"select e.id,usr_no 编号,usr_name 姓名, e.gender 性别,phone_no 手机电话,usr_type 状态 ",
 						" from  Employee e join partment p on p.id=e.dep_no "
 								+ whee.toString() + " order by e.id ",

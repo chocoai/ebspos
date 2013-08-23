@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -20,7 +19,6 @@ import javax.servlet.http.HttpSession;
 import net.loyin.jFinal.anatation.PowerBind;
 import net.loyin.jFinal.anatation.RouteBind;
 import net.loyin.jFinal.plugin.sqlXml.SqlManager;
-import net.loyin.memcache.MemcacheTool;
 import net.loyin.util.safe.MD5;
 
 import com.ebspos.StaticCfg;

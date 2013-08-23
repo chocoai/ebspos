@@ -31,7 +31,7 @@ public class ManagerPowerInterceptor implements Interceptor {
 			if(ckey.contains("webadmin")){
 				ctrl.redirect(ctrl.getRequest().getContextPath()+"/webadmin");
 			}else*/
-			ctrl.renderText("{\"statusCode\":301,\"message\":\"登录超时，请重新登录！\"}");
+			ctrl.renderJson("{\"statusCode\":301,\"message\":\"登录超时，请重新登录！\"}");
 		}else{
 			/*boolean v=true;
 			String code=null;
