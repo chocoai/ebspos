@@ -3,13 +3,13 @@
 <script type="text/javascript">
 initQueryForm(); 
 </script>
-<div class="pageContent">
+<div class="pageContent" >
 	<form method="post" action="${root!}/ckinitstore/save" id="jbstoreform"
 		class="pageForm required-validate"
 		onsubmit="return validateCallback(this, dialogAjaxDone);">
 		<input name="ckinitstore.id" type="hidden" value="${ckt.id!}"/>
-		<div class="pageFormContent" id="ckinitstoreSave" layoutH="55">
-			<table class="mytablecls" width="98%">
+		<div id="ckinitstoreSave" >
+			<table class="mytablecls" width="98%" >
 				<tr>
 					<th>票据号：</th><td><input class="required" value="${ckt.billorderno!}" name="ckinitstore.billorderno"/></td>
 					<th>票据日期：</th><td><input type="text"  class="date"  value="${ckt.billorderno!}" name="ckinitstore.billorderno"><a class="inputDateButton" href="javascript:;">选择</a></td>
@@ -23,7 +23,7 @@ initQueryForm();
 					</td>
 				</tr>
 				<tr>
-					<th>备注：</th><td colspan="3"><textarea name="ckinitstore.Memo" style="width:99%;height:50px;">${ckt.Memo!}</textarea></td>
+					<th>备注：</th><td colspan="3"><textarea name="ckinitstore.Memo" style="width:95%;height:15px;">${ckt.Memo!}</textarea></td>
 				</tr>
 				<tr>
 					<th>合计商品数量：</th><td><input class="required" value="${ckt.CountQuantity!}" name="ckinitstore.CountQuantity"/></td>
@@ -36,6 +36,46 @@ initQueryForm();
 				<tr>
 					<th>审核人：</th><td><input class="required" value="${ckt.checkman!}" name="ckinitstore.checkman"/></td>
 					<th>审核日期：</th><td><input type="text"  class="date"  value="${ckt.checkdate!}" name="ckinitstore.checkdate"><a class="inputDateButton" href="javascript:;">选择</a></td>
+				</tr>
+				<tr>
+				     <td colspan="4">
+						<div class="tabsContent" style="height: 150px;overflow: auto">
+							<div inited="1000" style="display: block;">
+								<table class="list nowrap itemDetail" addbutton="新建商品明细"
+									width="100%" style="clear: both;">
+									<thead>
+										<tr>
+											<th type="text" name="lineId"  class="textInput readonly valid"  readonly="readonly"
+												defaultval="#index#" size="5"  fieldclass="digits">行号</th>
+											<th type="lookup" name="items.org.orgName[]"
+												lookupgroup="items.org"
+												lookupurl="demo/database/dwzOrgLookup.html"
+												suggesturl="demo/database/db_lookupSuggest.html"
+												suggestfields="orgName" size="12">商品编号</th>
+											<th type="text" name="items[#index#].itemString" size="12"
+												fieldclass="required"
+												fieldattrs="{remote:'validate_remote.html', maxlength:10}">商品名称</th>
+											<th type="text" name="items[#index#].itemString" size="12"
+												fieldclass="required"
+												fieldattrs="{remote:'validate_remote.html', maxlength:10}">基本单位</th>
+											<th type="text" name="items[#index#].itemFloat"
+												defaultval="0" size="12" fieldclass="number">数量</th>
+											<th type="text" name="items[#index#].itemFloat"
+												defaultval="0" size="12" fieldclass="number">成本价</th>
+											<th type="text" name="items[#index#].itemFloat"
+												defaultval="0" size="12" fieldclass="number">成本金额</th>
+											<th type="del" width="60">操作</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</td>
+				</tr>
+				    <tr><th>合计</th><td colspan="3">
+				           &nbsp;  &nbsp; 数量：0 &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 金额：0
+				    </td>
 				</tr>
 			</table>
 		</div>
