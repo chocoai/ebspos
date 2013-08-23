@@ -3,7 +3,7 @@ package com.ebspos.controller;
 import java.util.ArrayList;
 import java.util.List;
 import net.loyin.jFinal.anatation.RouteBind;
-import com.ebspos.ftl.EmployeeSelectTarget;
+import com.ebspos.ftl.YearbySelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
 import com.ebspos.model.Jbgoods;
 import com.jfinal.aop.Before;
@@ -29,13 +29,14 @@ public class JbgoodsController extends BaseController {
 		if(goodscode!=null && !"".equals(goodscode.trim())){
 			whee.append(" and p.goodscode like ?");
 			param.add("%"+goodscode+"%");			
-		}
+		}		
 		setAttr("goodscode",goodscode);
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
-				"select p.id,p.goodscode 商品编码, p.goodsname 商品名称,p.model 规格,p.barcode 条码, "+
-				" p.baseunit 计量单位 ,p.remark 备注",
+				"select p.id,p.goodscode 商品编码, p.goodsname 商品名称,p.goodstypeno 大类,p.subgoodstypeno 中类,p.smallgoodstypeno 小类, "+
+		        " p.brandno 品牌,p.ProduceArea 产地,p.model 规格,p.barcode 条码, "+
+				" p.baseunit 计量单位 ,p.stopflag 停用,p.remark 备注",
 				" from  jbgoods p  where 1=1  "+whee.toString(),param.toArray()));
-		setAttr("collist", new String[]{"商品编码","商品名称","规格","条码","计量单位","备注"});
+		setAttr("collist", new String[]{"商品编码","商品名称","大类","中类","小类","品牌","产地","规格","条码","计量单位","停用","备注"});
 		render("index.html");
 
 	}
@@ -47,6 +48,7 @@ public class JbgoodsController extends BaseController {
 		}
         
 		setAttr("xtts", xtts);
+		setAttr(YearbySelectTarget.targetName, new YearbySelectTarget());
 		render("add.html");
 	}
 	public void save() {
