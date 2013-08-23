@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50145
 File Encoding         : 65001
 
-Date: 2013-08-16 15:50:52
+Date: 2013-08-23 17:58:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -150,29 +150,6 @@ INSERT INTO `employee` VALUES ('6', 'test', 'test', 'e10adc3949ba59abbe56e057f20
 INSERT INTO `employee` VALUES ('7', 'ttt', 'ttt', 'e10adc3949ba59abbe56e057f20f883e', '2', '11', null, '高中', null, null, '11111', null, null, null, '业务员', '11', null, null, null, null, '1', '2013-08-10 18:34:01', null, null, null, '0');
 
 -- ----------------------------
--- Table structure for `goodstype`
--- ----------------------------
-DROP TABLE IF EXISTS `goodstype`;
-CREATE TABLE `goodstype` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL COMMENT '类别名称',
-  `remark` varchar(250) DEFAULT NULL COMMENT '备注',
-  `pid` bigint(10) DEFAULT NULL COMMENT '父级类别id',
-  `num` varchar(20) DEFAULT NULL COMMENT '编码',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='商品类别';
-
--- ----------------------------
--- Records of goodstype
--- ----------------------------
-INSERT INTO `goodstype` VALUES ('2', '休闲服', null, '0', '001');
-INSERT INTO `goodstype` VALUES ('3', '男式休闲服', null, '2', '001001');
-INSERT INTO `goodstype` VALUES ('4', '女式休闲服', null, '2', '001002');
-INSERT INTO `goodstype` VALUES ('5', '西装', null, '0', '002');
-INSERT INTO `goodstype` VALUES ('6', '男装', null, '5', '002001');
-INSERT INTO `goodstype` VALUES ('7', '女装', null, '5', '002002');
-
--- ----------------------------
 -- Table structure for `jbgoods`
 -- ----------------------------
 DROP TABLE IF EXISTS `jbgoods`;
@@ -308,7 +285,7 @@ INSERT INTO `menu` VALUES ('1023', '采购入库单', '#', '1', '2', null, '1', 
 INSERT INTO `menu` VALUES ('1021', '采购管理', null, '1', '1', null, '0', null, '2', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1022', '采购订单', '#', '1', '2', null, '0', null, '1021', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1019', '类别资料', null, '1', '2', null, '6', null, '11', '0', null, '1', null);
-INSERT INTO `menu` VALUES ('1020', '商品类别', 'goodstype', '1', '3', null, '0', null, '1019', '0', null, '1', null);
+INSERT INTO `menu` VALUES ('1020', '商品类别', 'types', '1', '3', null, '0', null, '1019', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1024', '采购付款单', '#', '1', '2', null, '2', null, '1021', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1025', '销售管理', null, '1', '1', null, '0', null, '3', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1026', '销售订单', '#', '1', '2', null, '0', null, '1025', '0', null, '1', null);
@@ -320,7 +297,7 @@ INSERT INTO `menu` VALUES ('1031', '其它收发货单', '#', '1', '2', null, '1
 INSERT INTO `menu` VALUES ('1032', '成本价调整', '#', '1', '2', null, '2', null, '1029', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1033', '盘点表', '#', '1', '2', null, '3', null, '1029', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1037', '期初库存商品录入', null, '1', '1', null, '1', null, '1', '0', null, '1', null);
-INSERT INTO `menu` VALUES ('1038', '期初库存商品录入单', '#', '1', '2', null, '0', null, '1037', '0', null, '1', null);
+INSERT INTO `menu` VALUES ('1038', '期初库存商品录入单', 'ckinitstore', '1', '2', null, '0', null, '1037', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1039', '期初库存商品录入单汇总', '#', '1', '2', null, '1', null, '1037', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1040', '期初库存商品录入单明细表', '#', '1', '2', null, '2', null, '1037', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1041', '系统管理', null, '0', '0', null, '7', null, '0', '0', null, '1', null);
@@ -473,6 +450,29 @@ CREATE TABLE `storetype` (
 -- ----------------------------
 -- Records of storetype
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `types`
+-- ----------------------------
+DROP TABLE IF EXISTS `types`;
+CREATE TABLE `types` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL COMMENT '类别名称',
+  `remark` varchar(250) DEFAULT NULL COMMENT '备注',
+  `pid` bigint(10) DEFAULT NULL COMMENT '父级类别id',
+  `num` varchar(20) DEFAULT NULL COMMENT '编码',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='商品类别';
+
+-- ----------------------------
+-- Records of types
+-- ----------------------------
+INSERT INTO `types` VALUES ('2', '休闲服', null, '0', '001');
+INSERT INTO `types` VALUES ('3', '男式休闲服', null, '2', '001001');
+INSERT INTO `types` VALUES ('4', '女式休闲服', null, '2', '001002');
+INSERT INTO `types` VALUES ('5', '西装', null, '0', '002');
+INSERT INTO `types` VALUES ('6', '男装', null, '5', '002001');
+INSERT INTO `types` VALUES ('7', '女装', null, '5', '002002');
 
 -- ----------------------------
 -- Table structure for `userrole`
