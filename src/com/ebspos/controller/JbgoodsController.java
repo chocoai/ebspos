@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import net.loyin.jFinal.anatation.RouteBind;
 import com.ebspos.ftl.YearbySelectTarget;
+import com.ebspos.ftl.BrandSelectTarget;
+import com.ebspos.ftl.BaseunitSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
 import com.ebspos.model.Jbgoods;
 import com.jfinal.aop.Before;
@@ -33,9 +35,9 @@ public class JbgoodsController extends BaseController {
 		setAttr("goodscode",goodscode);
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
 				"select p.id,p.goodscode 商品编码, p.goodsname 商品名称,p.goodstypeno 大类,p.subgoodstypeno 中类,p.smallgoodstypeno 小类, "+
-		        " p.brandno 品牌,p.ProduceArea 产地,p.model 规格,p.barcode 条码, "+
-				" p.baseunit 计量单位 ,p.stopflag 停用,p.remark 备注",
-				" from  jbgoods p  where 1=1  "+whee.toString(),param.toArray()));
+		        " p2.name 品牌,p.ProduceArea 产地,p.model 规格,p.barcode 条码, "+
+				" p3.name 计量单位 ,p.stopflag 停用,p.remark 备注",
+				" from  jbgoods p left join types p2 on p.brandno=p2.id left join types p3 on p.baseunit=p3.id  where 1=1  "+whee.toString(),param.toArray()));
 		setAttr("collist", new String[]{"商品编码","商品名称","大类","中类","小类","品牌","产地","规格","条码","计量单位","停用","备注"});
 		render("index.html");
 
@@ -49,6 +51,8 @@ public class JbgoodsController extends BaseController {
         
 		setAttr("xtts", xtts);
 		setAttr(YearbySelectTarget.targetName, new YearbySelectTarget());
+		setAttr(BrandSelectTarget.targetName, new BrandSelectTarget());
+		setAttr(BaseunitSelectTarget.targetName, new BaseunitSelectTarget());
 		render("add.html");
 	}
 	public void save() {
