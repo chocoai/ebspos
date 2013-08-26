@@ -19,8 +19,7 @@ style="float: left; overflow: auto; width: 200px; border: solid 1px #CCC; line-h
 <li><a href="javascript:void(0);" url="${path}/employee/list/${o.id!}-${p.id!}" target="ajax" rel="empbox">${p.name!}[${p.num!}]</a>
 <ul>
 <#list part as p1><#if p1.pid??&&p1.pid=p.id>
-<li><a href="javascript:void(0);" url="${path}/employee/list/${o.id!}-${p.id!}-${p1.id!}" target="ajax"
-rel="empbox" >${p1.name!}[${p1.num!}]</a></li> </#if> </#list>
+<li><a href="javascript:void(0);" url="${path}/employee/list/${o.id!}-${p.id!}-${p1.id!}" target="ajax" rel="empbox" >${p1.name!}[${p1.num!}]</a></li> </#if> </#list>
 </ul></li>
 </#if>
 </#list>

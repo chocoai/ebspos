@@ -1,7 +1,7 @@
 <#include "../inc/_layout.html"/>
 <@layout>
 <script>
-$.each($("#org_part_tree").find("ul"), function(i, r) {
+$.each($("#types_tree").find("ul"), function(i, r) {
 var $ul = $(r);
 if ($ul.text() == "\n")$ul.remove();
 });
@@ -9,16 +9,25 @@ if ($ul.text() == "\n")$ul.remove();
 <div class="pageContent">
 <div layoutH="2"
 style="float: left; overflow: auto; width: 200px; border: solid 1px #CCC; line-height: 21px;">
-<ul class="tree treeFolder" id="org_part_tree">
-<li><a href="javascript:void(0);" url="${path}/types/list/0">定义类别</a>
+<ul class="tree treeFolder" id="types_tree">
+<li><a href="javascript:void(0);" url="${path}/types/list/0" target="ajax" rel="types">定义类别</a>
 <ul>
 <#list types as p><#if p.pid=0>
-<li><a href="javascript:void(0);" url="${path}/types/list/${p.id!}" target="ajax" rel="types">${p.name!}[${p.num!}]</a>
+<li><a href="javascript:void(0);" url="${path}/types/list/${p.pid!}" target="ajax" rel="types">${p.name!}[${p.num!}]</a>
+<ul>
+<#list types as p1><#if p1.pid!=0&&p1.pid=p.id>
+<li><a href="javascript:void(0);" url="${path}/types/list/${p1.pid!}" target="ajax" rel="types">${p1.name!}[${p1.num!}]</a>
+<ul>
+<#list types as p2><#if p2.pid!=0&&p2.pid=p1.id>
+<li><a href="javascript:void(0);" url="${path}/types/list/${p2.pid!}" target="ajax" rel="types">${p2.name!}[${p2.num!}]</a>
+<ul>
+<#list types as p3><#if p3.pid!=0&&p3.pid=p2.id>
+<li><a href="javascript:void(0);" url="${path}/types/list/${p3.pid!}" target="ajax" rel="types">${p3.name!}[${p3.num!}]</a>
+</li></#if></#list></ul>
+<li></#if></#list></ul>
+</li></#if></#list></ul>
+</li></#if></#list></ul>
 </li>
-</#if>
-</#list>
-</ul></li>
-
 </ul>
 </div>
 <div id="types" class="unitBox" style="margin-left: 202px;">

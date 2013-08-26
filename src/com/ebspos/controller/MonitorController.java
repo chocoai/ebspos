@@ -5,6 +5,7 @@ import java.util.Set;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
 import net.loyin.jFinal.anatation.RouteBind;
 import net.loyin.memcache.MemcacheTool;
+import com.jfinal.plugin.ehcache.CacheKit;
 
 import com.jfinal.aop.Before;
 /**
@@ -21,9 +22,9 @@ public class MonitorController extends BaseController {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void index() {
-		Set<String> clientSet=(Set<String>)MemcacheTool.mcc.get("clientSet");
+		Set<String> clientSet=(Set<String>)CacheKit.get("mcc","clientSet");
 		this.setAttr("clientSet",clientSet.size());
-		this.setAttr("teSet",MemcacheTool.mcc.get("teSet"));
+		this.setAttr("teSet",CacheKit.get("mcc","teSet"));
 		render("index.html");
 	}
 
