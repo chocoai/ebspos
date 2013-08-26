@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ebspos.ftl.EmployeeSelectTarget;
-import com.ebspos.ftl.GoodstypepSelectTarget;
+import com.ebspos.ftl.GoodsBigSelectTarget;
 import com.ebspos.ftl.StoretypeSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
 import com.ebspos.model.Employee;

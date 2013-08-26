@@ -2,10 +2,6 @@ package com.ebspos.interceptor;
 
 
 import java.util.List;
-
-import net.loyin.jFinal.anatation.PowerBind;
-import net.loyin.memcache.MemcacheTool;
-
 import com.ebspos.StaticCfg;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.core.ActionInvocation;

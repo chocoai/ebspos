@@ -2,7 +2,7 @@ package com.ebspos.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.ebspos.ftl.GoodstypepSelectTarget;
+import com.ebspos.ftl.GoodsBigSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
 import com.ebspos.model.Employee;
 import com.ebspos.model.Types;
@@ -29,11 +29,11 @@ public class TypesController extends BaseController {
 	public void index(){
 		f = true;
 		list();		
-		setAttr("types",Types.dao.find("select id, name,num ,pid from types order by id"));
+		setAttr("types",Types.dao.find("select id, name,num ,pid,path from types order by id"));
 		render("index.html");
 	}
 	public void list() {
-		Long goodstypeid = getParaToLong(0, 0L);
+		Long typesPid = getParaToLong(0, 0L);
 		StringBuffer whee=new StringBuffer();
 		List<Object> param=new ArrayList<Object>();
 		String name=getPara("name");
@@ -48,14 +48,10 @@ public class TypesController extends BaseController {
 			whee.append(" and gt.num = ?");
 			param.add(num);
 		}
-		setAttr("num", num);
-		if (goodstypeid !=0)
-		{
-			whee.append(" and gt.pid= ? or gt.id= ?");
-			param.add(goodstypeid);
-			param.add(goodstypeid);
-		}
-		setAttr("pid",goodstypeid);
+		setAttr("num", num);		
+		whee.append(" and gt.pid= ? ");
+		param.add(typesPid);		
+		setAttr("pid",typesPid);
 	//	setAttr(OrgSelectTarget.targetName,new OrgSelectTarget());
 	//	setAttr(PartmentSelectTarget.targetName,new PartmentSelectTarget());
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
@@ -72,7 +68,7 @@ public class TypesController extends BaseController {
 		if (id != 0) {  //修改
 			gtt = Types.dao.findById(id);
 		}else {gtt.set("pid", pid);}  //新增
-		setAttr(GoodstypepSelectTarget.targetName, new GoodstypepSelectTarget());
+		//setAttr(GoodstypepSelectTarget.targetName, new GoodstypepSelectTarget());
 		//setAttr(PartmentSelectTarget.targetName, new PartmentSelectTarget());
 		setAttr("gtt", gtt);
 		render("add.html");
@@ -83,7 +79,7 @@ public class TypesController extends BaseController {
 			if (m.getLong("id") != null) {
 				m.update();
 			} else {
-				//m.set("pwd",MD5.getMD5ofStr("123456"));
+				//m.set("pwd",MD5.getMD5ofStr("123456"));				
 				m.save();
 			}
 			

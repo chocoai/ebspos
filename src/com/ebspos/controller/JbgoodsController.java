@@ -6,6 +6,9 @@ import net.loyin.jFinal.anatation.RouteBind;
 import com.ebspos.ftl.YearbySelectTarget;
 import com.ebspos.ftl.BrandSelectTarget;
 import com.ebspos.ftl.BaseunitSelectTarget;
+import com.ebspos.ftl.GoodsBigSelectTarget;
+import com.ebspos.ftl.GoodsSubSelectTarget;
+import com.ebspos.ftl.GoodsSmallSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
 import com.ebspos.model.Jbgoods;
 import com.jfinal.aop.Before;
@@ -53,6 +56,9 @@ public class JbgoodsController extends BaseController {
 		setAttr(YearbySelectTarget.targetName, new YearbySelectTarget());
 		setAttr(BrandSelectTarget.targetName, new BrandSelectTarget());
 		setAttr(BaseunitSelectTarget.targetName, new BaseunitSelectTarget());
+		setAttr(GoodsBigSelectTarget.targetName, new GoodsBigSelectTarget());	
+		setAttr(GoodsSubSelectTarget.targetName, new GoodsSubSelectTarget());
+		setAttr(GoodsSmallSelectTarget.targetName, new GoodsSmallSelectTarget());
 		render("add.html");
 	}
 	public void save() {

@@ -18,12 +18,12 @@ $(function (){
 	              
 	           </tr>
 	           <tr>
-	              <th>大类</th><td><input type="text" name="jbgoods.GoodsTypeNo" value="${xtts.GoodsTypeNo!}" /></td>	                     
-	              <th>中类</th><td><input type="text" name="jbgoods.subgoodstypeno" value="${xtts.subgoodstypeno!}" /></td>
-	              <th>小类</th><td><input type="text" name="jbgoods.smallgoodstypeno" value="${xtts.smallgoodstypeno!}" /></td>
+	              <th>大类</th><td><select name="jbgoods.goodstypeno" val="${xtts.goodstypeno!}" class="combox"><@goodsBigSelect/></select></td>	                     
+	              <th>中类</th><td><select name="jbgoods.subgoodstypeno" val="${xtts.subgoodstypeno!}" class="combox" ><@goodsSubSelect/></select></td>
+	              <th>小类</th><td><select name="jbgoods.smallgoodstypeno" val="${xtts.smallgoodstypeno!}" class="combox" ><@goodsSmallSelect/></select></td>
 	           </tr>
 	           <tr>
-	              <th>计量单位</th><td><select name="jbgoods.baseunit" value="${xtts.baseunit!}" class="combox" ><@baseunitSelect/></select></td>	                     
+	              <th>计量单位</th><td><select name="jbgoods.baseunit" val="${xtts.baseunit!}" class="combox" ><@baseunitSelect/></select></td>	                     
 	              <th>品牌</th><td><select name="jbgoods.brandno" val="${xtts.brandno!}" class="combox"><@brandSelect/></select></td>
 	              <th>条码</th><td><input type="text" name="jbgoods.barcode" value="${xtts.barcode!}" /></td>
 	              

@@ -98,7 +98,7 @@ public class JFWebConfig extends JFinalConfig {
 	public void configHandler(Handlers me) {
 //		me.add(new SessionHandler());//将session里的参数传递到request中直接得到
 		//访问路径是/admin/monitor
-		DruidStatViewHandler dvh =  new DruidStatViewHandler("/monitor", new IDruidStatViewAuth() {
+		DruidStatViewHandler dvh =  new DruidStatViewHandler("/admin/monitor", new IDruidStatViewAuth() {
 			public boolean isPermitted(HttpServletRequest request) {//获得查看权限
 //				HttpSession hs = request.getSession(false);
 //				return (hs != null && hs.getAttribute("$admin$") != null);

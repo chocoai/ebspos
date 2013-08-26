@@ -7,17 +7,21 @@ initQueryForm();
 	<form method="post" action="${root!}/types/save" id="goodstypeform"
 		class="pageForm required-validate"
 		onsubmit="return validateCallback(this, dialogAjaxDone);">
-		<input name="goodstype.id" type="hidden" value="${gtt.id!}"/>
+		<input name="types.pid" type="hidden" value="${gtt.pid!}"/>
 		<div class="pageFormContent" id="goodstypeSave" layoutH="55">
 			<table class="mytablecls" width="98%">
 				<tr>
 					<th>类别编号：</th><td><input class="required" value="${gtt.num!}" name="types.num"/></td>
 					<th>类别名称：</th><td><input class="required" name="types.name" value="${gtt.name!}"></td>
+					
 				</tr>
 				<tr>
-					<th>上级类别：</th><td colspan="3"><select name="types.pid" class="combox"  val="${gtt.pid!}"><@goodstypepSelect/></select></td>
-					
-				</tr>				
+				    <th>功能类别：</th><td colspan="3"><select class="combox" name="types.function" val="${gtt.function!}">
+					                      <option value="计量单位">计量单位</option>
+					                      <option value="品牌">品牌</option>
+					                      <option value="商品类别">商品类别</option>
+					                      </select></td>
+				</tr>								
 				<tr>
 					<th>备注：</th><td colspan="3"><textarea name="types.remark" style="width:99%;height:50px;">${gtt.remark!}</textarea></td>
 				</tr>

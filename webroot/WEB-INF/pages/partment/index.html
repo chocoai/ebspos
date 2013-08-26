@@ -6,7 +6,8 @@ initQueryForm();
 <div class="pageHeader">
 		<form action="${root!}/partment" method="post" id="partmentpagerForm"
 			onsubmit="return navTabSearch(this)">
-			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> <input type="hidden" name="numPerPage" value="${page.pageSize!}" />
+			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> 
+			<input type="hidden" name="numPerPage" value="${page.pageSize!}" />
 			<div class="searchBar">
 				<ul class="searchContent">
 					<li>
@@ -55,5 +56,5 @@ initQueryForm();
 		</div>
 		<@table layouth="137" tid="partment_table"/>
 	</div>
-<@paginate/>
+<@paginate />
 </@layout>
