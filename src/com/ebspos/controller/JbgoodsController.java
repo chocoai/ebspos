@@ -34,7 +34,7 @@ public class JbgoodsController extends BaseController {
 		if(goodscode!=null && !"".equals(goodscode.trim())){
 			whee.append(" and p.goodscode like ?");
 			param.add("%"+goodscode+"%");			
-		}		
+		}
 		setAttr("goodscode",goodscode);
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
 				"select p.id,p.goodscode 商品编码, p.goodsname 商品名称,p.goodstypeno 大类,p.subgoodstypeno 中类,p.smallgoodstypeno 小类, "+
@@ -45,6 +45,30 @@ public class JbgoodsController extends BaseController {
 		render("index.html");
 
 	}
+	
+	public void lookup() {
+		StringBuffer whee=new StringBuffer();
+		List<Object> param = new ArrayList<Object>();
+		String goodscode=getPara("goodscode");
+		String goodname=getPara("goodname");
+		if(goodscode!=null && !"".equals(goodscode.trim())){
+			whee.append(" and p.goodscode like ?");
+			param.add("%"+goodscode+"%");			
+		}
+		if(goodscode!=null && !"".equals(goodscode.trim())){
+			whee.append(" and p.goodsname like ?");
+			param.add("%"+goodname+"%");			
+		}
+		setAttr("goodscode",goodscode);
+		setAttr("goodname",goodname);
+		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
+				"select p.id,p.goodscode 商品编码, p.goodsname 商品名称, " +
+				" p2.name 品牌,p.ProduceArea 产地,p.model 规格,p.barcode 条码 ",
+				" from  jbgoods p left join types p2 on p.brandno=p2.id left join types p3 on p.baseunit=p3.id  where 1=1  "+whee.toString(),param.toArray()));
+		setAttr("collist", new String[]{"商品编码","商品名称","品牌","产地","规格","条码"});
+		render("lookup.html");
+	}
+	
 	public void add() {
 		Jbgoods xtts = new Jbgoods();
 		Long id = getParaToLong(0, 0L);

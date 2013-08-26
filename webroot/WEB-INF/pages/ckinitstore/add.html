@@ -42,18 +42,16 @@ initQueryForm();
 						<div class="tabsContent" style="height: 150px;overflow: auto">
 							<div inited="1000" style="display: block;">
 								<table class="list nowrap itemDetail" addbutton="新建商品明细"
-									width="100%" style="clear: both;">
+									width="100%" style="clear: both;"><a class="btnLook" href="/jbgoods/lookup"  title="查找带回">查找带回</a>
 									<thead>
 										<tr>
 											<th type="text" name="items[#index#].id" 
 												defaultval="#index#" size="5"  fieldclass="digits">行号</th>
-											<th type="lookup" name="items[#index#].GoodsNo"
-												suggesturl="demo/database/db_lookupSuggest.html"
-												suggestfields="GoodsCode,GoodsName" 
-												lookupgroup="items[#index#].goods"
-												lookupurl="demo/database/dwzOrgLookup.html"
-												postfield="keywords"  fieldclass="required" size="12">商品编号</th>
-											<th type="text" name="GoodsName" size="12"
+											<th type="lookup" name="items[#index#].goodno"
+												lookupgroup="Jbgoods"
+												lookupurl="${root}/jbgoods/lookup"
+							                    size="12">商品编号</th>
+											<th type="text" name="name" size="12"
 												fieldclass="readonly textInput valid"  readonly="readonly"
 												fieldattrs="{remote:'validate_remote.html', maxlength:10}">商品名称</th>
 											<th type="text" name="items[#index#].Unit" size="12"
