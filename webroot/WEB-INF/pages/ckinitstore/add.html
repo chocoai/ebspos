@@ -3,7 +3,7 @@
 <script type="text/javascript">
 initQueryForm(); 
 </script>
-<div class="pageContent" >
+<div class="pageFormContent" >
 	<form method="post" action="${root!}/ckinitstore/save" id="jbstoreform"
 		class="pageForm required-validate"
 		onsubmit="return validateCallback(this, dialogAjaxDone);">
@@ -12,7 +12,7 @@ initQueryForm();
 			<table class="mytablecls" width="98%" >
 				<tr>
 					<th>票据号：</th><td><input class="required" value="${ckt.billorderno!}" name="ckinitstore.billorderno"/></td>
-					<th>票据日期：</th><td><input type="text"  class="date"  value="${ckt.billorderno!}" name="ckinitstore.billorderno"><a class="inputDateButton" href="javascript:;">选择</a></td>
+					<th>票据日期：</th><td><input type="text"  name="ckinitstore.OrderDate" class="date"  value="${ckt.OrderDate!}"><a class="inputDateButton" href="javascript:;">选择</a></td>
 				</tr>
 				<tr>
 					<th>仓库：</th><td><select name="ckinitstore.storeno" class="combox"  val="${ckt.storeno!}"><@storetypepSelect/></select></td>
@@ -45,24 +45,25 @@ initQueryForm();
 									width="100%" style="clear: both;">
 									<thead>
 										<tr>
-											<th type="text" name="lineId"  class="textInput readonly valid"  readonly="readonly"
+											<th type="text" name="items[#index#].id" 
 												defaultval="#index#" size="5"  fieldclass="digits">行号</th>
-											<th type="lookup" name="items.org.orgName[]"
-												lookupgroup="items.org"
-												lookupurl="demo/database/dwzOrgLookup.html"
+											<th type="lookup" name="items[#index#].GoodsNo"
 												suggesturl="demo/database/db_lookupSuggest.html"
-												suggestfields="orgName" size="12">商品编号</th>
-											<th type="text" name="items[#index#].itemString" size="12"
-												fieldclass="required"
+												suggestfields="GoodsCode,GoodsName" 
+												lookupgroup="items[#index#].goods"
+												lookupurl="demo/database/dwzOrgLookup.html"
+												postfield="keywords"  fieldclass="required" size="12">商品编号</th>
+											<th type="text" name="GoodsName" size="12"
+												fieldclass="readonly textInput valid"  readonly="readonly"
 												fieldattrs="{remote:'validate_remote.html', maxlength:10}">商品名称</th>
-											<th type="text" name="items[#index#].itemString" size="12"
+											<th type="text" name="items[#index#].Unit" size="12"
 												fieldclass="required"
 												fieldattrs="{remote:'validate_remote.html', maxlength:10}">基本单位</th>
-											<th type="text" name="items[#index#].itemFloat"
+											<th type="text" name="items[#index#].Quantity"
 												defaultval="0" size="12" fieldclass="number">数量</th>
-											<th type="text" name="items[#index#].itemFloat"
+											<th type="text" name="items[#index#].CKPrice"
 												defaultval="0" size="12" fieldclass="number">成本价</th>
-											<th type="text" name="items[#index#].itemFloat"
+											<th type="text" name="cost_amount"
 												defaultval="0" size="12" fieldclass="number">成本金额</th>
 											<th type="del" width="60">操作</th>
 										</tr>
