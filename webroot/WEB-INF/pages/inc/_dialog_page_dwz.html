@@ -1,0 +1,15 @@
+<#macro dialogpaginate rel="">
+<div class="panelBar">
+<div class="pages">
+<span>显示</span>
+<select name="pageSize" onchange="dwzPageBreak({targetType:dialog,numPerPage:this.value,pageNum:${page.pageNumber!}}<#if rel??&&rel!=''>,'${rel!}'</#if>)">
+<option value="${page.pageSize!}"  selected="selected" >${page.pageSize!}</option>
+<option value="20">20</option>
+<option value="30">30</option>
+<option value="50">50</option>
+</select>
+<span>条，共${page.totalRow!}条/${page.totalPage!}页&nbsp;</span>
+</div>
+<div class="pagination"  <#if rel??&&rel!=''> rel="${rel!}" </#if> targetType="dialog" totalCount="${page.totalRow!}" numPerPage="${page.pageSize!}" pageNumShown="10" currentPage="${page.pageNumber!}" ></div>
+</div>
+</#macro>

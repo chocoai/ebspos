@@ -6,7 +6,7 @@ $("#tableckinitstore tr td:nth-child(11)").each(function(r,td){
 	$(td).html(storeStopFlg[num]);
 });
 </script>
-<div class="pageHeader">
+<div class="pageFormContent"  style="background-color:#ebf0f5;">
 		<form action="${path}/ckinitstore/list" method="post" id="pagerForm"
 			onsubmit="return divSearch(this,'ckinitstore')">
 			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> <input
@@ -14,11 +14,12 @@ $("#tableckinitstore tr td:nth-child(11)").each(function(r,td){
 			<div class="searchBar">
 				<ul class="searchContent">
 					<li>
-						<label>开始日期</label>
+						<label>开始日期：</label>
 						<input type="text" name="startTime" class="date"  value="${startTime!}"><a class="inputDateButton" href="javascript:;">选择</a>
 					</li>
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
 					<li>
-						<label>结束日期</label>
+						<label>结束日期：</label>
 						<input type="text" name="endTime" class="date"  value="${endTime!}"><a class="inputDateButton" href="javascript:;">选择</a>
 					</li>
 				</ul>
