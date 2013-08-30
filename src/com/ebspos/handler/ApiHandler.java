@@ -22,6 +22,7 @@ public class ApiHandler extends Handler {
 				target += "/" + request.getQueryString();
 			}
 		}
+		if (target.contains("unde")) target = "/jbgoods/lookuplst";
 	     nextHandler.handle(target, request, response, isHandled);
 	}
 

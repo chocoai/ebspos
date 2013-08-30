@@ -9,9 +9,9 @@ import com.jfinal.plugin.activerecord.Model;
  *
  */
 @TableBind(name="xttables")
-public class Xttables extends Model<Xttables> {
+public class XTTables extends Model<XTTables> {
 	private static final long serialVersionUID = 973448093676645483L;
-	public static final Xttables dao=new Xttables(); 
+	public static final XTTables dao=new XTTables(); 
 	
 	
 

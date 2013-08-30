@@ -1,6 +1,7 @@
 package com.ebspos.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.loyin.jFinal.anatation.RouteBind;
@@ -10,7 +11,6 @@ import com.ebspos.ftl.PartmentSelectTarget;
 import com.ebspos.ftl.StoretypeSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
 import com.ebspos.model.CKinitStore;
-import com.ebspos.model.Jbstore;
 import com.jfinal.aop.Before;
 import com.jfinal.log.Logger;
 import com.jfinal.plugin.activerecord.Db;
@@ -39,13 +39,13 @@ public class CKinitStoreController extends BaseController {
 		StringBuffer whee=new StringBuffer();
 		List<Object> param=new ArrayList<Object>();
 		if(startTime!=null&&!"".equals(startTime.trim())){
-			whee.append(" and a.orderdate >= str_to_date(?,'%Y%m%d')");
+			whee.append(" and UNIX_TIMESTAMP(a.orderdate) >= UNIX_TIMESTAMP(?)");
 			param.add(startTime);
 		}
 		setAttr("startTime", startTime);
 		String endTime = getPara("endTime");
 		if(endTime!=null&&!"".equals(endTime.trim())){
-			whee.append(" and a.orderdate <= str_to_date(?,'%Y%m%d')");
+			whee.append(" and UNIX_TIMESTAMP(a.orderdate) <= UNIX_TIMESTAMP(?)");
 			param.add(endTime);
 		}
 		setAttr("endTime", endTime);
@@ -66,6 +66,10 @@ public class CKinitStoreController extends BaseController {
 		Long id = getParaToLong(0, 0L);
 		if (id != 0) { // 修改
 			ckt = CKinitStore.dao.findById(id);
+		} else {
+			Date cur = new Date();
+			String orderNo = "CK" + cur.getTime();
+			ckt.set("OrderNo", orderNo);
 		}
         setAttr(StoretypeSelectTarget.targetName, new StoretypeSelectTarget());
 		 setAttr(PartmentSelectTarget.targetName, new PartmentSelectTarget());
@@ -92,7 +96,7 @@ public class CKinitStoreController extends BaseController {
 	public void del() {
 		Long id = getParaToLong(0, 0L);
 		try {
-			Jbstore.dao.deleteById(id);
+			CKinitStore.dao.deleteById(id);
 			toDwzJson(200, "删除成功！", navTabId);
 		} catch (Exception e) {
 			toDwzJson(300, "删除失败！");

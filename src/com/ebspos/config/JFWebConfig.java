@@ -106,7 +106,7 @@ public class JFWebConfig extends JFinalConfig {
 			}
 		});
 		me.add(dvh);
-		me.add(new ApiHandler("/api/"));
+//		me.add(new ApiHandler("/api/"));
 	}
 	/**
 	 * 建议使用 JFinal 手册推荐的方式启动项目
