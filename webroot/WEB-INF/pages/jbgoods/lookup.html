@@ -1,7 +1,10 @@
 <#include "../inc/_layout.html"/>
 <@layout>
+<script type="text/javascript">
+initQueryForm(); 
+</script>
 <div class="pageHeader">
-		<form action="${path}/jbgoods/lookup" method="post"   id="pagerForm"
+		<form action="${path}/jbgoods/lookup" method="post"   id="lookupForm"
 			onsubmit="return dwzSearch(this, 'dialog');">
 			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> <input
 				type="hidden" name="numPerPage" value="${page.pageSize!}" />
@@ -19,9 +22,9 @@
 				<@searchBar/>
 			</div>
 		</form>
-	</div>
 	<div class="pageContent">
 		<@lookuptbl layouth="118"  tid="lookupgood"/>
 	</div>
 <@dialogpaginate rel="lookupgood"/>
+</div>
 </@layout>

@@ -1,0 +1,73 @@
+<#include "../inc/_layout.html"/>
+<@layout>
+<div class="pageFormContent" >
+	<form method="post" action="${root!}/ckinitdetail/save" id="ckinitdetail1"
+		class="pageForm required-validate"
+		onsubmit="return validateCallback(this, dialogAjaxDone);">
+	 <input type="hidden" name="orderNo"  value="${orderNo!}">
+	<div inited="1000" style="height: 350px;overflow: auto;display: block;">
+		<table class="list nowrap itemDetail"  addbutton="新建商品明细" 
+			width="100%" style="clear: both;">
+			<thead>
+				<tr>
+					<th type="text" name="lineId" 
+						defaultval="#index#" size="5"  fieldclass="digits">行号</th>
+					<th type="lookup" name="CKinitStoreDetail#index#.goodsno"
+						lookupgroup="CKinitStoreDetail#index#"
+						lookupurl="/jbgoods/lookuplst"
+	                    size="12">商品编号</th>
+					<th type="text" name="CKinitStoreDetail#index#.goodsname" size="12" 
+						fieldclass="readonly textInput valid"  readonly="readonly"
+						fieldattrs="{remote:'validate_remote.html', maxlength:10}">商品名称</th>
+					<th type="text" name="CKinitStoreDetail#index#.unit" size="12"
+						fieldclass="required">基本单位</th>
+					<th type="text" name="CKinitStoreDetail#index#.Quantity"
+						defaultval="0" size="12" fieldclass="number" >数量</th>
+					<th type="text" name="CKinitStoreDetail#index#.CKPrice"
+						defaultval="0" size="12" fieldclass="number">成本价</th>
+					<th type="text" name="cost_amount"
+						defaultval="0" size="12" fieldclass="number">成本金额</th>
+					<th type="del" width="60">操作</th>
+				</tr>
+			</thead>
+			<#if page??&&page.list??>
+			<tbody>
+				<#list page.list as d>
+				<tr target="sid_key"  rel="${d.id!}">
+				<td><input type="hidden"  name="CKinitStoreDetail${d_index}.id"  value="${d.id!}"><input type="checkbox" name="idds"  value="${d.id!}">${d_index+1}</td>
+				<td><input type="hidden" name="CKinitStoreDetail${d_index}.GoodsNo"  value="${d.GoodsNo!}"><input
+						type="text" name="CKinitStoreDetail${d_index}.GoodsNo"  lookuppk="GoodsNo" size="12"
+						class="textInput"  value="${d.GoodsNo!}"><a class="btnLook"
+						url="/jbgoods/lookuplst" lookupgroup="CKinitStoreDetail${d_index}" lookuppk="id"
+						title="查找带回">查找带回</a></td>
+				  <td><input type="text"  name="GoodsName"  value="${d.GoodsName!}"  readonly="readonly"></td>
+				  <td><input type="text" name="CKinitStoreDetail${d_index}.Unit" value="${d.Unit!}" size="12" ></td>
+				  <td><input type="text" name="CKinitStoreDetail${d_index}.Quantity" value="${d.Quantity!}" size="12" ></td>
+				  <td><input type="text" name="CKinitStoreDetail${d_index}.CKPrice" value="${d.CKPrice!}" size="12" ></td>
+				  <td><input type="text" name="cost_amount" value="0" size="12" ></td>
+				  <td><a class="btnDel"  href="${path}/ckinitdetail/del/${d.id!}"  title="确定要删除期初入库单吗？" target="ajaxTodo"><span>删除</span></a></td>
+				</tr>
+				</#list>
+			</tbody>
+			</#if>
+		</table>
+	</div>
+	<div class="pageFormContent"  style="background-color:#ebf0f5;">
+	<table>
+		<tr><th>合计</th><td width="720">
+		           &nbsp;  &nbsp; 数量：0 &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 金额：0
+		    </td>
+		    <td align="left">
+		    <div class="buttonActive">
+						<div class="buttonContent">
+							<button type="submit">保存</button>
+						</div>
+					</div>
+		    </td>
+		</tr>
+	</table>
+	</div>
+</form>
+</div>
+<@paginate rel="ckinitdetail"/>
+</@layout>

@@ -3,8 +3,8 @@
 <thead><tr>
 <#list collist as t>
 <th>${t!}</th>
-<th width="80">查找带回</th>
 </#list>
+<th width="80">查找带回</th>
 </tr></thead>
 <#if page??&&page.list??>
 <tbody>
@@ -13,7 +13,7 @@
 <#list collist as t>
 <td>${d.get(t)!}</td>
 </#list>
-<td><a class="btnSelect"  href="javascript:$.bringBack({id:'${d.id!}', code:'${d.goodscode!}', name:'${d.goodsname!}'})" title="查找带回">选择</a></td>
+<td><a class="btnSelect"  href="javascript:$.bringBack({unit:'${d.get('基本单位')!}',goodsno:'${d.get('商品编码')!}', goodsname:'${d.get('商品名称')!}'})" title="查找带回">选择</a></td>
 </tr>
 </#list>
 </tbody>
