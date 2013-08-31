@@ -33,7 +33,7 @@ public class JbgoodsController extends BaseController {
 		String goodscode=getPara("goodscode");
 		if(goodscode!=null && !"".equals(goodscode.trim())){
 			whee.append(" and p.goodscode like ?");
-			param.add("%"+goodscode+"%");			
+			param.add("%"+goodscode+"%");
 		}
 		setAttr("goodscode",goodscode);
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
@@ -43,10 +43,9 @@ public class JbgoodsController extends BaseController {
 				" from  jbgoods p left join types p2 on p.brandno=p2.id left join types p3 on p.baseunit=p3.id  where 1=1  "+whee.toString(),param.toArray()));
 		setAttr("collist", new String[]{"商品编码","商品名称","大类","中类","小类","品牌","产地","规格","条码","计量单位","停用","备注"});
 		render("index.html");
-
 	}
 	
-	public void lookup() {
+	public void lookuplst() {
 		StringBuffer whee=new StringBuffer();
 		List<Object> param = new ArrayList<Object>();
 		String goodscode=getPara("goodscode");
@@ -62,10 +61,10 @@ public class JbgoodsController extends BaseController {
 		setAttr("goodscode",goodscode);
 		setAttr("goodname",goodname);
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
-				"select p.id,p.goodscode 商品编码, p.goodsname 商品名称, " +
+				"select p.id,p.goodscode 商品编码, p.goodsname 商品名称, p.BaseUnit 基本单位," +
 				" p2.name 品牌,p.ProduceArea 产地,p.model 规格,p.barcode 条码 ",
 				" from  jbgoods p left join types p2 on p.brandno=p2.id left join types p3 on p.baseunit=p3.id  where 1=1  "+whee.toString(),param.toArray()));
-		setAttr("collist", new String[]{"商品编码","商品名称","品牌","产地","规格","条码"});
+		setAttr("collist", new String[]{"商品编码","商品名称","基本单位","品牌","产地","规格","条码"});
 		render("lookup.html");
 	}
 	

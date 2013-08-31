@@ -3,78 +3,42 @@
 <script type="text/javascript">
 initQueryForm(); 
 </script>
-<div class="pageFormContent" >
+<div class="pageContent">
 	<form method="post" action="${root!}/ckinitstore/save" id="jbstoreform"
 		class="pageForm required-validate"
 		onsubmit="return validateCallback(this, dialogAjaxDone);">
-		<input name="ckinitstore.id" type="hidden" value="${ckt.id!}"/>
-		<div id="ckinitstoreSave" >
+		<input name="cKinitStore.id" type="hidden" value="${ckt.id!}"/>
+		<div class="pageFormContent" id="ckinitstoreSave" >
 			<table class="mytablecls" width="98%" >
 				<tr>
-					<th>票据号：</th><td><input class="required" value="${ckt.billorderno!}" name="ckinitstore.billorderno"/></td>
-					<th>票据日期：</th><td><input type="text"  name="ckinitstore.OrderDate" class="date"  value="${ckt.OrderDate!}"><a class="inputDateButton" href="javascript:;">选择</a></td>
+					<th>票据号：</th><td><input readonly="readonly" value="${ckt.OrderNo!}" name="cKinitStore.OrderNo"/></td>
+					<th>票据日期：</th><td><input type="text"  name="cKinitStore.OrderDate" class="date"  value="${ckt.OrderDate!}"><a class="inputDateButton" href="javascript:;">选择</a></td>
+				</tr>
+				<tr>                                                             
+					<th>仓库：</th><td><select name="cKinitStore.StoreNo" class="combox"  val="${ckt.storeno!}"><@storeSelect/></select></td>
+					<th>部门：</th><td><select name="cKinitStore.DepartmentNo" class="combox"  val="${ckt.DepartmentNo!}"><@partSelect/></select></td>
 				</tr>
 				<tr>
-					<th>仓库：</th><td><select name="ckinitstore.storeno" class="combox"  val="${ckt.storeno!}"><@storetypepSelect/></select></td>
-					<th>部门：</th><td><select name="ckinitstore.DepartmentNo" class="combox"  val="${ckt.DepartmentNo!}"><@partSelect/></select></td>
-				</tr>
-				<tr>
-					<th>业务员：</th><td colspan="3"><select name="ckinitstore.usr_name" class="combox"  val="${ckt.usr_name!}"><@empSelect/></select>
+					<th>业务员：</th><td colspan="3"><select name="cKinitStore.EmployeeNo" class="combox"  val="${ckt.usr_name!}"><@empSelect/></select>
 					</td>
 				</tr>
 				<tr>
-					<th>备注：</th><td colspan="3"><textarea name="ckinitstore.Memo" style="width:95%;height:15px;">${ckt.Memo!}</textarea></td>
+					<th>备注：</th><td colspan="3"><textarea name="cKinitStore.Memo" style="width:95%;height:15px;">${ckt.Memo!}</textarea></td>
 				</tr>
 				<tr>
-					<th>合计商品数量：</th><td><input class="required" value="${ckt.CountQuantity!}" name="ckinitstore.CountQuantity"/></td>
-					<th>计价方式：</th><td><input class="required" name="ckinitstore.PriceType" value="${ckt.PriceType!}"></td>
+					<th>合计商品数量：</th><td><input class="required" value="${ckt.CKAmount!}" name="cKinitStore.CKAmount"/></td>
+					<th>计价方式：</th><td><input class="required" name="cKinitStore.Operator" value="${ckt.Operator!}"></td>
 				</tr>
 				<tr>
-					<th>数量：</th><td><input class="required" value="${ckt.ckamout!}" name="ckinitstore.ckamout"/></td>
+					<th>数量：</th><td><input class="required" value="${ckt.CKAmount!}" name="cKinitStore.CKAmount"/></td>
 					<th></th><td></td>
 				</tr>
 				<tr>
-					<th>审核人：</th><td><input class="required" value="${ckt.checkman!}" name="ckinitstore.checkman"/></td>
-					<th>审核日期：</th><td><input type="text"  class="date"  value="${ckt.checkdate!}" name="ckinitstore.checkdate"><a class="inputDateButton" href="javascript:;">选择</a></td>
+					<th>审核人：</th><td><input class="required" value="${ckt.checkman!}" name="cKinitStore.checkman"/></td>
+					<th>审核日期：</th><td><input type="text"  class="date"  value="${ckt.checkdate!}" name="cKinitStore.checkdate"><a class="inputDateButton" href="javascript:;">选择</a></td>
 				</tr>
 				<tr>
-				     <td colspan="4">
-						<div class="tabsContent" style="height: 150px;overflow: auto">
-							<div inited="1000" style="display: block;">
-								<table class="list nowrap itemDetail" addbutton="新建商品明细"
-									width="100%" style="clear: both;"><a class="btnLook" href="/jbgoods/lookup"  title="查找带回">查找带回</a>
-									<thead>
-										<tr>
-											<th type="text" name="items[#index#].id" 
-												defaultval="#index#" size="5"  fieldclass="digits">行号</th>
-											<th type="lookup" name="items[#index#].goodno"
-												lookupgroup="Jbgoods"
-												lookupurl="${root}/jbgoods/lookup"
-							                    size="12">商品编号</th>
-											<th type="text" name="name" size="12"
-												fieldclass="readonly textInput valid"  readonly="readonly"
-												fieldattrs="{remote:'validate_remote.html', maxlength:10}">商品名称</th>
-											<th type="text" name="items[#index#].Unit" size="12"
-												fieldclass="required"
-												fieldattrs="{remote:'validate_remote.html', maxlength:10}">基本单位</th>
-											<th type="text" name="items[#index#].Quantity"
-												defaultval="0" size="12" fieldclass="number">数量</th>
-											<th type="text" name="items[#index#].CKPrice"
-												defaultval="0" size="12" fieldclass="number">成本价</th>
-											<th type="text" name="cost_amount"
-												defaultval="0" size="12" fieldclass="number">成本金额</th>
-											<th type="del" width="60">操作</th>
-										</tr>
-									</thead>
-									<tbody></tbody>
-								</table>
-							</div>
-						</div>
-					</td>
-				</tr>
-				    <tr><th>合计</th><td colspan="3">
-				           &nbsp;  &nbsp; 数量：0 &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 金额：0
-				    </td>
+                     <td colspan="4"><a class="button"  href="javascript:void(0);" url="/ckinitdetail/list/${ckt.OrderNo!}"  title="库存商品明细"  target="dialog"  rel="ckinitdetailDlg"  width="840"  height="480"><span>库存商品明细</span></a></td>
 				</tr>
 			</table>
 		</div>
