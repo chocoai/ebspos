@@ -1,0 +1,107 @@
+<#include "../inc/_layout.html"/> <#include "../inc/_nation.html"/>
+<@layout>
+<script>
+$(function (){
+	initQueryForm();
+});
+</script>
+<div class="pageContent">
+	<form method="post" action="${root!}/jbclient/save"
+		id="jbclientform" class="pageForm required-validate"
+		onsubmit="return validateCallback(this, dialogAjaxDone);">
+		<input name="jbclient.id" type="hidden" value="${xtts.id!}">
+		<div class="pageFormContent" id="jbclientSave" layoutH="55">
+			<table class="mytablecls">
+				<tr>
+					<th>客户代码</th>
+					<td><input type="text" name="jbclient.clientcode"
+						value="${xtts.clientcode!}" class="required" /></td>
+					<th>客户名称</th>
+					<td><input type="text" name="jbclient.clientname"
+						value="${xtts.clientname!}" class="required" /></td>
+					<th>业务员</th>
+					<td><input type="text" name="jbclient.employeeno"
+						value="${xtts.employeeno!}" /></td>
+				</tr>
+				<tr>
+					<th>联系地址</th>
+					<td><input type="text" name="jbclient.address"
+						value="${xtts.address!}" /></td>
+					<th>发货地址</th>
+					<td><input type="text" name="jbclient.sendaddress"
+						value="${xtts.sendaddress!}" /></td>
+					<th>邮编</th>
+					<td><input type="text" name="jbclient.postno"
+						value="${xtts.postno!}" /></td>
+				</tr>
+				<tr>
+					<th>公司电话</th>
+					<td><input type="text" name="jbclient.telephone" value="${xtts.telephone!}"/>	</td>
+					<th>传真</th>
+					<td><input type="text" name="jbclient.fax" value="${xtts.fax!}"/></td>
+					<th>邮箱</th>
+					<td><input type="text" name="jbclient.email" value="${xtts.barcode!}" class="email" /></td>
+				</tr>
+				<tr>
+					<th>联系人</th>
+					<td><input type="text" name="jbclient.linkman" value="${xtts.linkman!}" /></td>
+					<th>联系电话</th>
+					<td><input type="text" name="jbclient.linkphone" value="${xtts.linkphone!}" class="phone" /></td>
+					<th>期初应收</th>
+					<td><input type="number" name="jbclient.preamount"  value="${xtts.preamount!}" /></td>
+				</tr>
+				<tr>
+					<th>网址</th>
+					<td><input type="text" name="jbclient.url" value="${xtts.url!}" class="url" /></td>
+					<th>信用天数</th>
+					<td><input type="number" name="jbclient.sdaymax" val="${xtts.sdaymax!}" /></td>
+					<th>客户类别</th>
+					<td><select name="jbclient.typeno" val="${xtts.typeno!}"
+						class="combox">	</select></td>
+				</tr>
+				<tr>
+					<th>信用金额</th>
+					<td><input type="number" name="jbclient.samountmax"
+						value="${xtts.samountmax!}" /></td>
+					<th>开户行</th>
+					<td><input type="text" name="jbclient.bankno"
+						value="${xtts.bankno!}" /></td>
+					<th>账号</th>
+					<td><input type="text" name="jbclient.bankaccount"
+						value="${xtts.bankaccount!}" /></td>
+				</tr>
+				<tr>
+					<input type="hidden" id="StopFlag" name="jbclient.StopFlag"
+						value="${xtts.StopFlag!}" />
+					<th>是否停用</th>
+					<td><input type="checkbox" id="stopFlgChk"
+						onclick="if ($('#stopFlgChk').prop('checked')==true) {$('#StopFlag').val(1);} else {$('#StopFlag').val(0);}"<#if
+						xtts.StopFlag??&&xtts.StopFlag==1> checked="checked"</#if> /></td>
+				
+					<th>备注</th>
+					<td colspan="3"><textarea name="jbclient.remark"
+							style="width: 99%; height: 50px;">${xtts.remark!}</textarea></td>
+				</tr>
+
+			</table>
+		</div>
+		<div class="formBar">
+			<ul>
+				<@btnPower safecode="partsave">
+				<li><div class="buttonActive">
+						<div class="buttonContent">
+							<button type="submit">保存</button>
+						</div>
+					</div></li> </@btnPower>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="Button" class="close">关闭</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+</@layout>
