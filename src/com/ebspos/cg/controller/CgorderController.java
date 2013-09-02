@@ -1,55 +1,62 @@
-package com.ebspos.controller;
+package com.ebspos.cg.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 import net.loyin.jFinal.anatation.RouteBind;
+
+import com.ebspos.controller.BaseController;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
-import com.ebspos.model.Jbsupplier;
 import com.jfinal.aop.Before;
 import com.jfinal.log.Logger;
 import com.jfinal.plugin.activerecord.Db;
 /**
- * 供应商资料
+ * 采购订单资料
  * @author 湛原红 
- * 2013.8.14
+ * 2013.8.30
  *
  */
-@RouteBind(path="/jbsupplier")
+@RouteBind(path="/cgorder")
 @Before({ManagerPowerInterceptor.class})
-public class JbsupplierController extends BaseController {
+public class CgorderController extends BaseController {
 
-	public static Logger log = Logger.getLogger(JbsupplierController.class);
-	private static String navTabId = "jbsupplier";
+	public static Logger log = Logger.getLogger(CgorderController.class);
+	private static String navTabId = "cgorder";
 	@Override
 	public void index() {
+		
 		StringBuffer whee=new StringBuffer();
 		List<Object> param = new ArrayList<Object>();
-		String suppliercode=getPara("suppliercode");
-		if(suppliercode!=null && !"".equals(suppliercode.trim())){
-			whee.append(" and p.goodscode like ?");
-			param.add("%"+suppliercode+"%");			
-		}		
-		setAttr("suppliercode",suppliercode);
+	/*	String clientcode=getPara("clientcode");
+		if(clientcode!=null && !"".equals(clientcode.trim())){
+			whee.append(" and p.clientcode like ?");
+			param.add("%"+clientcode+"%");			
+		}
+				
+		setAttr("suppliercode",clientcode);*/
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
-				"select p.id,p.suppliercode 供应商代码, p.suppliername 供应商名称,p.suppliertypeno 供应商类别,p.stopflag 停用,p.remark 备注",
-				" from  jbsupplier p where 1=1  "+whee.toString(),param.toArray()));
-		setAttr("collist", new String[]{"供应商代码","供应商名称","供应商类别","停用","备注"});
+				"select p.id,p.ordercode 订单号, p.orderdate 订单日期,p.stopflag 停用,p.remark 备注",
+				" from  cgorder p where 1=1  "+whee.toString(),param.toArray()));
+		setAttr("collist", new String[]{"订单号","订单日期","停用","备注"});
+		
 		render("index.html");
 
 	}
 	public void add() {
-		Jbsupplier xtts = new Jbsupplier();
+		/*
+		Jbclient xtts = new Jbclient();
 		Long id = getParaToLong(0, 0L);
 		if (id != 0) { // 修改
-			xtts = Jbsupplier.dao.findById(id);
+			xtts = Jbclient.dao.findById(id);
 		}
         
 		setAttr("xtts", xtts);		
 		render("add.html");
+		*/
 	}
 	public void save() {
+		/*
 		try {
-			Jbsupplier m = getModel(Jbsupplier.class);
+			Jbclient m = getModel(Jbclient.class);
 			if (m.getLong("id") != null) {
 				m.update();
 			} else {
@@ -60,15 +67,18 @@ public class JbsupplierController extends BaseController {
 			log.error("保存系统表信息异常", e);
 			toDwzJson(300, "保存异常！");
 		}
+		*/
 	}
 	public void del() {
+	/*
 		Long id = getParaToLong(0, 0L);
 		try {
-			Jbsupplier.dao.deleteById(id);
+			Jbclient.dao.deleteById(id);
 			toDwzJson(200, "删除成功！", navTabId);
 		} catch (Exception e) {
 			toDwzJson(300, "删除失败！");
 		}
+		*/
 	}
-
+  
 }
