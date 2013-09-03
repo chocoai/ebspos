@@ -53,16 +53,58 @@ public class CKinitStoreController extends BaseController {
 	//	setAttr(OrgSelectTarget.targetName,new OrgSelectTarget());
 	//	setAttr(PartmentSelectTarget.targetName,new PartmentSelectTarget());
 		String sql = "select a.id,a.orderno 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
-				+ "c.name 部门,d.usr_name 员工,a.operator 操作人,a.ckamount 库存数量,a.checkflag 审核,a.checkdate 审核日期,a.checkman 审核人,a.recordcount 记录数,a.Memo 备注";
+				+ "c.name 部门,d.usr_name 员工,a.operator 操作人,a.ckamount 库存数量,a.checkdate 审核日期,a.checkman 审核人,a.recordcount 记录数,a.Memo 备注,a.checkflag 审核";
 		String sqlSelect = "from ckinitstore a ";
 		sqlSelect += " inner join jbstore b on a.storeno = b.storeno ";
 		sqlSelect += " inner join partment c on a.DepartmentNo = c.id ";
 		sqlSelect += " inner join employee d on a.EmployeeNo = d.usr_no where 1=1 ";
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
 				sql, sqlSelect + whee.toString(),param.toArray()));
-		setAttr("collist", new String[]{"订单号","订单日期","仓库","票据号","票据日期","部门","员工","库存数量","审核","审核日期","审核人","备注","审核"});
+		setAttr("collist", new String[]{"订单号","订单日期","仓库","票据号","票据日期","部门","员工","库存数量","审核日期","审核人","备注","审核"});
 		if (f == false)
 			render("list.html");
+	}
+	
+	// 期初库存录入单汇总
+	public void gatherlist() {
+		String startTime = getPara("startTime");
+		StringBuffer whee=new StringBuffer();
+		List<Object> param=new ArrayList<Object>();
+		if(startTime!=null&&!"".equals(startTime.trim())){
+			whee.append(" and UNIX_TIMESTAMP(a.orderdate) >= UNIX_TIMESTAMP(?)");
+			param.add(startTime);
+		}
+		setAttr("startTime", startTime);
+		String endTime = getPara("endTime");
+		if(endTime!=null&&!"".equals(endTime.trim())){
+			whee.append(" and UNIX_TIMESTAMP(a.orderdate) <= UNIX_TIMESTAMP(?)");
+			param.add(endTime);
+		}
+		setAttr("endTime", endTime);
+		String orderNo = getPara("orderNo");
+		if(orderNo!=null&&!"".equals(orderNo.trim())){
+			whee.append(" and a.orderNo = ?");
+			param.add(orderNo);
+		}
+		setAttr("orderNo", orderNo);
+		String storeNo = getPara("storeNo");
+		if(storeNo!=null&&!"".equals(storeNo.trim())){
+			whee.append(" and a.storeNo = ?");
+			param.add(storeNo);
+		}
+		setAttr("storeNo", storeNo);
+        setAttr(StoreSelectTarget.targetName, new StoreSelectTarget());
+		String sql = "select a.id,a.orderno 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
+				+ "c.name 部门,d.usr_name 员工,a.operator 操作人,a.ckamount 库存数量,a.checkdate 审核日期,a.checkman 审核人,a.recordcount 记录数,a.Memo 备注";
+		String sqlSelect = "from ckinitstore a ";
+		sqlSelect += " inner join jbstore b on a.storeno = b.storeno ";
+		sqlSelect += " inner join partment c on a.DepartmentNo = c.id ";
+		sqlSelect += " inner join employee d on a.EmployeeNo = d.usr_no where 1=1 ";
+		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
+				sql, sqlSelect + whee.toString(),param.toArray()));
+		setAttr("collist", new String[]{"订单号","订单日期","仓库","票据号","票据日期","员工","库存数量","成本金额","备注"});
+		if (f == false)
+			render("gather_list.html");
 	}
 	
 	public void add() {
