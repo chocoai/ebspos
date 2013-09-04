@@ -107,6 +107,59 @@ public class CKinitStoreController extends BaseController {
 			render("gather_list.html");
 	}
 	
+	// 期初库存录入单明细
+	public void detaillist() {
+		String startTime = getPara("startTime");
+		StringBuffer whee=new StringBuffer();
+		List<Object> param=new ArrayList<Object>();
+		if(startTime!=null&&!"".equals(startTime.trim())){
+			whee.append(" and UNIX_TIMESTAMP(a.orderdate) >= UNIX_TIMESTAMP(?)");
+			param.add(startTime);
+		}
+		setAttr("startTime", startTime);
+		String endTime = getPara("endTime");
+		if(endTime!=null&&!"".equals(endTime.trim())){
+			whee.append(" and UNIX_TIMESTAMP(a.orderdate) <= UNIX_TIMESTAMP(?)");
+			param.add(endTime);
+		}
+		setAttr("endTime", endTime);
+		String orderNo = getPara("orderNo");
+		if(orderNo!=null&&!"".equals(orderNo.trim())){
+			whee.append(" and a.orderNo = ?");
+			param.add(orderNo);
+		}
+		setAttr("orderNo", orderNo);
+		String storeNo = getPara("storeNo");
+		if(storeNo!=null&&!"".equals(storeNo.trim())){
+			whee.append(" and a.storeNo = ?");
+			param.add(storeNo);
+		}
+		setAttr("storeNo", storeNo);
+		String goodsNo = getPara("goodsNo");
+		if(goodsNo!=null&&!"".equals(goodsNo.trim())){
+			whee.append(" and c.GoodsNo = ?");
+			param.add(goodsNo);
+		}
+		setAttr("goodsNo", goodsNo);
+		String goodsName = getPara("goodsName");
+		if(goodsName!=null&&!"".equals(goodsName.trim())){
+			whee.append(" and c.goodsName = ?");
+			param.add(goodsName);
+		}
+		setAttr("goodsName", goodsName);
+        setAttr(StoreSelectTarget.targetName, new StoreSelectTarget());
+		String sql = "select a.id,a.orderno 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
+				+ "c.GoodsNo 商品编号,c.GoodsName 商品名称,c.Unit 单位,c.Quantity 数量, c.CKPrice 成本价,c.memo 备注,a.operator 操作人,a.ckamount 库存数量,a.checkdate 审核日期,a.checkman 审核人,a.recordcount 记录数";
+		String sqlSelect = "from ckinitstore a ";
+		sqlSelect += " inner join jbstore b on a.storeno = b.storeno ";
+		sqlSelect += " inner join ckinitstoredetail c on a.orderno = c.OrderNo where 1=1";
+		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
+				sql, sqlSelect + whee.toString(),param.toArray()));
+		setAttr("collist", new String[]{"订单号","订单日期","仓库","商品编号","商品名称","单位","数量","成本价","成本金额","备注"});
+		if (f == false)
+			render("detail_list.html");
+	}
+	
 	public void add() {
 		CKinitStore ckt = new CKinitStore();
 		Long id = getParaToLong(0, 0L);
