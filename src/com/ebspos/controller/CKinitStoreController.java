@@ -8,7 +8,7 @@ import net.loyin.jFinal.anatation.RouteBind;
 
 import com.ebspos.ftl.EmployeeSelectTarget;
 import com.ebspos.ftl.PartmentSelectTarget;
-import com.ebspos.ftl.StoreSelectTarget;
+//import com.ebspos.ftl.StoreSelectTarget;
 import com.ebspos.ftl.StoretypeSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
 import com.ebspos.model.CKinitStore;
@@ -76,7 +76,7 @@ public class CKinitStoreController extends BaseController {
 			ckt.set("OrderNo", orderNo);
 		}
         setAttr(StoretypeSelectTarget.targetName, new StoretypeSelectTarget());
-        setAttr(StoreSelectTarget.targetName, new StoreSelectTarget());
+       // setAttr(StoreSelectTarget.targetName, new StoreSelectTarget());
 		 setAttr(PartmentSelectTarget.targetName, new PartmentSelectTarget());
 		 setAttr(EmployeeSelectTarget.targetName, new EmployeeSelectTarget());
 		setAttr("ckt", ckt);
