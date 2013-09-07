@@ -13,7 +13,7 @@ import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 /**
- * 组织机构选择
+ * 仓库类别选择
  * @author loyin
  * 2013-8-13
  */

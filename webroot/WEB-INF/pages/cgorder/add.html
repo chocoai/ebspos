@@ -2,8 +2,11 @@
 <@layout>
 <script>
 $(function (){
-	initQueryForm();
+    
+	initQueryForm();	
 });
+
+
 </script>
 
 
@@ -41,12 +44,41 @@ $(function (){
 		     <th>收货仓库</th><td><input autocomplete="off" class="required textInput valid" name="orgLookup.orgName" value=""
 					     suggestfields="orgNum,orgName" suggesturl="demo/database/db_lookupSuggest.html" lookupgroup="orgLookup" type="text"/>					
 					    <a class="btnLook" href="/jbgoods/lookup"  title="查找带回">查找带回</a></td>
-			<th>备注</th><td colspan="3"><input type="text" name="employee.age" value=""></td>
+			<th>备注</th><td colspan="3"><input type="text" name="employee.remark" value="tommy"></td>
 		</tr>	
-	</table>
+	</table>	
    </div>
-   <div style="height:300px;border: 1px solid rgb(183, 183, 183);box-shadow: 1px 2px 2px rgb(255, 255, 255);margin-bottom: 5px;text-align: left;">
-   </div>
+   <div inited="1000" style="height: 320px;overflow: auto;display: block;">
+		<table class="list nowrap itemDetail"  addbutton="新建商品明细" 
+			width="100%" style="clear: both;">
+			<thead>
+				<tr>
+					<th type="text" name="lineId" 
+						defaultval="#index#" size="5"  fieldclass="digits">行号</th>
+					<th type="lookup" name="CKinitStoreDetail#index#.goodsno"
+						lookupgroup="CKinitStoreDetail#index#"
+						lookupurl="/jbgoods/lookuplst"
+	                    size="12">商品编号</th>
+					<th type="text" name="CKinitStoreDetail#index#.goodsname" size="12" 
+						fieldclass="readonly textInput valid"  readonly="readonly"
+						fieldattrs="{remote:'validate_remote.html', maxlength:10}">商品名称</th>
+					<th type="text" name="CKinitStoreDetail#index#.unit" size="12"
+						fieldclass="required">基本单位</th>
+					<th type="text" name="CKinitStoreDetail#index#.Quantity"
+						defaultval="0" size="12" fieldclass="number" >数量</th>
+					<th type="text" name="CKinitStoreDetail#index#.CKPrice"
+						defaultval="0" size="12" fieldclass="number">成本价</th>
+					<th type="text" name="cost_amount"
+						defaultval="0" size="12" fieldclass="number">成本金额</th>
+					<th type="del" width="60">操作</th>
+				</tr>
+			</thead>		
+			<tbody>					
+			</tbody>
+			
+		</table>
+	</div>
+	
    <div style="height:30px;margin-bottom: 5px;text-align: left;">
      <table>
      <tr align="right"><th>制单人：</th><td></td>
@@ -84,5 +116,10 @@ $(function (){
 		</div>
 	</form>
 </div>
+<script>
+//alert($(".pageContent").find('[name="dwz_rowNum"]').val());
+//$('<input type="text" name="dwz_rowNum" class="textInput" style="margin:2px;" value="1" size="2"/>').val("2");
+	//$('<div class="button"><div class="buttonContent"><button type="button">新建商品明细</button></div></div>').click();
+</script>
 </@layout>
 
