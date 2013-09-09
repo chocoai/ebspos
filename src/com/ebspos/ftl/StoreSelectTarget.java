@@ -24,10 +24,10 @@ public class StoreSelectTarget extends BaseTarget {
 	@Override
 	public void execute(Environment env, Map args, TemplateModel[] arg2,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
-		List<Jbstore> list= Jbstore.dao.find("select id,StoreCode,StoreName from jbstore ");
+		List<Jbstore> list= Jbstore.dao.find("select StoreNo,StoreCode,StoreName from jbstore ");
 		Writer out= env.getOut();
 		for(Jbstore o:list){
-			out.append("<option value='"+o.getLong("id")+"'>");
+			out.append("<option value='"+o.getStr("StoreNo")+"'>");
 			out.append(o.getStr("StoreName")+"["+o.getStr("StoreCode")+"]");
 			out.append("</option>");
 		}
