@@ -34,9 +34,10 @@
 			<tbody>
 				<#list page.list as d>
 				<tr target="sid_key"  rel="${d.id!}">
-				<td><input type="hidden"  name="CKinitStoreDetail${d_index}.id"  value="${d.id!}"><input type="checkbox" name="idds"  value="${d.id!}">${d_index+1}</td>
-				<td><input type="hidden" name="CKinitStoreDetail${d_index}.GoodsNo"  value="${d.GoodsNo!}"><input
-						type="text" name="CKinitStoreDetail${d_index}.GoodsNo"  lookuppk="GoodsNo" size="12"
+				<td><input type="hidden"  name="CKinitStoreDetail${d_index}.id"  value="${d.id!}">
+					<input type="checkbox" name="idds"  value="${d.id!}">${d_index+1}</td>
+				<td><input type="hidden" name="CKinitStoreDetail${d_index}.GoodsNo"  value="${d.GoodsNo!}">
+					<input type="text" name="CKinitStoreDetail${d_index}.GoodsNo"  lookuppk="GoodsNo" size="12"
 						class="textInput"  value="${d.GoodsNo!}"><a class="btnLook"
 						url="/jbgoods/lookuplst" lookupgroup="CKinitStoreDetail${d_index}" lookuppk="id"
 						title="查找带回">查找带回</a></td>

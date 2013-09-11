@@ -2,89 +2,94 @@
 <@layout>
 <script>
 $(function (){
-	initQueryForm();
+    
+	initQueryForm();	
 });
+
+
 </script>
+
+
 <div class="pageContent">
 	<form method="post" action="${root!}/jbclient/save"
 		id="jbclientform" class="pageForm required-validate"
 		onsubmit="return validateCallback(this, dialogAjaxDone);">
-		<input name="jbclient.id" type="hidden" value="${xtts.id!}">
-		<div class="pageFormContent" id="jbclientSave" layoutH="55">
-			<table class="mytablecls">
+		<input name="jbclient.id" type="hidden" value="">
+		<div class="pageFormContent" id="jbclientSave" layoutH="55">	
+		<table style="margin-top:5px;margin-bottom:5px;border:0px" >
+			<tbody><tr>
+			<th style="width:50px"></th>			
+			<th valign="top">
+			   <div style="width:90px;text-align:left;">进货订单</div>
+			 </th>
+			 <th style="width:200px"></th>
+			 <th>录单日期</th><td><input type="text" name="date1" class="date" readonly="true"/>
+						   <a class="inputDateButton" href="javascript:;">选择</a></td>
+			     	
+			  <th>编号</th><td><input type="text" name="employee.age" value=""></td>
+		 </tr></tbody>
+		 </table>
+		 <div style="border: 1px solid rgb(183, 183, 183);box-shadow: 1px 2px 2px rgb(255, 255, 255);margin-bottom: 5px;text-align: left;">
+		 <table style="margin-top:5px;margin-bottom:5px">
+		 <tr><th>供货单位</th><td><input autocomplete="off" class="required textInput valid" name="orgLookup.orgName" value=""
+					     suggestfields="orgNum,orgName" suggesturl="demo/database/db_lookupSuggest.html" lookupgroup="orgLookup" type="text"/>					
+					    <a class="btnLook" href="/jbgoods/lookup"  title="查找带回">查找带回</a></td>
+			 <th>经手人</th><td><input autocomplete="off" class="required textInput valid" name="orgLookup.orgName" value=""
+					     suggestfields="orgNum,orgName" suggesturl="demo/database/db_lookupSuggest.html" lookupgroup="orgLookup" type="text"/>					
+					    <a class="btnLook" href="/jbgoods/lookup"  title="查找带回">查找带回</a></td>
+			<th>交货日期</th><td><input type="text" name="date1" class="date" readonly="true"/>
+						   <a class="inputDateButton" href="javascript:;">选择</a></td>
+		</tr>
+		<tr>
+		     <th>收货仓库</th><td><input autocomplete="off" class="required textInput valid" name="orgLookup.orgName" value=""
+					     suggestfields="orgNum,orgName" suggesturl="demo/database/db_lookupSuggest.html" lookupgroup="orgLookup" type="text"/>					
+					    <a class="btnLook" href="/jbgoods/lookup"  title="查找带回">查找带回</a></td>
+			<th>备注</th><td colspan="3"><input type="text" name="employee.remark" value="tommy"></td>
+		</tr>	
+	</table>	
+   </div>
+   <div inited="1000" style="height: 320px;overflow: auto;display: block;">
+		<table class="list nowrap itemDetail"  addbutton="新建商品明细" 
+			width="100%" style="clear: both;">
+			<thead>
 				<tr>
-					<th>客户代码</th>
-					<td><input type="text" name="jbclient.clientcode"
-						value="${xtts.clientcode!}" class="required" /></td>
-					<th>客户名称</th>
-					<td><input type="text" name="jbclient.clientname"
-						value="${xtts.clientname!}" class="required" /></td>
-					<th>业务员</th>
-					<td><input type="text" name="jbclient.employeeno"
-						value="${xtts.employeeno!}" /></td>
+					<th type="text" name="lineId" 
+						defaultval="#index#" size="5"  fieldclass="digits">行号</th>
+					<th type="lookup" name="CKinitStoreDetail#index#.goodsno"
+						lookupgroup="CKinitStoreDetail#index#"
+						lookupurl="/jbgoods/lookuplst"
+	                    size="12">商品编号</th>
+					<th type="text" name="CKinitStoreDetail#index#.goodsname" size="12" 
+						fieldclass="readonly textInput valid"  readonly="readonly"
+						fieldattrs="{remote:'validate_remote.html', maxlength:10}">商品名称</th>
+					<th type="text" name="CKinitStoreDetail#index#.unit" size="12"
+						fieldclass="required">基本单位</th>
+					<th type="text" name="CKinitStoreDetail#index#.Quantity"
+						defaultval="0" size="12" fieldclass="number" >数量</th>
+					<th type="text" name="CKinitStoreDetail#index#.CKPrice"
+						defaultval="0" size="12" fieldclass="number">成本价</th>
+					<th type="text" name="cost_amount"
+						defaultval="0" size="12" fieldclass="number">成本金额</th>
+					<th type="del" width="60">操作</th>
 				</tr>
-				<tr>
-					<th>联系地址</th>
-					<td><input type="text" name="jbclient.address"
-						value="${xtts.address!}" /></td>
-					<th>发货地址</th>
-					<td><input type="text" name="jbclient.sendaddress"
-						value="${xtts.sendaddress!}" /></td>
-					<th>邮编</th>
-					<td><input type="text" name="jbclient.postno"
-						value="${xtts.postno!}" /></td>
-				</tr>
-				<tr>
-					<th>公司电话</th>
-					<td><input type="text" name="jbclient.telephone" value="${xtts.telephone!}"/>	</td>
-					<th>传真</th>
-					<td><input type="text" name="jbclient.fax" value="${xtts.fax!}"/></td>
-					<th>邮箱</th>
-					<td><input type="text" name="jbclient.email" value="${xtts.barcode!}" class="email" /></td>
-				</tr>
-				<tr>
-					<th>联系人</th>
-					<td><input type="text" name="jbclient.linkman" value="${xtts.linkman!}" /></td>
-					<th>联系电话</th>
-					<td><input type="text" name="jbclient.linkphone" value="${xtts.linkphone!}" class="phone" /></td>
-					<th>期初应收</th>
-					<td><input type="number" name="jbclient.preamount"  value="${xtts.preamount!}" /></td>
-				</tr>
-				<tr>
-					<th>网址</th>
-					<td><input type="text" name="jbclient.url" value="${xtts.url!}" class="url" /></td>
-					<th>信用天数</th>
-					<td><input type="number" name="jbclient.sdaymax" val="${xtts.sdaymax!}" /></td>
-					<th>客户类别</th>
-					<td><select name="jbclient.typeno" val="${xtts.typeno!}"
-						class="combox">	</select></td>
-				</tr>
-				<tr>
-					<th>信用金额</th>
-					<td><input type="number" name="jbclient.samountmax"
-						value="${xtts.samountmax!}" /></td>
-					<th>开户行</th>
-					<td><input type="text" name="jbclient.bankno"
-						value="${xtts.bankno!}" /></td>
-					<th>账号</th>
-					<td><input type="text" name="jbclient.bankaccount"
-						value="${xtts.bankaccount!}" /></td>
-				</tr>
-				<tr>
-					<input type="hidden" id="StopFlag" name="jbclient.StopFlag"
-						value="${xtts.StopFlag!}" />
-					<th>是否停用</th>
-					<td><input type="checkbox" id="stopFlgChk"
-						onclick="if ($('#stopFlgChk').prop('checked')==true) {$('#StopFlag').val(1);} else {$('#StopFlag').val(0);}"<#if
-						xtts.StopFlag??&&xtts.StopFlag==1> checked="checked"</#if> /></td>
-				
-					<th>备注</th>
-					<td colspan="3"><textarea name="jbclient.remark"
-							style="width: 99%; height: 50px;">${xtts.remark!}</textarea></td>
-				</tr>
-
-			</table>
-		</div>
+			</thead>		
+			<tbody>					
+			</tbody>
+			
+		</table>
+	</div>
+	
+   <div style="height:30px;margin-bottom: 5px;text-align: left;">
+     <table>
+     <tr align="right"><th>制单人：</th><td></td>
+         <th>审核人：</th><td></td> 
+         <th>状态：</th><td></td>
+         <th>数量合计：</th><td></td>
+         <th>金额合计：</th><td></td>
+     </tr>
+     </table>
+   </div>		
+</div>
 		<div class="formBar">
 			<ul>
 				<@btnPower safecode="partsave">
@@ -96,6 +101,13 @@ $(function (){
 				<li>
 					<div class="button">
 						<div class="buttonContent">
+							<button type="Button" class="close">打印</button>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
 							<button type="Button" class="close">关闭</button>
 						</div>
 					</div>
@@ -104,4 +116,10 @@ $(function (){
 		</div>
 	</form>
 </div>
+<script>
+//alert($(".pageContent").find('[name="dwz_rowNum"]').val());
+//$('<input type="text" name="dwz_rowNum" class="textInput" style="margin:2px;" value="1" size="2"/>').val("2");
+	//$('<div class="button"><div class="buttonContent"><button type="button">新建商品明细</button></div></div>').click();
+</script>
 </@layout>
+
