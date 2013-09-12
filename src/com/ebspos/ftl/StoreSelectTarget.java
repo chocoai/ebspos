@@ -13,8 +13,8 @@ import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 /**
- * 员工选择
- * @author 熊涛
+ * 仓库选择
+ * @author 湛原红
  * 2013-08-30
  */
 public class StoreSelectTarget extends BaseTarget {
@@ -27,7 +27,7 @@ public class StoreSelectTarget extends BaseTarget {
 		List<Jbstore> list= Jbstore.dao.find("select StoreNo,StoreCode,StoreName from jbstore ");
 		Writer out= env.getOut();
 		for(Jbstore o:list){
-			out.append("<option value='"+o.getStr("StoreNo")+"'>");
+			out.append("<option value='"+o.getStr("StoreCode")+"'>");
 			out.append(o.getStr("StoreName")+"["+o.getStr("StoreCode")+"]");
 			out.append("</option>");
 		}
