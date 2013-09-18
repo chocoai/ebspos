@@ -176,7 +176,6 @@ public class CKinitStoreController extends BaseController {
 			String orderNo = "CK" + cur.getTime();
 			ckt.set("OrderNo", orderNo);
 		}
-       
         setAttr(StoreSelectTarget.targetName, new StoreSelectTarget());
 		 setAttr(PartmentSelectTarget.targetName, new PartmentSelectTarget());
 		 setAttr(EmployeeSelectTarget.targetName, new EmployeeSelectTarget());
@@ -192,6 +191,7 @@ public class CKinitStoreController extends BaseController {
 		// 不足10条，补足10条显示
 		if ( size < 10) {
 			for (int i = 0; i < 10 - size; i++) {
+				Record a = new Record();
 				redLst.getList().add(new Record());
 			}
 		}

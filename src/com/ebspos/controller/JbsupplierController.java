@@ -22,21 +22,37 @@ public class JbsupplierController extends BaseController {
 	private static String navTabId = "jbsupplier";
 	@Override
 	public void index() {
+		getPageInfo();
+		setAttr("collist", new String[]{"供应商代码","供应商名称","供应商类别","停用","备注"});
+		render("index.html");
+	}
+	
+	public void lookuplst() {
+		getPageInfo();
+		setAttr("collist", new String[]{"供应商代码","供应商名称"});
+		render("lookup.html");
+	}
+	
+	private void getPageInfo() {
 		StringBuffer whee=new StringBuffer();
 		List<Object> param = new ArrayList<Object>();
 		String suppliercode=getPara("suppliercode");
 		if(suppliercode!=null && !"".equals(suppliercode.trim())){
 			whee.append(" and p.goodscode like ?");
 			param.add("%"+suppliercode+"%");			
-		}		
+		}
+		String suppliername=getPara("suppliername");
+		if(suppliername!=null && !"".equals(suppliername.trim())){
+			whee.append(" and p.suppliername like ?");
+			param.add("%"+suppliername+"%");			
+		}
 		setAttr("suppliercode",suppliercode);
+		setAttr("suppliername",suppliername);
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
 				"select p.id,p.suppliercode 供应商代码, p.suppliername 供应商名称,p.suppliertypeno 供应商类别,p.stopflag 停用,p.remark 备注",
 				" from  jbsupplier p where 1=1  "+whee.toString(),param.toArray()));
-		setAttr("collist", new String[]{"供应商代码","供应商名称","供应商类别","停用","备注"});
-		render("index.html");
-
 	}
+	
 	public void add() {
 		Jbsupplier xtts = new Jbsupplier();
 		Long id = getParaToLong(0, 0L);

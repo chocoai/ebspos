@@ -35,10 +35,23 @@ public class JbstoreController extends BaseController {
 	public void index() {
 		f = true;
 		list();
-		render("index.html");
+    	render("index.html");
 	}
 	
 	public void list() {
+		getPageInfo();
+		setAttr("collist", new String[]{"仓库序号","仓库编号","仓库名称","面积","位置","管理员","合计商品数量","计价方式","备注","停用"});
+		if (f == false)
+			render("list.html");		
+	}
+	
+	public void lookuplst() {
+		getPageInfo();
+		setAttr("collist", new String[]{"仓库序号","仓库编号","仓库名称","面积","位置"});
+		render("lookup.html");
+	}
+	
+	private void getPageInfo() {
 		Long typeNo = getParaToLong(0, 0L);
 		StringBuffer whee=new StringBuffer();
 		List<Object> param=new ArrayList<Object>();
@@ -65,9 +78,6 @@ public class JbstoreController extends BaseController {
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
 				"select id,StoreNo 仓库序号,StoreCode 仓库编号,StoreName 仓库名称,LAndHeight 面积,Place 位置,EmployeeNo 管理员,CountQuantity 合计商品数量,PriceType 计价方式,Memo 备注,StopFlag 停用",
 				" from  jbstore st where 1=1 "+whee.toString(),param.toArray()));
-		setAttr("collist", new String[]{"仓库序号","仓库编号","仓库名称","面积","位置","管理员","合计商品数量","计价方式","备注","停用"});
-		if (f == false)
-			render("list.html");		
 	}
 	
 	public void add() {
