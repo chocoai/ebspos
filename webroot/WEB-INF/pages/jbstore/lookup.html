@@ -1,0 +1,30 @@
+<#include "../inc/_layout.html"/>
+<@layout>
+<script type="text/javascript">
+initQueryForm(); 
+</script>
+<div class="pageHeader">
+		<form action="${path}/jbstore/index" method="post"   id="lookupForm"
+			onsubmit="return dwzSearch(this, 'dialog');">
+			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> <input
+				type="hidden" name="numPerPage" value="${page.pageSize!}" />
+			<div class="searchBar">
+				<ul class="searchContent">
+					<li>
+						<label>仓库编号</label>
+						<input type="text" name="storeCode" value="${storeCode!}">
+					</li>
+					<li>
+						<label>仓库名称</label>
+						<input type="text" name="storeName" value="${storeName!}">
+					</li>
+				</ul>
+				<@searchBar/>
+			</div>
+		</form>
+	<div class="pageContent">
+		<@lookuptbl layouth="118"  tid="lookupstore"/>
+	</div>
+<@dialogpaginate rel="lookupstore"/>
+</div>
+</@layout>

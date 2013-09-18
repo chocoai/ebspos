@@ -8,33 +8,31 @@ $("#jbclienttable tr td:nth-child(12)").each(function(r,td){
 });
 </script>
 <div class="pageHeader">
-		<form action="${root!}/jbclient" method="post" id="jbclient_pagerForm"
+		<form action="${root!}/cgorder" method="post" id="cgorder_pagerForm"
 			onsubmit=" return navTabSearch(this)">
 			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> 
 			<input type="hidden" name="numPerPage" value="${page.pageSize!}" />
 			<div class="searchBar pageFormContent">				
-					<table ><tr><th>开始日期</th><td>
-						<input type="text" name="date1" class="date" readonly="true"/>
+					<table ><tr><th>开始日期：</th><td>
+						<input type="text" name="startTime" class="date" readonly="true"  value="${startTime!}"/>
 						<a class="inputDateButton" href="javascript:;">选择</a>
-						<span class="info">yyyy-MM-dd</span>
 					</td>
-					<th>结束日期</th><td>
-						<input type="text" name="date2" class="date" readonly="true"/>
+					<th>结束日期：</th><td>
+						<input type="text" name="endTime" class="date" readonly="true"  value="${endTime!}"/>
 						<a class="inputDateButton" href="javascript:;">选择</a>
-						<span class="info">yyyy-MM-dd</span>
 					</td></tr>
 					<tr><th>供货商</th><td>
-					    <input autocomplete="off" class="required textInput valid" name="orgLookup.orgName" value=""
-					     suggestfields="orgNum,orgName" suggesturl="demo/database/db_lookupSuggest.html" lookupgroup="orgLookup" type="text"/>					
-					    <a class="btnLook" href="/jbgoods/lookup"  title="查找带回">查找带回</a>
-					</td>			
+					    <input type="hidden" name="supplier.supplierNo"  value="${supplierNo!}">
+					    <input type="text" name="supplier.supplierName"   lookuppk="supplierNo"  class="textInput"  value="${supplierName!}" />
+					    <a class="btnLook"  url="/jbsupplier/lookuplst"   lookupgroup="supplier"  lookuppk="supplierNo"  title="查找带回">查找带回</a>
+					</td>
 					<th>订货仓库</th><td>
-					    <input autocomplete="off" class="required textInput valid" name="orgLookup.orgName" value=""
-					     suggestfields="orgNum,orgName" suggesturl="demo/database/db_lookupSuggest.html" lookupgroup="orgLookup" type="text"/>
-					
-					    <a class="btnLook" href="/jbgoods/lookup"  title="查找带回">查找带回</a>
-					</td></tr>	
-					</table>				
+					    <input type="hidden" name="store.storeCd"  lookupgroup="storeLookup"  value="${storeCd!}">
+					    <input autocomplete="off"  name="store.storeName" 
+					     suggestfields="storeNo,storeName" suggesturl=""  lookupgroup="store" type="text"  value="${storeName!}"/>
+					    <a class="btnLook"  url="/jbstore/lookuplst"  title="查找带回" lookupgroup="store"  lookuppk="storeCode" >查找带回</a>
+					</td></tr>
+					</table>
 				<@searchBar/>
 			</div>
 		</form>
@@ -44,16 +42,15 @@ $("#jbclienttable tr td:nth-child(12)").each(function(r,td){
 			<ul class="toolBar">
 			<@btnPower safecode="partctrl">
 				<li><a class="add" href="javascript:void(0);" url="${root!}/cgorder/add" title="添加采购订单"
-					target="dialog" height="550" width="750"><span>添加</span> </a></li>
-					
-				<li><a class="edit" href="javascript:void(0);" url="${root!}/jbclient/add/{sid_key}"
-					title="修改客户资料" target="dialog" height="500" width="750"><span>修改</span>
+					target="dialog" height="540" width="1280" rel="cgordadd"><span>添加</span> </a></li>
+				<li><a class="edit" href="javascript:void(0);" url="${root!}/cgorder/add/{sid_key}"
+					title="修改客户资料" target="dialog" height="540" width="1280" rel="cgordupd"><span>修改</span>
 				</a></li>
-				<li><a class="delete" href="javascript:void(0);" url="${root!}/jbclient/del/{sid_key}" title="确定要删除该客户吗？" target="ajaxTodo"><span>删除</span> </a></li>
+				<li><a class="delete" href="javascript:void(0);" url="${root!}/cgorder/del/{sid_key}" title="确定要删除该客户吗？" target="ajaxTodo"><span>删除</span> </a></li>
 				</@btnPower>
 			</ul>
 		</div>
-		<@table layouth="137" tid="jbclienttable"/>
+		<@table layouth="137" tid="cgordtable"/>
 	</div>
-<@paginate rel="jbsxBox"/>
+<@paginate rel="cgordBox"/>
 </@layout>

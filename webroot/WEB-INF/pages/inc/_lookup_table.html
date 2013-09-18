@@ -13,7 +13,15 @@
 <#list collist as t>
 <td>${d.get(t)!}</td>
 </#list>
-<td><a class="btnSelect"  href="javascript:$.bringBack({unit:'${d.get('基本单位')!}',goodsno:'${d.get('商品编码')!}', goodsname:'${d.get('商品名称')!}'})" title="查找带回">选择</a></td>
+<#if tid="lookupgood">
+<td><a class="btnSelect"  href="javascript:$.bringBack({BRefPrice:'${d.get('参考进价')!}',Model:'${d.get('规格')!}',BaseUnit:'${d.get('基本单位')!}',GoodsCode:'${d.get('商品编码')!}', GoodsName:'${d.get('商品名称')!}'})" title="查找带回">选择</a></td>
+</#if>
+<#if tid="lookupstore">
+<td><a class="btnSelect"  href="javascript:$.bringBack({StoreCode:'${d.get('仓库编号')!}', StoreName:'${d.get('仓库名称')!}'})" title="查找带回">选择</a></td>
+</#if>
+<#if tid="lookupsupplier">
+<td><a class="btnSelect"  href="javascript:$.bringBack({supplierCode:'${d.get('供应商代码')!}', supplierName:'${d.get('供应商名称')!}'})" title="查找带回">选择</a></td>
+</#if>
 </tr>
 </#list>
 </tbody>
