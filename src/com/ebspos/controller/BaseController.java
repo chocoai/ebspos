@@ -42,6 +42,26 @@ public abstract class BaseController extends Controller {
 		jsonMap.put("navTabId", navTabId);
 		this.renderJson(jsonMap);
 	}
+	
+	/**
+	 * 转换dwz json格式输出
+	 * @param statusCode
+	 * @param message
+	 * @param navTabId
+	 * @return
+	 */
+	public void toDwzJson(Integer statusCode,String message,String navTabId,String callbackType){
+		Map<String,Object> jsonMap=new HashMap<String,Object>();
+		jsonMap.put("statusCode", statusCode);
+		if(message!=null)
+			jsonMap.put("message",message);
+		if(navTabId!=null)
+			jsonMap.put("navTabId", navTabId);
+		if (callbackType != null)
+		jsonMap.put("callbackType", callbackType);
+		this.renderJson(jsonMap);
+	}
+	
 	public void toDwzJson(Integer statusCode,String message,Long id){
 		Map<String,Object> jsonMap=new HashMap<String,Object>();
 		jsonMap.put("statusCode", statusCode);
