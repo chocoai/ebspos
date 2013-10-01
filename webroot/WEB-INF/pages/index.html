@@ -21,10 +21,10 @@ function login(){
 	<#if StaticCfg.get("validCode").get("value")=="1">
 	code=$("#code").val();
 	</#if>
-	if(username==''||pwd==''||code==''){
+/* 	if(username==''||pwd==''||code==''){
 		changecode();
-		alert("有未填写项，请完善输入！");
-	}else{
+		alert("有未填写项，请完善输入！"); 
+	}else{ */
 		$.ajax({url:"${root!}/login",data:$form.serialize(),dataType:'json',
 		success:function(msg){
 		if(msg.statusCode==200){
@@ -37,7 +37,7 @@ function login(){
 			alert(msg.message);
 		}
 		},error:function(){changecode();alert("数据提交异常！请检查网络");}});
-	}
+/* 	} */
 }
 </script>
 </head>
@@ -60,11 +60,11 @@ function login(){
 				<form method="post">
 					<p>
 						<label>用户名：</label>
-						<input type="text" name="username" id="username" size="20"  class="login_input" />
+						<input type="text" name="username" id="username" size="20"  class="login_input"  value="admin"/>
 					</p>
 					<p>
 						<label>密码：</label>
-						<input type="password" name="pwd" id="pwd" size="20"  class="login_input" />
+						<input type="password" name="pwd" id="pwd" size="20"  class="login_input"  value="123456"/>
 					</p>
 					<#if StaticCfg.get("validCode").get("value")=="1">
 					<p>

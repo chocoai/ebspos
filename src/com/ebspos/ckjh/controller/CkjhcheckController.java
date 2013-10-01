@@ -1,4 +1,4 @@
-package com.ebspos.cg.controller;
+package com.ebspos.ckjh.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +12,7 @@ import com.ebspos.ckjh.model.Ckjhcheck;
 import com.ebspos.ckjh.model.Ckjhcheckdetail;
 import com.ebspos.controller.BaseController;
 import com.ebspos.ftl.EmployeeSelectTarget;
+import com.ebspos.ftl.InOutTypeNoSelectTarget;
 import com.ebspos.ftl.PartmentSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
 import com.ebspos.model.Jbgoods;
@@ -24,17 +25,16 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.util.BsUtil;
 /**
- * 采购订单资料
- * @author 湛原红 
- * 2013.8.30
+ * 采购入库单
+ * @author 熊涛
+ * 2013.9.25
  *
  */
-@RouteBind(path="/cgorder")
+@RouteBind(path="/ckjhcheck")
 @Before({ManagerPowerInterceptor.class})
-public class CgorderController extends BaseController {
-
-	public static Logger log = Logger.getLogger(CgorderController.class);
-	private static String navTabId = "cgorder";
+public class CkjhcheckController extends BaseController {
+	public static Logger log = Logger.getLogger(CkjhcheckController.class);
+	private static String navTabId = "ckjhcheck";
 	private byte[] lock = new byte[0];
 	@Override
 	public void index() {
@@ -42,19 +42,19 @@ public class CgorderController extends BaseController {
 		List<Object> param = new ArrayList<Object>();
 		String startTime = getPara("startTime");
 		if(startTime!=null&&!"".equals(startTime.trim())){
-			whee.append(" and UNIX_TIMESTAMP(p.orderdate) >= UNIX_TIMESTAMP(?)");
+			whee.append(" and UNIX_TIMESTAMP(p.OrderDate) >= UNIX_TIMESTAMP(?)");
 			param.add(startTime);
 		}
 		setAttr("startTime", startTime);
 		String endTime = getPara("endTime");
 		if(endTime!=null&&!"".equals(endTime.trim())){
-			whee.append(" and UNIX_TIMESTAMP(p.orderdate) <= UNIX_TIMESTAMP(?)");
+			whee.append(" and UNIX_TIMESTAMP(p.OrderDate) <= UNIX_TIMESTAMP(?)");
 			param.add(endTime);
 		}
 		setAttr("endTime", endTime);
 		String supplierCode = getPara("supplier.supplierCode");
 		if(supplierCode!=null && !"".equals(supplierCode.trim())){
-			whee.append(" and p.supplierCode = ?");
+			whee.append(" and p.SupplierNo = ?");
 			param.add(Long.parseLong(supplierCode));
 		}
 		setAttr("supplierCode", supplierCode);
@@ -62,49 +62,48 @@ public class CgorderController extends BaseController {
 		
 		String storeCd = getPara("store.StoreCode");
 		if(storeCd!=null && !"".equals(storeCd.trim())){
-			whee.append(" and p.StoreCode = ?");
+			whee.append(" and p.StoreNo = ?");
 			param.add(Long.parseLong(storeCd));
 		}
 		setAttr("StoreCode", storeCd);
 		setAttr("StoreName", getPara("store.StoreName"));
-		String sql = " from cgorder p  left join  jbsupplier b on p.supplierCode = b.supplierCode ";
-		sql += " left join  jbstore c on p.StoreCode = c.StoreCode ";
+		String sql = " from ckjhcheck p  left join  jbsupplier b on p.SupplierNo = b.supplierCode ";
+		sql += " left join  jbstore c on p.StoreNo = c.StoreCode ";
 		sql += " left join  employee d on d.usr_no = p.EmployeeNo ";
-		sql += " left join  partment e on e.id = p.partmentNo ";
+		sql += " left join  partment e on e.id = p.DepartmentNo ";
 		sql +=" where 1=1 ";
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
-				"select p.id,p.ordercode 订单号, p.orderdate 订单日期,p.stopflag,p.FinishFlag, p.DeliveryDate 收货日期,p.remark 备注, b.supplierName 供应商,c.StoreName 订货仓库,d.usr_name 业务员, e.`name` 部门 ",
+				"select p.id,p.OrderNo 订单号, p.OrderDate 进货日期,p.remark 备注, p.InOutTypeNo 入库类型,p.BillOrderNo 采购单号,p.CKAmount 入库金额, p.Amount 购货金额, b.supplierName 供应商,c.StoreName 订货仓库,d.usr_name 业务员, e.`name` 部门 ",
 				sql + whee.toString(),param.toArray()));
-		setAttr("collist", new String[]{"订单号","订单日期","供应商","业务员","部门","收货日期","订货仓库","折前金额","折后金额","税后金额","是否完成","停用","备注"});
+		setAttr("collist", new String[]{"订单号","进货日期","供应商","业务员","部门","收货日期","订货仓库","入库类型","采购单号","入库金额","购货金额","备注"});
 		render("index.html");
 	}
 	
-	
 	public void add() {
-		Cgorder cgOrd = new Cgorder();
+		Ckjhcheck ckjhcheck = new Ckjhcheck();
 		Jbsupplier jbsupplier = new Jbsupplier();
 		Jbstore jbstore = new Jbstore();
 		Long id = getParaToLong(0, 0L);
 		List<Object> param=new ArrayList<Object>();
 		StringBuffer whee=new StringBuffer();
-		whee.append(" and a.orderCode = ?");
+		whee.append(" and a.OrderNo = ?");
 		if (id != 0) { // 修改
-			cgOrd = Cgorder.dao.findById(id);
-			jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", cgOrd.getStr("supplierCode"));
-			jbstore = Jbstore.dao.findFirst("select * from jbstore where StoreCode = ?", cgOrd.getInt("StoreCode"));
-			param.add(cgOrd.get("orderCode"));
+			ckjhcheck = Ckjhcheck.dao.findById(id);
+			jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", ckjhcheck.getStr("SupplierNo"));
+			jbstore = Jbstore.dao.findFirst("select * from jbstore where StoreCode = ?", ckjhcheck.getInt("StoreNo"));
+			param.add(ckjhcheck.get("OrderNo"));
 		} else {
 			String ordCdNw;
 			synchronized(lock) {
-				ordCdNw = BsUtil.getMaxOrdNo("ordercode","CGDD","cgorder");
+				ordCdNw = BsUtil.getMaxOrdNo("OrderNo","PK","ckjhcheck");
 			}
-			cgOrd.set("orderCode", ordCdNw);
+			ckjhcheck.set("OrderNo", ordCdNw);
 			param.add(ordCdNw);
 		}
 		String sql = "select a.id,b.GoodsCode 商品编号,b.GoodsName 商品名称,b.Model 商品规格,b.BaseUnit 基本单位,b.BRefPrice 原价,a.Discount 折扣,a.OrigPrice 单价, a.Quantity 数量,";
-		sql += " a.TaxRate 税率,a.TaxAmount 税额,a.Amount 税后金额";
-		String sqlSelect = " from cgorderdetail a"; 
-		sqlSelect += " left join jbgoods b on a.GoodsCode = b.GoodsCode where 1=1 ";
+		sql += " a.TaxRate 税率,a.TaxAmount 税额,a.Amount 金额";
+		String sqlSelect = " from ckjhcheckdetail a"; 
+		sqlSelect += " left join jbgoods b on a.GoodsNo = b.GoodsCode where 1=1 ";
 		Page<Record> redLst = Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
 				sql, sqlSelect + whee.toString(),param.toArray());
 		int size = redLst.getList().size();
@@ -115,67 +114,24 @@ public class CgorderController extends BaseController {
 			}
 		}
 		setAttr("page", redLst);
-		setAttr("collist", new String[]{"商品编号","商品名称","商品规格","基本单位","原价","折扣%","单价","数量","税率%","折后金额","税后金额"});
-		setAttr("cgOrd", cgOrd);
+		setAttr("collist", new String[]{"商品编号","商品名称","商品规格","单位","原价","折扣%","数量","订单金额","税率%","税额","金额"});
+		setAttr("ckjhcheck", ckjhcheck);
 		setAttr("store", jbstore);
 		setAttr("supplier", jbsupplier);
+		setAttr(InOutTypeNoSelectTarget.targetName, new InOutTypeNoSelectTarget());
 		setAttr(PartmentSelectTarget.targetName, new PartmentSelectTarget());
 		setAttr(EmployeeSelectTarget.targetName, new EmployeeSelectTarget());
 		render("add.html");
 	}
 	
-	// 采购入库信息
-	private Ckjhcheck initCkjhcheck(Cgorder m,Double amount) {
-		Ckjhcheck ckjhcheck = new Ckjhcheck();
-		String ordCdNw;
-		synchronized(lock) {
-			ordCdNw = BsUtil.getMaxOrdNo("OrderNo","PK","ckjhcheck");
-			ckjhcheck.set("OrderNo", ordCdNw);
-		}
-		ckjhcheck.set("OrderDate", m.getDate("DeliveryDate"));
-		ckjhcheck.set("SupplierNo", m.getStr("supplierCode"));
-		ckjhcheck.set("StoreNo", Integer.parseInt(m.getStr("StoreCode")));
-		ckjhcheck.set("InOutTypeNo", "1");
-		ckjhcheck.set("BillOrderNo", m.getStr("orderCode"));
-		ckjhcheck.set("DepartmentNo", m.getInt("partmentNo"));
-		ckjhcheck.set("EmployeeNo", m.getStr("EmployeeNo"));
-		ckjhcheck.set("Operator", m.getStr("Operator"));
-		// 入库金额
-		ckjhcheck.set("CKAmount", amount);
-		// 购货金额
-		ckjhcheck.set("Amount", amount);
-		ckjhcheck.save();
-		return ckjhcheck;
-	}
-	
-	// 采购入库明细信息
-	private void initCkjhcheckDetail(Cgorderdetail md,String ordNo) {
-		Ckjhcheckdetail ckjhcheckDetail = new Ckjhcheckdetail();
-		ckjhcheckDetail.set("OrderNo", ordNo);
-		ckjhcheckDetail.set("SerialNo", md.getInt("SerialNo"));
-		ckjhcheckDetail.set("GoodsNo", md.getStr("GoodsCode"));
-		ckjhcheckDetail.set("Quantity", md.getBigDecimal("Quantity"));
-		ckjhcheckDetail.set("OrigPrice", md.getBigDecimal("OrigPrice"));
-		ckjhcheckDetail.set("Price", md.getBigDecimal("Price"));
-		ckjhcheckDetail.set("BuyAmount", md.getBigDecimal("BuyAmount"));
-		ckjhcheckDetail.set("TaxRate", md.getBigDecimal("TaxRate"));
-		ckjhcheckDetail.set("TaxAmount", md.getBigDecimal("TaxAmount"));
-		ckjhcheckDetail.set("CKAmount", md.getBigDecimal(""));
-		ckjhcheckDetail.set("CKPrice", md.getBigDecimal("Price"));
-		ckjhcheckDetail.set("CKAmount", md.getBigDecimal("BuyAmount"));
-//		ckjhcheckDetail.set("Unit", md.getStr("Unit"));
-		ckjhcheckDetail.save();
-	}
-	
 	public void save() {
 		try {
 			boolean settleTypeFlag = false;
-			Ckjhcheck initCkjhcheck = new Ckjhcheck();
-			Cgorder m = getModel(Cgorder.class,"cgOrd");
+			Ckjhcheck m = getModel(Ckjhcheck.class,"ckjhcheck");
 			Jbsupplier supplier = getModel(Jbsupplier.class,"supplier");
 			Jbstore store = getModel(Jbstore.class,"store");
-			m.set("supplierCode", supplier.getStr("supplierCode"));
-			m.set("StoreCode", store.getStr("StoreCode"));
+			m.set("SupplierNo", supplier.getStr("supplierCode"));
+			m.set("StoreNo", store.getStr("StoreCode"));
 			if (getPara("typeFlg") != null && !getPara("typeFlg").equals("")) {
 				m.set("SettleTypeFlag", getParaToInt("typeFlg"));
 				settleTypeFlag = true;
@@ -189,17 +145,16 @@ public class CgorderController extends BaseController {
 				m.set("CheckFlag", 1);
 				m.save();
 			}
-			// 清货模式
+			// 单面付模式
 			if(settleTypeFlag) {
 				Double amount = Double.parseDouble(getPara("amount"));
-				initCkjhcheck = initCkjhcheck(m,amount);
 			}
-			String orderNo = getPara("cgOrd.ordercode");
+			String orderNo = getPara("ckjhcheck.OrderNo");
 			// 保存明细
 			int size = 0;
 			// 通过【新建商品明细】按钮新追加记录
 			String[] index = getParaValues("lineId");
-			size = Db.queryLong("select count(*)  from cgorderdetail where orderCode = '" +  orderNo + "'").intValue();
+			size = Db.queryLong("select count(*)  from ckjhcheckdetail where orderNo = '" +  orderNo + "'").intValue();
 			if (!(index == null || index.length == 0)) {
 				size = size + index.length;
 			}
@@ -208,20 +163,19 @@ public class CgorderController extends BaseController {
 				size = 10;
 			}
 			for (int i=0; i<size; i++) {
-				Cgorderdetail md = getModel(Cgorderdetail.class, "cgOrdDetail" + i);
+				Ckjhcheckdetail md = getModel(Ckjhcheckdetail.class, "ckjhcheckDetail" + i);
 				Jbgoods goods = getModel(Jbgoods.class,"goods" + i);
 				if (goods.getStr("GoodsCode") != null) {
-					md.set("GoodsCode", goods.get("GoodsCode"));
+					md.set("GoodsNo", goods.get("GoodsCode"));
 					if (md.getLong("id") != null) {
 						md.update();
-						md = Cgorderdetail.dao.findById(md.getLong("id"));
 					} else {
-						md.set("ordercode", orderNo);
+						md.set("orderNo", orderNo);
 						md.save();
 					}
-					// 清货模式
+					// 当面付模式
 					if(settleTypeFlag) {
-						initCkjhcheckDetail(md,initCkjhcheck.getStr("OrderNo"));
+						
 					}
 				}
 			}
@@ -236,14 +190,14 @@ public class CgorderController extends BaseController {
 		Long id = getParaToLong(0, 0L);
 		try {
 			if (id != null) {
-				Cgorder r = Cgorder.dao.findById(id);
-				Cgorder.dao.deleteById(id);
-				Db.update("delete from cgorderdetail where orderCode=?", r.getStr("orderCode"));
+				Ckjhcheck r = Ckjhcheck.dao.findById(id);
+				Ckjhcheck.dao.deleteById(id);
+				Db.update("delete from ckjhcheckdetail where OrderNo=?", r.getStr("OrderNo"));
 			}
 			toDwzJson(200, "删除成功！", navTabId);
 		} catch (Exception e) {
 			toDwzJson(300, "删除失败！");
 		}
 	}
-  
+
 }

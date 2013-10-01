@@ -1,4 +1,4 @@
-package com.ebspos.model;
+package com.ebspos.cg.model;
 
 import com.jfinal.plugin.activerecord.Model;
 

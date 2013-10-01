@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateDirectiveModel;
 
-/**引用方法为将此标签类实例设置到request中,然后直接使用<@tage
+/**引用方法为将此标签类实例设置到request中,然后直接使用<@target/>
  * 自定义freemarker 标签
  * @author 刘声凤 2012-9-5 下午9:07:41
  */
