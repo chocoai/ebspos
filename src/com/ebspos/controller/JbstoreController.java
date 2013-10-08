@@ -29,25 +29,24 @@ import com.jfinal.plugin.activerecord.Record;
 public class JbstoreController extends BaseController {
 	public static Logger log = Logger.getLogger(JbstoreController.class);
 	private static String navTabId = "jbstore";
-	private boolean f;
+	
 	
 	@Override
-	public void index() {
-		f = true;
-		list();
+	public void index() {		
+		getPageInfo();
+		setAttr("collist", new String[]{"仓库编号","仓库名称","面积","位置","管理员","计价方式","备注","停用"});
     	render("index.html");
 	}
-	
+	/*
 	public void list() {
-		getPageInfo();
-		setAttr("collist", new String[]{"仓库序号","仓库编号","仓库名称","面积","位置","管理员","合计商品数量","计价方式","备注","停用"});
+		
 		if (f == false)
 			render("list.html");		
 	}
-	
+	*/
 	public void lookuplst() {
 		getPageInfo();
-		setAttr("collist", new String[]{"仓库序号","仓库编号","仓库名称","面积","位置"});
+		setAttr("collist", new String[]{"仓库编号","仓库名称","面积","位置"});
 		render("lookup.html");
 	}
 	
@@ -76,7 +75,7 @@ public class JbstoreController extends BaseController {
 	//	setAttr(OrgSelectTarget.targetName,new OrgSelectTarget());
 	//	setAttr(PartmentSelectTarget.targetName,new PartmentSelectTarget());
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
-				"select id,StoreNo 仓库序号,StoreCode 仓库编号,StoreName 仓库名称,LAndHeight 面积,Place 位置,EmployeeNo 管理员,CountQuantity 合计商品数量,PriceType 计价方式,Memo 备注,StopFlag 停用",
+				"select id,StoreCode 仓库编号,StoreName 仓库名称,LAndHeight 面积,Place 位置,EmployeeNo 管理员,PriceType 计价方式,Memo 备注,StopFlag 停用",
 				" from  jbstore st where 1=1 "+whee.toString(),param.toArray()));
 	}
 	
@@ -103,7 +102,7 @@ public class JbstoreController extends BaseController {
 			}
 			toDwzJson(200, "保存成功！", navTabId);
 		} catch (Exception e) {
-			log.error("保存仓库分类异常", e);
+			log.error("保存仓库信息异常", e);
 			toDwzJson(300, "保存异常！");
 		}
 	}

@@ -227,7 +227,7 @@ public class CgorderController extends BaseController {
 			}
 			toDwzJson(200, "保存成功！", navTabId,"closeCurrent");
 		} catch (Exception e) {
-			log.error("保存仓库分类异常", e);
+			log.error("保存异常", e);
 			toDwzJson(300, "保存异常！");
 		}
 	}
