@@ -11,7 +11,7 @@
            eternal="false"
            overflowToDisk="true"
            timeToIdleSeconds="200"
-           timeToLiveSeconds="600">
+           timeToLiveSeconds="6000">
     </defaultCache>
 
     <cache name="mcc"
@@ -20,8 +20,8 @@
            eternal="false"
            overflowToDisk="true"
            diskSpoolBufferSizeMB="20"
-           timeToIdleSeconds="300"
-           timeToLiveSeconds="600"
+           timeToIdleSeconds="1800"
+           timeToLiveSeconds="0"
            memoryStoreEvictionPolicy="LFU"
            transactionalMode="off"
             />

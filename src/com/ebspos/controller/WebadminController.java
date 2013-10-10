@@ -103,14 +103,15 @@ public class WebadminController extends BaseController {
 		this.removeSessionAttr("check");
 		boolean validCode="1".equals((String)StaticCfg.get("validCode").get("value"))?true:false;
 		
-		if(username==null||"".equals(username.trim())||pwd==null||"".equals(pwd)||(code==null||"".equals(code))&&validCode){
-			this.toDwzJson(300, "信息填写不全！");
-		}else
-		if((check==null||"".equals(check))&&validCode){
-			this.toDwzJson(300, "验证码超时！");
-		}else if(validCode&&(check!=null&&code!=null&&!check.equals(code.toLowerCase()))){
-			this.toDwzJson(300, "验证码错误！");
-		}else{
+//		if(username==null||"".equals(username.trim())||pwd==null||"".equals(pwd)||(code==null||"".equals(code))&&validCode){
+//			this.toDwzJson(300, "信息填写不全！");
+//		}else
+//		if((check==null||"".equals(check))&&validCode){
+//			this.toDwzJson(300, "验证码超时！");
+//		}else if(validCode&&(check!=null&&code!=null&&!check.equals(code.toLowerCase()))){
+//			this.toDwzJson(300, "验证码错误！");
+//		}else
+//		{
 			pwd=MD5.getMD5ofStr(pwd);
 			Record m=Db.findFirst(SqlManager.sql("webadmin.login"), new Object[]{username,pwd});
 			if(m!=null&&m.getLong("id")!=0){
@@ -150,7 +151,7 @@ public class WebadminController extends BaseController {
 			}else{
 				this.toDwzJson(300, "用户名或密码错误");
 			}
-		}
+//		}
 	}
 	@PowerBind
 	public void logout(){

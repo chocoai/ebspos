@@ -121,6 +121,7 @@ public class EmployeeController extends BaseController {
 		setAttr("pojo", pojo);
 		render("show.html");
 	}
+	
 	public void save() {
 		try {
 			Employee m = getModel(Employee.class);

@@ -10,11 +10,7 @@ initQueryForm();
 		<input name="jbstore.id" type="hidden" value="${stt.id!}"/>
 		<div class="pageFormContent" id="jbstoreSave" layoutH="55">
 			<table class="mytablecls" width="98%">
-				<tr>
-					<th>仓库序号：</th><td><input class="required" value="${stt.StoreNo!}" name="jbstore.StoreNo"/></td>
-					<input type="hidden"   id="StopFlag"   name="jbstore.StopFlag"  value="${stt.StopFlag!}">
-					<th>停用：</th><td><input type="checkbox"  id="stopFlgChk"  onclick="if ($('#stopFlgChk').prop('checked')==true) {$('#StopFlag').val(1);} else {$('#StopFlag').val(0);}"  <#if stt.StopFlag??&&stt.StopFlag==1> checked="checked"</#if>></td>
-				</tr>
+				
 				<tr>
 					<th>仓库编号：</th><td><input class="required" value="${stt.StoreCode!}" name="jbstore.StoreCode"/></td>
 					<th>仓库名称：</th><td><input class="required" name="jbstore.StoreName" value="${stt.StoreName!}"></td>
@@ -24,14 +20,13 @@ initQueryForm();
 					<th>位置：</th><td><input class="required" name="jbstore.Place" value="${stt.Place!}"></td>
 				</tr>
 				<tr>
-					<th>合计商品数量：</th><td><input class="required" value="${stt.CountQuantity!}" name="jbstore.CountQuantity"/></td>
+				    <th>管理员：</th><td><select name="jbstore.EmployeeNo" class="combox"  val="${stt.EmployeeNo!}"><@empSelect/></select></td>					
 					<th>计价方式：</th><td><input class="required" name="jbstore.PriceType" value="${stt.PriceType!}"></td>
-				</tr>
+				</tr>				
 				<tr>
-					<th>管理员：</th><td colspan="3"><select name="jbstore.EmployeeNo" class="combox"  val="${stt.EmployeeNo!}"><@empSelect/></select></td>
-				</tr>
-				<tr>
-					<th>备注：</th><td colspan="3"><textarea name="jbstore.Memo" style="width:99%;height:50px;">${stt.Memo!}</textarea></td>
+					<th>备注：</th><td><textarea name="jbstore.Memo" style="width:99%;height:50px;">${stt.Memo!}</textarea></td>
+					<input type="hidden"   id="StopFlag"   name="jbstore.StopFlag"  value="${stt.StopFlag!}">
+					<th>停用：</th><td><input type="checkbox"  id="stopFlgChk"  onclick="if ($('#stopFlgChk').prop('checked')==true) {$('#StopFlag').val(1);} else {$('#StopFlag').val(0);}"  <#if stt.StopFlag??&&stt.StopFlag==1> checked="checked" </#if> ></td>
 				</tr>
 			</table>
 		</div>

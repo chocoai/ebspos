@@ -25,10 +25,10 @@ public class DateUtil {
 
 	/** YYYY-MM 格式 */
 	public static final String FORMAT_DATE_YEAR_MONTH = "yyyy-MM";
-	
+
 	/** YYYY-MM-dd 格式 */
 	public static final String FORMAT_DATE = "yyyy-MM-dd";
-	
+
 	public static final String FORMAT_DATE_1 = "yyyyMMdd";
 
 	/** 默认格式 */
@@ -36,7 +36,7 @@ public class DateUtil {
 
 	/** 默认日期时间格式 */
 	public static final String FORMAT_DATETIME = "yyyy-MM-dd HH:mm:ss";
-	
+
 	private static final Logger logger = Logger.getLogger(DateUtil.class);
 
 
@@ -192,7 +192,7 @@ public class DateUtil {
 		cal.add(Calendar.DAY_OF_YEAR, num);
 		return cal.getTime();
 	}
-	
+
 	/**
 	 * 添加小时。
 	 * @param date 日期
@@ -205,7 +205,7 @@ public class DateUtil {
 		cal.add(Calendar.HOUR_OF_DAY, num);
 		return cal.getTime();
 	}
-	
+
 	/**
 	 * 添加分钟
 	 * @param date 日期
@@ -378,7 +378,7 @@ public class DateUtil {
 			return 1;
 		}
 	}
-	
+
 	/**
 	 * 获取日期年
 	 * @param 日期
@@ -398,7 +398,7 @@ public class DateUtil {
     	cal.setTime(dt);
     	return cal.get(Calendar.MONTH) + 1;
     }
-	
+
 	public static void main(String[] args) {
 		Date date = new Date();
 		int result = DateUtil.compareDay(31, 1);

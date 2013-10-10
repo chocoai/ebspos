@@ -1068,4 +1068,8 @@ INSERT INTO `xttables` VALUES ('17', 'partment', '0', '35', null, '0', '部门')
 INSERT INTO `xttables` VALUES ('18', 'role', '0', '36', null, '0', '角色');
 INSERT INTO `xttables` VALUES ('19', 'userrole', '0', '36', null, '0', '用户角色');
 INSERT INTO `xttables` VALUES ('20', 'powermenu', '0', '36', null, '0', '权限');
+<<<<<<< HEAD
 INSERT INTO `xttables` VALUES ('21', 'jbsupplier', '0', '35', null, '0', '供应商资料');
+=======
+INSERT INTO `xttables` VALUES ('21', 'jbsupplier', '0', '35', null, '0', '供应商资料');
+>>>>>>> origin/master

@@ -1,23 +1,47 @@
 <#include "../inc/_layout.html"/>
 <@layout>
 <script>
-$.each($("#org_part_tree").find("ul"), function(i, r) {
-var $ul = $(r);
-if ($ul.text() == "\n")$ul.remove();
+$("#tablejbstore tr td:nth-child(9)").each(function(r,td){
+	var num=(new Number($(td).text()));
+	$(td).html(storeStopFlg[num]);
 });
 </script>
-<div class="pageContent">
-<div layoutH="2"
-style="float: left; overflow: auto; width: 200px; border: solid 1px #CCC; line-height: 21px;">
-<ul class="tree treeFolder" id="org_part_tree">
-<li><a href="javascript:void(0);" url="${path}/jbstore/list/">仓库类别</a>
-<ul>
-<li><a href="javascript:void(0);" url="${path}/jbstore/list/" target="ajax" rel="jbstore">仓库</a>
-</li>
-</ul></li>
-
-</ul>
-</div>
-<div id="jbstore" class="unitBox" style="margin-left: 202px;">
-<#include "list.html"/></div>
+<div class="pageHeader">
+		<form action="${path}/jbstore/list" method="post" id="pagerForm"
+			onsubmit="return divSearch(this,'jbstore')">
+			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> <input
+				type="hidden" name="numPerPage" value="${page.pageSize!}" />
+			<div class="searchBar">
+				<ul class="searchContent">
+					<li>
+						<label>仓库编号</label>
+						<input type="text" name="StoreCode" value="${StoreCode!}">
+					</li>
+					<li>
+						<label>仓库名称</label>
+						<input type="text" name="StoreName" value="${StoreName!}">
+					</li>
+				</ul>
+				<@searchBar/>
+			</div>
+		</form>
+	</div>
+	<div class="pageContent">
+		<div class="panelBar">
+			<ul class="toolBar">
+			<@btnPower safecode="empaed">
+				<li><a class="add" href="javascript:void(0);" url="${path}/jbstore/add/" title="添加商品类别"
+					target="dialog" rel="newemployee" height="400"><span>添加</span></a></li>
+				<li><a class="edit" href="javascript:void(0);" url="${path}/jbstore/add/{sid_key}"
+					title="修改商品类别" target="dialog" height="400" rel="1"><span>修改</span>
+				<li><a class="delete" href="javascript:void(0);" url="${path}/jbstore/del/{sid_key}"
+					title="确定要删除商品类别吗？" target="ajaxTodo"><span>删除</span> </a></li>
+				<li class="line">line</li>
+			</@btnPower>
+			
+			</ul>
+		</div>
+		<@table layouth="137" tid="tablejbstore"/>
+	</div>
+<@paginate rel="jbstore"/>
 </@layout>
