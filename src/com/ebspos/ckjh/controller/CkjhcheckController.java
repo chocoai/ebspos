@@ -1,5 +1,6 @@
 package com.ebspos.ckjh.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -145,7 +146,7 @@ public class CkjhcheckController extends BaseController {
 				m.set("CheckFlag", 1);
 				m.save();
 			}
-			// 单面付模式
+			// 当面付模式
 			if(settleTypeFlag) {
 				Double amount = Double.parseDouble(getPara("amount"));
 			}
@@ -167,6 +168,7 @@ public class CkjhcheckController extends BaseController {
 				Jbgoods goods = getModel(Jbgoods.class,"goods" + i);
 				if (goods.getStr("GoodsCode") != null) {
 					md.set("GoodsNo", goods.get("GoodsCode"));
+					md.set("Price", goods.getBigDecimal("BRefPrice"));
 					if (md.getLong("id") != null) {
 						md.update();
 					} else {
@@ -175,8 +177,12 @@ public class CkjhcheckController extends BaseController {
 					}
 					// 当面付模式
 					if(settleTypeFlag) {
-						
+
 					}
+					// 加权平均价格
+					BigDecimal avgPrice = Db.queryBigDecimal("select sum(a.Price*a.Quantity)/sum(a.Quantity) from ckjhcheckdetail a where a.GoodsNo=?", md.getStr("GOODSNO"));
+					// 库存表更新加权平均价格
+					Db.update("update ckjhcheckdetail set CKPrice = ? where GoodsNo=?", avgPrice,md.getStr("GOODSNO"));
 				}
 			}
 			toDwzJson(200, "保存成功！", navTabId,"closeCurrent");

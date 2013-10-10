@@ -165,6 +165,8 @@ public class CgorderController extends BaseController {
 		ckjhcheckDetail.set("CKAmount", md.getBigDecimal("BuyAmount"));
 //		ckjhcheckDetail.set("Unit", md.getStr("Unit"));
 		ckjhcheckDetail.save();
+		// 商品表更新商品最近价格
+		Db.update("update jbgoods set BRefPrice = ? where GoodsCode=?", md.getBigDecimal("Price"),md.getStr("GoodsCode"));
 	}
 	
 	public void save() {
