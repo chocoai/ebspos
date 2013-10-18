@@ -3,8 +3,9 @@
 <script type="text/javascript">
 initQueryForm(); 
 </script>
+<div id="lookupbox">
 <div class="pageHeader">
-		<form action="${path}/jbgoods/lookup" method="post"   id="lookupForm"
+		<form action="${path}/jbgoods/lookuplst" method="post"   id="pagerForm"
 			onsubmit="return dwzSearch(this, 'dialog');">
 			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> <input
 				type="hidden" name="numPerPage" value="${page.pageSize!}" />
@@ -25,6 +26,7 @@ initQueryForm();
 	<div class="pageContent">
 		<@lookuptbl layouth="118"  tid="lookupgood"/>
 	</div>
-<@dialogpaginate rel="lookupgood"/>
+<@dialogpaginate rel="lookupbox"/>
+</div>
 </div>
 </@layout>
