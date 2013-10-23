@@ -60,7 +60,7 @@ public class JbgoodsController extends BaseController {
 		}
 		setAttr("goodscode",goodscode);
 		setAttr("goodname",goodname);
-		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
+		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 1),
 				"select p.id,p.goodscode 商品编码, p.goodsname 商品名称, p.BaseUnit 基本单位," +
 				" p2.name 品牌,p.ProduceArea 产地,p.model 规格,p.barcode 条码,p.BRefPrice 参考进价 ",
 				" from  jbgoods p left join types p2 on p.brandno=p2.id left join types p3 on p.baseunit=p3.id  where 1=1  "+whee.toString(),param.toArray()));

@@ -21,10 +21,10 @@ function login(){
 	<#if StaticCfg.get("validCode").get("value")=="1">
 	code=$("#code").val();
 	</#if>
- 	if(username==''||pwd==''||code==''){
+/* 	if(username==''||pwd==''||code==''){
 		changecode();
 		alert("有未填写项，请完善输入！"); 
-	}else{ 
+	}else{ */
 		$.ajax({url:"${root!}/login",data:$form.serialize(),dataType:'json',
 		success:function(msg){
 		if(msg.statusCode==200){
@@ -37,7 +37,7 @@ function login(){
 			alert(msg.message);
 		}
 		},error:function(){changecode();alert("数据提交异常！请检查网络");}});
- 	} 
+/* 	} */
 }
 </script>
 </head>

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50145
 File Encoding         : 65001
 
-Date: 2013-10-08 10:47:58
+Date: 2013-10-18 17:55:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -184,6 +184,24 @@ INSERT INTO `cgorderdetail` VALUES ('3', 'CGDD-20130918-001', '1', '1111', '11.0
 INSERT INTO `cgorderdetail` VALUES ('4', 'CGDD-20130926-001', '1', '1111', '11.00', null, '1.00', '100.00', null, null, null, '17.00', '1.87', '12.87', null);
 
 -- ----------------------------
+-- Table structure for `ckcurrstore`
+-- ----------------------------
+DROP TABLE IF EXISTS `ckcurrstore`;
+CREATE TABLE `ckcurrstore` (
+  `StoreNo` varchar(20) NOT NULL COMMENT '仓库编号',
+  `GoodsNo` varchar(20) NOT NULL COMMENT '商品编号',
+  `Quantity` decimal(10,2) DEFAULT NULL COMMENT '数量',
+  `CostPrice` decimal(10,2) DEFAULT NULL COMMENT '单价',
+  `Amount` decimal(10,2) DEFAULT NULL COMMENT '金额',
+  `remark` varchar(50) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`StoreNo`,`GoodsNo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='库存表';
+
+-- ----------------------------
+-- Records of ckcurrstore
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `ckinitstore`
 -- ----------------------------
 DROP TABLE IF EXISTS `ckinitstore`;
@@ -291,20 +309,12 @@ CREATE TABLE `ckjhcheck` (
   `SettleTypeFlag` smallint(6) DEFAULT '0' COMMENT '是否当面付，0：不付，1：付',
   `HasRed` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`id`,`OrderNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='采购入库表';
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='采购入库表';
 
 -- ----------------------------
 -- Records of ckjhcheck
 -- ----------------------------
-INSERT INTO `ckjhcheck` VALUES ('6', 'PK-20130926-001', null, null, '112', '1', '42', null, null, '1', 'zyh', '系统管理员', null, null, null, null, null, '1', '2013-09-26 17:08:30', '系统管理员', null, null, null, null, null, null, null, '0', null);
-INSERT INTO `ckjhcheck` VALUES ('7', 'PK-20130926-002', '2013-09-17', null, '112', '239', '42', null, null, '1', 'admin', '系统管理员', null, null, null, null, null, '1', '2013-09-26 17:09:07', '系统管理员', null, null, null, null, null, null, null, '0', null);
-INSERT INTO `ckjhcheck` VALUES ('8', 'PK-20130926-003', '2013-10-08', null, '112', '1', '42', null, null, '1', 'admin', '系统管理员', null, null, null, null, null, '1', '2013-09-26 17:10:34', '系统管理员', null, null, null, null, null, null, null, '0', null);
-INSERT INTO `ckjhcheck` VALUES ('9', 'PK-20130926-004', '2013-09-25', null, '112', '239', '42', null, null, '2', 'wcc', '系统管理员', null, null, null, null, null, '1', '2013-09-26 17:13:11', '系统管理员', null, null, null, null, null, null, null, '0', null);
-INSERT INTO `ckjhcheck` VALUES ('10', 'PK-20130926-005', '2013-09-26', null, '112', '1', '42', null, null, '1', 'admin', '系统管理员', null, null, null, null, null, '1', '2013-09-26 17:17:08', '系统管理员', null, null, null, null, null, null, null, '0', null);
-INSERT INTO `ckjhcheck` VALUES ('11', 'PK-20130926-006', null, null, '112', '1', '42', null, null, '2', 'wcc', '系统管理员', null, null, null, null, null, '1', '2013-09-26 17:26:12', '系统管理员', null, null, null, null, null, null, null, '0', null);
-INSERT INTO `ckjhcheck` VALUES ('13', 'PK-20130926-007', null, null, '112', '1', '42', null, null, '3', 'zyh', '系统管理员', null, null, null, null, null, '1', '2013-09-26 17:27:40', '系统管理员', null, null, null, null, null, null, null, '0', null);
-INSERT INTO `ckjhcheck` VALUES ('14', 'PK-20130926-008', null, null, '112', '1', '42', null, null, '1', 'admin', '系统管理员', null, null, null, null, null, '1', '2013-09-26 17:28:11', '系统管理员', null, null, null, null, null, null, null, '0', null);
-INSERT INTO `ckjhcheck` VALUES ('20', 'PK-20130930-001', '2013-09-13', null, '112', '239', '1', 'CGDD-20130926-001', null, '3', 'wcc', '系统管理员', null, null, '12.87', '12.87', null, null, null, null, null, null, null, null, null, null, null, '0', null);
+INSERT INTO `ckjhcheck` VALUES ('21', 'PK-20131008-001', null, null, '112', '1', '42', null, null, '1', 'admin', '系统管理员', null, null, null, null, null, '1', '2013-10-08 14:53:47', '系统管理员', null, null, null, null, null, null, null, '0', null);
 
 -- ----------------------------
 -- Table structure for `ckjhcheckdetail`
@@ -335,15 +345,13 @@ CREATE TABLE `ckjhcheckdetail` (
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
   `LastPrice` decimal(10,2) DEFAULT NULL COMMENT '最近进价',
   PRIMARY KEY (`id`,`OrderNo`,`SerialNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='采购入库明细表';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='采购入库明细表';
 
 -- ----------------------------
 -- Records of ckjhcheckdetail
 -- ----------------------------
-INSERT INTO `ckjhcheckdetail` VALUES ('6', 'PK-20130926-001', '1', '1111', '1.00', null, null, '100.00', null, '17.00', '1.87', '11.00', null, null, null, null, null, null, null, null, null, null, null);
-INSERT INTO `ckjhcheckdetail` VALUES ('7', 'PK-20130926-002', '1', 'dss', '2.00', null, null, '100.00', null, '17.00', '3.74', '22.00', null, null, null, null, null, null, null, null, null, null, null);
-INSERT INTO `ckjhcheckdetail` VALUES ('8', 'PK-20130926-005', '1', '1111', '1.00', null, null, '100.00', null, '17.00', '1.87', '11.00', null, null, null, null, null, null, null, null, null, null, null);
-INSERT INTO `ckjhcheckdetail` VALUES ('10', 'PK-20130930-001', '1', '1111', '1.00', '11.00', null, null, null, '17.00', '1.87', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `ckjhcheckdetail` VALUES ('11', 'PK-20131008-001', '1', '1111', '1.00', null, '11.00', '100.00', null, '17.00', '1.87', '11.00', '10.50', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `ckjhcheckdetail` VALUES ('12', 'PK-20131008-001', '1', '1111', '1.00', null, '10.00', '100.00', null, '17.00', '1.70', '10.00', '10.50', null, null, null, null, null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for `comment`
@@ -397,7 +405,7 @@ CREATE TABLE `employee` (
   `del_flg` tinyint(4) DEFAULT '0' COMMENT '删除标志',
   PRIMARY KEY (`id`,`usr_no`),
   UNIQUE KEY `usr_no` (`usr_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of employee
@@ -409,6 +417,8 @@ INSERT INTO `employee` VALUES ('4', 'zyh', '湛原红', 'e10adc3949ba59abbe56e05
 INSERT INTO `employee` VALUES ('5', 'zs', '张三', 'e10adc3949ba59abbe56e057f20f883e', '1', '11', null, '高中', '1971-10-10', '2013-08-06', '11111', null, null, null, '业务员', '1111', null, '10', null, null, null, '2013-08-07 21:17:10', null, null, null, '0');
 INSERT INTO `employee` VALUES ('13', '123', '123', 'e10adc3949ba59abbe56e057f20f883e', '2', null, null, '高中', null, null, '123', null, null, null, '业务员', null, null, null, null, null, '1', '2013-09-26 16:11:29', null, null, null, '0');
 INSERT INTO `employee` VALUES ('16', 'uy', 'ftv', 'e10adc3949ba59abbe56e057f20f883e', '2', null, null, '高中', null, null, '78', null, null, null, '业务员', null, null, null, null, null, '1', '2013-09-26 16:27:21', null, null, null, '0');
+INSERT INTO `employee` VALUES ('17', 'test100', 'jjm', 'e10adc3949ba59abbe56e057f20f883e', '2', null, null, '高中', null, null, '234123513245', null, null, null, '业务员', null, null, null, null, null, '1', '2013-10-09 10:27:18', null, null, null, '0');
+INSERT INTO `employee` VALUES ('18', 'test101', 'adf', 'e10adc3949ba59abbe56e057f20f883e', '2', null, null, '高中', null, null, '23412343324', null, null, null, '业务员', null, null, null, null, null, '1', '2013-10-09 10:31:43', null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for `jbclient`
@@ -1068,8 +1078,4 @@ INSERT INTO `xttables` VALUES ('17', 'partment', '0', '35', null, '0', '部门')
 INSERT INTO `xttables` VALUES ('18', 'role', '0', '36', null, '0', '角色');
 INSERT INTO `xttables` VALUES ('19', 'userrole', '0', '36', null, '0', '用户角色');
 INSERT INTO `xttables` VALUES ('20', 'powermenu', '0', '36', null, '0', '权限');
-<<<<<<< HEAD
 INSERT INTO `xttables` VALUES ('21', 'jbsupplier', '0', '35', null, '0', '供应商资料');
-=======
-INSERT INTO `xttables` VALUES ('21', 'jbsupplier', '0', '35', null, '0', '供应商资料');
->>>>>>> origin/master
