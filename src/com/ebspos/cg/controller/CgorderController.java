@@ -69,8 +69,8 @@ public class CgorderController extends BaseController {
 		setAttr("StoreName", getPara("store.StoreName"));
 		String sql = " from cgorder p  left join  jbsupplier b on p.supplierCode = b.supplierCode ";
 		sql += " left join  jbstore c on p.StoreCode = c.StoreCode ";
-		sql += " left join  employee d on d.usr_no = p.EmployeeNo ";
-		sql += " left join  partment e on e.id = p.partmentNo ";
+		sql += " left join  employee d on d.usr_no = p.empcode ";
+		sql += " left join  partment e on e.deptcode = p.deptcode ";
 		sql +=" where 1=1 ";
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
 				"select p.id,p.ordercode 订单号, p.orderdate 订单日期,p.stopflag,p.FinishFlag, p.DeliveryDate 收货日期,p.remark 备注, b.supplierName 供应商,c.StoreName 订货仓库,d.usr_name 业务员, e.`name` 部门 ",

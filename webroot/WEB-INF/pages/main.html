@@ -56,6 +56,7 @@ var storeStopFlg=["<span style='color:green;'>否</span>","<span style='color:re
 				}); // themeBase 相对于index页面的主题base路径
 				$("#navMenu li:first-child").addClass("selected");
 				$("body").oneTime(50,"showfirstchildmenu",function(){$("#navMenu .selected a").click();$("body").stopTime("showfirstchildmenu");});
+				navTab.openTab("main","nav");
 			}
 		});
 	});
