@@ -3,7 +3,7 @@
 <script type="text/javascript">
 $(function (){
 		initQueryForm();
-		if ($("#typeFlg").val() == 2) {
+		if ($("#typeFlg").val() == 2 || $("#CheckFlag").val() == 1) {
 			// 如果清货状态，各输入框不可改
 			for ( var i = 0; i < $("input").length; i++) {
 				$(".pageContent input[type=text]").attr("disabled","disabled");
@@ -223,7 +223,9 @@ $(function (){
 			<tr align="center">
 		         <th>审核人：</th><td width="120">${cgOrd.CheckMan!}</td> 
 				<th>审核日期：</th><td width="120">${cgOrd.CheckDate!}</td>
-		         <th>状态：</th><td width="120"><#if cgOrd.CheckFlag??&&cgOrd.CheckFlag == 1>已审核<#else>未审核	</#if></td>
+		         <th>审核：</th><td width="120"><input type="hidden"   id="CheckFlag"   name="CheckFlag"  value="${cgOrd.CheckFlag!}"/>
+		         <input type="checkBox"  id="checkTypeFlag" onclick="if ($('#CheckFlag').prop('checked')==true) {$('#CheckFlag').val(1);}"  <#if cgOrd.CheckFlag??&&cgOrd.CheckFlag==1> checked="checked" disabled</#if> />
+		         </td>
 		         <th>数量合计：</th><td width="120"><span id ="total" ></span></td>
 		         <th>金额合计：</th><td width="120"><input type="hidden"   id="amount"   name="amount"><span id ="all" ></span></td>
 		         <th></th><td width="120">
