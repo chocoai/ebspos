@@ -73,12 +73,11 @@ public class CgorderController extends BaseController {
 		sql += " left join  partment e on e.id = p.partmentNo ";
 		sql +=" where 1=1 ";
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
-				"select p.id,p.ordercode 订单号, p.orderdate 订单日期,p.stopflag,p.FinishFlag, p.DeliveryDate 收货日期,p.remark 备注, b.supplierName 供应商,c.StoreName 订货仓库,d.usr_name 业务员, e.`name` 部门 ",
+				"select p.id,p.ordercode 订单号, p.orderdate 订单日期,p.stopflag 停用, p.CheckFlag 审核, p.DeliveryDate 收货日期,p.remark 备注, b.supplierName 供应商,c.StoreName 订货仓库,d.usr_name 业务员, e.`name` 部门 ",
 				sql + whee.toString(),param.toArray()));
-		setAttr("collist", new String[]{"订单号","订单日期","供应商","业务员","部门","收货日期","订货仓库","折前金额","折后金额","税后金额","是否完成","停用","备注"});
+		setAttr("collist", new String[]{"订单号","订单日期","供应商","业务员","部门","收货日期","订货仓库","折前金额","折后金额","税后金额","审核","停用","备注"});
 		render("index.html");
 	}
-	
 	
 	public void add() {
 		Cgorder cgOrd = new Cgorder();
@@ -179,14 +178,14 @@ public class CgorderController extends BaseController {
 			if (getPara("typeFlg") != null && !getPara("typeFlg").equals("")) {
 				m.set("SettleTypeFlag", getParaToInt("typeFlg"));
 				settleTypeFlag = true;
+				// 清货状态自动审核
+				m.set("CheckMan", m.get("Operator"));
+				m.set("CheckDate", new Date());
+				m.set("CheckFlag", 1);
 			}
 			if (m.getLong("id") != null) {
 				m.update();
 			} else {
-				// 自动审核
-				m.set("CheckMan", m.get("Operator"));
-				m.set("CheckDate", new Date());
-				m.set("CheckFlag", 1);
 				m.save();
 			}
 			// 清货模式
@@ -232,15 +231,62 @@ public class CgorderController extends BaseController {
 		}
 	}
 	
+	// 审核
+	public void review() {
+		Long id = getParaToLong(0, 0L);
+		try {
+			if (id != null) {
+				Cgorder r = Cgorder.dao.findById(id);
+				if (r.getInt("SettleTypeFlag") == 2) {
+					toDwzJson(300, "已清货不能审核！", navTabId);
+					return;
+				}
+				if (r.getInt("CheckFlag") != 1) {
+					r.set("CheckFlag",1);
+					r.update();
+				}
+				toDwzJson(200, "审核通过！", navTabId);
+			}
+		} catch (Exception e) {
+			toDwzJson(300, "删除失败！");
+		}
+	}
+	
+	// 未审核
+	public void unreview() {
+		Long id = getParaToLong(0, 0L);
+		try {
+			if (id != null) {
+				Cgorder r = Cgorder.dao.findById(id);
+				if (r.getInt("SettleTypeFlag") == 2) {
+					toDwzJson(300, "已清货不能反审核！", navTabId);
+					return;
+				}
+				if (r.getInt("CheckFlag") != 0) {
+					r.set("CheckFlag",0);
+					r.update();
+				}
+				toDwzJson(200, "反审核通过！", navTabId);
+			}
+		} catch (Exception e) {
+			toDwzJson(300, "删除失败！");
+		}
+	}
+	
 	public void del() {
 		Long id = getParaToLong(0, 0L);
 		try {
 			if (id != null) {
 				Cgorder r = Cgorder.dao.findById(id);
-				Cgorder.dao.deleteById(id);
-				Db.update("delete from cgorderdetail where orderCode=?", r.getStr("orderCode"));
+				if (r.getInt("CheckFlag") == 1) {
+					toDwzJson(300, "审核通过的信息不能删除！", navTabId);
+				} else {
+					Cgorder.dao.deleteById(id);
+					// 同时删除采购明细
+					Db.update("delete from cgorderdetail where orderCode=?", r.getStr("orderCode"));
+					toDwzJson(200, "删除成功！", navTabId);
+				}
 			}
-			toDwzJson(200, "删除成功！", navTabId);
 		} catch (Exception e) {
 			toDwzJson(300, "删除失败！");
 		}
