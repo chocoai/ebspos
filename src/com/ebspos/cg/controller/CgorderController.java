@@ -191,6 +191,7 @@ public class CgorderController extends BaseController {
 			// 清货模式
 			if(settleTypeFlag) {
 				Double amount = Double.parseDouble(getPara("amount"));
+				// 生成采购入库单
 				initCkjhcheck = initCkjhcheck(m,amount);
 			}
 			String orderNo = getPara("cgOrd.ordercode");
