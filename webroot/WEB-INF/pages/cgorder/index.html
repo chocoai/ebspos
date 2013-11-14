@@ -2,7 +2,11 @@
 <@layout>
 <script type="text/javascript">
 initQueryForm();
-$("#jbclienttable tr td:nth-child(12)").each(function(r,td){
+$("#cgordtable tr td:nth-child(12)").each(function(r,td){
+	var num=(new Number($(td).text()));
+	$(td).html(checkFlg[num]);
+});
+$("#cgordtable tr td:nth-child(13)").each(function(r,td){
 	var num=(new Number($(td).text()));
 	$(td).html(storeStopFlg[num]);
 });
@@ -45,11 +49,15 @@ $("#jbclienttable tr td:nth-child(12)").each(function(r,td){
 				<li><a class="edit" href="javascript:void(0);" url="${root!}/cgorder/add/{sid_key}"
 					title="修改采购订单" target="dialog" height="580" width="1280" rel="cgordupd"><span>修改</span>
 				</a></li>
-				<li><a class="delete" href="javascript:void(0);" url="${root!}/cgorder/del/{sid_key}" title="确定要删除该客户吗？" target="ajaxTodo"><span>删除</span> </a></li>
+				<li><a class="arrow_redo" href="javascript:void(0);" url="${root!}/cgorder/review/{sid_key}" title="确定要审核通过该采购订单?" target="ajaxTodo"><span>审核</span> </a></li>
+				<li><a class="arrow_undo" href="javascript:void(0);" url="${root!}/cgorder/unreview/{sid_key}" title="确定要反审核该采购订单?" target="ajaxTodo"><span>反审核</span> </a></li>
+				<li><a class="delete" href="javascript:void(0);" url="${root!}/cgorder/del/{sid_key}" title="确定要删除该信息吗？" target="ajaxTodo"><span>删除</span></a></li>
 				</@btnPower>
 			</ul>
 		</div>
-		<@table layouth="137" tid="cgordtable"/>
+		<div layouth="150" style="overflow:visible">
+		<@table layouth="150" width="1000" tid="cgordtable"/>
+		</div>
 	</div>
 <@paginate rel="cgordBox"/>
 </@layout>
