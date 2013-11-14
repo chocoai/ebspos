@@ -38,6 +38,16 @@ public class CgorderController extends BaseController {
 	private byte[] lock = new byte[0];
 	@Override
 	public void index() {
+		list();
+		render("index.html");
+	}
+	
+	public void select() {
+		list();
+		render("list.html");
+	}
+	
+	private void list() {
 		StringBuffer whee=new StringBuffer();
 		List<Object> param = new ArrayList<Object>();
 		String startTime = getPara("startTime");
@@ -76,7 +86,6 @@ public class CgorderController extends BaseController {
 				"select p.id,p.ordercode 订单号, p.orderdate 订单日期,p.stopflag 停用, p.CheckFlag 审核, p.DeliveryDate 收货日期,p.remark 备注, b.supplierName 供应商,c.StoreName 订货仓库,d.usr_name 业务员, e.`name` 部门 ",
 				sql + whee.toString(),param.toArray()));
 		setAttr("collist", new String[]{"订单号","订单日期","供应商","业务员","部门","收货日期","订货仓库","折前金额","折后金额","税后金额","审核","停用","备注"});
-		render("index.html");
 	}
 	
 	public void add() {

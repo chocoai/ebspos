@@ -92,7 +92,7 @@ $(function (){
 			 </th>
 			 <th style="width:500px"></th>
 			  <th>单据编号</th><td><input type="text"  name="ckjhcheck.OrderNo"  readonly="readonly"  value="${ckjhcheck.OrderNo!}"></td>
-			  <td>&nbsp;&nbsp;</td>
+			  <td>&nbsp;<a href="javascript:void(0);" url="${root!}/cgorder/select"  target="dialog" height="480" width="800" rel="cgordselect" title="已审核采购订单"><img width="16px"  height="21px" src="${root!}/ht/dwz/css/images/toolbar_icons16/application_view_list.png"/></td>
 			 <th>单据日期</th><td><input type="text" name="ckjhcheck.OrderDate" class="date" readonly="readonly"  dateFmt="yyyy-M-d"   value="${ckjhcheck.OrderDate!}"/>
 						   <a class="inputDateButton" href="javascript:;">选择</a></td>
 			  <td>&nbsp;&nbsp;</td>
