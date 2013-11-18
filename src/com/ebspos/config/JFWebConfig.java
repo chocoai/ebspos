@@ -8,11 +8,9 @@ import net.loyin.jFinal.plugin.AutoTableBindPlugin;
 import net.loyin.jFinal.plugin.MyRoutesUtil;
 import net.loyin.jFinal.plugin.TableNameStyle;
 import net.loyin.jFinal.plugin.sqlXml.SqlInXmlPlugin;
-import net.loyin.memcache.MemcacheTool;
 import net.loyin.util.PropertiesContent;
 
 import com.alibaba.druid.filter.stat.StatFilter;
-import com.ebspos.handler.ApiHandler;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -23,7 +21,6 @@ import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.druid.DruidStatViewHandler;
 import com.jfinal.plugin.druid.IDruidStatViewAuth;
-import com.jfinal.plugin.ehcache.CacheKit;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 /**
  * API引导式配置
