@@ -79,10 +79,65 @@ public class CkjhcheckController extends BaseController {
 		render("index.html");
 	}
 	
+	// 采购入库
+	public void cgInStore() {
+		Ckjhcheck ckjhcheck = new Ckjhcheck();
+		Jbsupplier jbsupplier = new Jbsupplier();
+		Jbstore jbstore = new Jbstore();
+		List<Object> param=new ArrayList<Object>();
+		// 采购入库单号
+		String ordCdNw = null;
+		String obj = getPara();
+		// 由采购订单导入
+		ordCdNw = "PK" + obj.substring(4);
+		Cgorder cgOrd = new Cgorder();
+		cgOrd = Cgorder.dao.findFirst("select * from cgorder where orderCode = ?", new Object[]{obj});
+		jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", cgOrd.getStr("supplierCode"));
+		jbstore = Jbstore.dao.findFirst("select * from jbstore where StoreCode = ?", cgOrd.getInt("StoreCode"));
+		ckjhcheck.set("OrderNo", ordCdNw);
+		ckjhcheck.set("OrderDate", cgOrd.getDate("DeliveryDate"));
+		ckjhcheck.set("SupplierNo", cgOrd.getStr("supplierCode"));
+		ckjhcheck.set("StoreNo", cgOrd.getInt("StoreCode"));
+		ckjhcheck.set("InOutTypeNo", "52");
+		ckjhcheck.set("BillOrderNo", cgOrd.getStr("orderCode"));
+		ckjhcheck.set("DepartmentNo", cgOrd.getInt("partmentNo"));
+		ckjhcheck.set("EmployeeNo", cgOrd.getStr("EmployeeNo"));
+		ckjhcheck.set("Operator", cgOrd.getStr("Operator"));
+		ckjhcheck.set("CheckFlag", 1);
+		StringBuffer whee=new StringBuffer();
+		whee.append(" and a.orderCode = ?");
+		param.add(obj);
+		String sql = "select a.id,b.GoodsCode 商品编号,b.GoodsName 商品名称,b.Model 商品规格,b.BaseUnit 基本单位,b.BRefPrice 原价,a.Discount 折扣,a.OrigPrice 单价, a.Quantity 数量,";
+		sql += " a.TaxRate 税率,a.TaxAmount 税额,a.Amount 税后金额";
+		String sqlSelect = " from cgorderdetail a"; 
+		sqlSelect += " left join jbgoods b on a.GoodsCode = b.GoodsCode where 1=1 ";
+		Page<Record> redLst = Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
+				sql, sqlSelect + whee.toString(),param.toArray());
+		int size = redLst.getList().size();
+		// 不足10条，补足10条显示
+		if ( size < 10) {
+			for (int i = 0; i < 10 - size; i++) {
+				redLst.getList().add(new Record());
+			}
+		}
+		setAttr("page", redLst);
+		setAttr("collist", new String[]{"商品编号","商品名称","商品规格","基本单位","原价","折扣%","单价","数量","税率%","折后金额","税后金额"});
+		setAttr("ckjhcheck", ckjhcheck);
+		setAttr("store", jbstore);
+		setAttr("supplier", jbsupplier);
+		setAttr(InOutTypeNoSelectTarget.targetName, new InOutTypeNoSelectTarget());
+		setAttr(PartmentSelectTarget.targetName, new PartmentSelectTarget());
+		setAttr(EmployeeSelectTarget.targetName, new EmployeeSelectTarget());
+		render("add.html");
+	}
+	
 	public void add() {
 		Ckjhcheck ckjhcheck = new Ckjhcheck();
 		Jbsupplier jbsupplier = new Jbsupplier();
 		Jbstore jbstore = new Jbstore();
+		// 采购入库单号
+		String ordCdNw = null;
+		// 不是采购订单导入
 		Long id = getParaToLong(0, 0L);
 		List<Object> param=new ArrayList<Object>();
 		StringBuffer whee=new StringBuffer();
@@ -93,7 +148,6 @@ public class CkjhcheckController extends BaseController {
 			jbstore = Jbstore.dao.findFirst("select * from jbstore where StoreCode = ?", ckjhcheck.getInt("StoreNo"));
 			param.add(ckjhcheck.get("OrderNo"));
 		} else {
-			String ordCdNw;
 			synchronized(lock) {
 				ordCdNw = BsUtil.getMaxOrdNo("OrderNo","PK","ckjhcheck");
 			}
