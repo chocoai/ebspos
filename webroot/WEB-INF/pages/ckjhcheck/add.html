@@ -6,18 +6,17 @@ $(function (){
 		if ($("#typeFlg").val() == 2 || $("#CheckFlag").val() == 1) {
 			// 如果清货状态，各输入框不可改
 			for ( var i = 0; i < $("input").length; i++) {
-				$(".pageContent input[type=text]").attr("disabled","disabled");
+				$(".pageContent input[type=text]").attr("readonly","readonly");
 			}
-		    $(".pageContent button[type=submit]").attr("disabled","disabled");
-		    $(".pageContent .combox").attr("disabled","disabled");
+/* 		    $(".pageContent button[type=submit]").attr("disabled","disabled"); */
+		    $(".pageContent").removeClass("combox");
 		    $("#settleTypeFlag").attr("disabled","disabled");
-		    $(".pageContent select").attr("disabled","disabled").css({ "color":"#ccc"});
+/* 		    $(".pageContent select").attr("disabled","disabled").css({ "color":"#ccc"}); */
 		    $(".pageContent .btnDel").remove();
 		    $(".pageContent .btnLook").remove();
 		    $(".pageContent .inputDateButton").remove();
-		} else {
-			reloadData();
 		}
+	    reloadData();
 	});
 	//入库单初始
 	function reloadData() {
