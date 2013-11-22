@@ -38,6 +38,16 @@ public class CkjhcheckController extends BaseController {
 	private byte[] lock = new byte[0];
 	@Override
 	public void index() {
+		select();
+		render("index.html");
+	}
+	
+	public void list() {
+		select();
+		render("list.html");
+	}
+	
+	private void select() {
 		StringBuffer whee=new StringBuffer();
 		List<Object> param = new ArrayList<Object>();
 		String startTime = getPara("startTime");
@@ -76,7 +86,6 @@ public class CkjhcheckController extends BaseController {
 				"select p.id,p.OrderNo 订单号, p.OrderDate 进货日期,p.remark 备注, p.InOutTypeNo 入库类型,p.BillOrderNo 采购单号,p.CKAmount 入库金额, p.Amount 购货金额, b.supplierName 供应商,c.StoreName 订货仓库,d.usr_name 业务员, e.`name` 部门 ",
 				sql + whee.toString(),param.toArray()));
 		setAttr("collist", new String[]{"订单号","进货日期","供应商","业务员","部门","收货日期","订货仓库","入库类型","采购单号","入库金额","购货金额","备注"});
-		render("index.html");
 	}
 	
 	// 采购入库
@@ -221,7 +230,8 @@ public class CkjhcheckController extends BaseController {
 				Jbgoods goods = getModel(Jbgoods.class,"goods" + i);
 				if (goods.getStr("GoodsCode") != null) {
 					md.set("GoodsNo", goods.get("GoodsCode"));
-					if (md.getLong("id") != null) {
+					Ckjhcheckdetail tmp = Ckjhcheckdetail.dao.findById(md.getLong("id"));
+					if (tmp != null ) {
 						md.update();
 					} else {
 						md.set("orderNo", orderNo);
