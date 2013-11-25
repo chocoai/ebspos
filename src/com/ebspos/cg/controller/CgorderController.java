@@ -79,8 +79,8 @@ public class CgorderController extends BaseController {
 		setAttr("StoreName", getPara("store.StoreName"));
 		String sql = " from cgorder p  left join  jbsupplier b on p.supplierCode = b.supplierCode ";
 		sql += " left join  jbstore c on p.StoreCode = c.StoreCode ";
-		sql += " left join  employee d on d.usr_no = p.EmployeeNo ";
-		sql += " left join  partment e on e.id = p.partmentNo ";
+		sql += " left join  employee d on d.usr_no = p.empcode ";
+		sql += " left join  partment e on e.deptcode = p.deptcode ";
 		sql +=" where 1=1 ";
 		if (type.equals("lookup")) {
 			whee.append(" and p.CheckFlag = 1");

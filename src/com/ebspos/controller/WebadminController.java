@@ -54,6 +54,7 @@ public class WebadminController extends BaseController {
 			}
 		}
 	}
+	public void nav(){	}
 	@Before({ ManagerPowerInterceptor.class})
 	public void commmenu(){}
 	@Before({ ManagerPowerInterceptor.class })

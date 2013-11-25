@@ -27,7 +27,7 @@ public class PowerController extends BaseController {
 		f=true;
 		list();
 		setAttr("org",Db.find("select id, name,num from Organization order by id"));
-		setAttr("part",Db.find("select id, name,num from Partment order by id"));
+		setAttr("part",Db.find("select id, name,deptcode from Partment order by id"));
 		setAttr("rolelist",Db.find("select id, name from role order by id"));
 		render("index.html");
 	}public void list(){
