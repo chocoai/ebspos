@@ -24,7 +24,6 @@
 }
 #header{height:85px}
 #leftside, #container, #splitBar, #splitBarProxy{top:90px}
-#container{left:990px;width:1px;}
 #navMenu a{text-transform:none;}
 .searchContent :text{width:80px;}
 
