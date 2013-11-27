@@ -3,20 +3,20 @@
 <script type="text/javascript">
 $(function (){
 		initQueryForm();
-		if ($("#typeFlg").val() == 1) {
+		if ($("#typeFlg").val() == 2 || $("#CheckFlag").val() == 1) {
 			// 如果清货状态，各输入框不可改
 			for ( var i = 0; i < $("input").length; i++) {
-				$(".pageContent input[type=text]").attr("disabled","disabled");
+				$(".pageContent input[type=text]").attr("readonly","readonly");
 			}
-		    $(".pageContent button[type=submit]").attr("disabled","disabled");
+/* 		    $(".pageContent button[type=submit]").attr("disabled","disabled"); */
+		    $(".pageContent").removeClass("combox");
 		    $("#settleTypeFlag").attr("disabled","disabled");
-		    $(".pageContent select").attr("disabled","disabled").css({ "color":"#ccc"});
+/* 		    $(".pageContent select").attr("disabled","disabled").css({ "color":"#ccc"}); */
 		    $(".pageContent .btnDel").remove();
 		    $(".pageContent .btnLook").remove();
 		    $(".pageContent .inputDateButton").remove();
-		} else {
-			reloadData();
 		}
+	    reloadData();
 	});
 	//入库单初始
 	function reloadData() {
@@ -91,8 +91,8 @@ $(function (){
 			   <div style="width:90px;text-align:left;"><h1>采购入库单</h1></div>
 			 </th>
 			 <th style="width:500px"></th>
-			  <th>单据编号</th><td><input type="text"  name="ckjhcheck.OrderNo"  readonly="readonly"  value="${ckjhcheck.OrderNo!}"></td>
-			  <td>&nbsp;&nbsp;</td>
+			  <th>单据编号</th><td><input type="text"  name="ckjhcheck.OrderNo"  lookupgroup="ckjhcheck"  readonly="readonly"  value="${ckjhcheck.OrderNo!}"></td>
+			  <td>&nbsp;<a href="javascript:void(0);" url="${root!}/cgorder/select"  lookupgroup="ckjhcheck"  rel="cgordselect" title="已审核采购订单"><img width="16px"  height="21px" src="${root!}/ht/dwz/css/images/toolbar_icons16/application_view_list.png"/></td>
 			 <th>单据日期</th><td><input type="text" name="ckjhcheck.OrderDate" class="date" readonly="readonly"  dateFmt="yyyy-M-d"   value="${ckjhcheck.OrderDate!}"/>
 						   <a class="inputDateButton" href="javascript:;">选择</a></td>
 			  <td>&nbsp;&nbsp;</td>
@@ -203,7 +203,7 @@ $(function (){
 			<tr align="center">
 		         <th>审核人：</th><td width="120">${ckjhcheck.CheckMan!}</td> 
 				<th>审核日期：</th><td width="120">${ckjhcheck.CheckDate!}</td>
-		         <th>状态：</th><td width="120"><#if ckjhcheck.CheckFlag??&&ckjhcheck.CheckFlag == 1>已审核<#else>未审核	</#if></td>
+		         <th>状态：</th><td width="120"><input type="hidden"   id="CheckFlag"   name="CheckFlag"  value="${ckjhcheck.CheckFlag!}"/><#if ckjhcheck.CheckFlag??&&ckjhcheck.CheckFlag == 1>已审核<#else>未审核	</#if></td>
 		         <th>数量合计：</th><td width="120"><span id ="total" ></span></td>
 		         <th>金额合计：</th><td width="120"><input type="hidden"   id="amount"   name="amount"><span id ="all" ></span></td>
 		         <th></th><td width="120">
