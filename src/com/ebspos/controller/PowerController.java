@@ -26,7 +26,7 @@ public class PowerController extends BaseController {
 	public void index() {
 		f=true;
 		list();
-		setAttr("org",Db.find("select id, name,num from Organization order by id"));
+		setAttr("org",Db.find("select id, name,orgcode from Organization order by id"));
 		setAttr("part",Db.find("select id, name,deptcode from Partment order by id"));
 		setAttr("rolelist",Db.find("select id, name from role order by id"));
 		render("index.html");
@@ -64,7 +64,7 @@ public class PowerController extends BaseController {
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),
 				getParaToInt("numPerPage", 20),
 				"select e.id,usr_no 编号,usr_name 姓名,e.gender 性别,phone_no 手机电话,is_use 状态 ",
-				" from  Employee e join partment p on p.id=e.dep_no "+whee.toString()+" order by e.id ",param.toArray()));
+				" from  Employee e join partment p on p.deptcode=e.deptcode "+whee.toString()+" order by e.id ",param.toArray()));
 		setAttr("collist", new String[]{"编号","姓名","性别","手机电话","状态"});
 		if(f==false)
 		render("list.html");

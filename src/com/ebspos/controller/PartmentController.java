@@ -49,7 +49,7 @@ public class PartmentController extends BaseController {
 		setAttr(OrgSelectTarget.targetName,new OrgSelectTarget());
 		setAttr(PartmentSelectTarget.targetName,new PartmentSelectTarget());
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
-				"select p.id,concat(o.name,'[',o.num,']') 所属机构, concat(p.name,'[',p.deptcode,']') 部门名称,e.usr_name 部门主管,p.remark 备注 ",
+				"select p.id,concat(o.name,'[',o.orgcode,']') 所属机构, concat(p.name,'[',p.deptcode,']') 部门名称,e.usr_name 部门主管,p.remark 备注 ",
 				" from  partment p  join organization o on o.id=p.orgid join employee e on e.id=p.picid "+whee.toString(),param.toArray()));
 		setAttr("collist", new String[]{"所属机构","部门名称","部门主管","备注"});
 		render("index.html");

@@ -36,8 +36,8 @@ public class EmployeeController extends BaseController {
 	public void index() {
 		f = true;
 		list();
-		setAttr("org",Organization.dao.find("select id, name,num from Organization order by id"));
-		setAttr("part",Partment.dao.find("select id, name,num from Partment order by id"));
+		setAttr("org",Organization.dao.find("select id, name,orgcode from Organization order by id"));
+		setAttr("part",Partment.dao.find("select id, name,deptcode from Partment order by id"));
 		render("index.html");
 	}
 
@@ -62,7 +62,7 @@ public class EmployeeController extends BaseController {
 		}
 		setAttr("usr_name", usr_name);
 		setAttr("usr_no", usr_no);
-		setAttr("dept_no", pid);
+		setAttr("deptcode", pid);
 		if (orgid != 0) {
 			whee.append(" and p.orgid = ?");
 			param.add(orgid);
@@ -72,9 +72,9 @@ public class EmployeeController extends BaseController {
 		setAttr("page",
 				Db.paginate(
 						getParaToInt("pageNum", 1),
-						getParaToInt("numPerPage", 2),
+						getParaToInt("numPerPage", 20),
 						"select e.id,usr_no 编号,usr_name 姓名, e.gender 性别,phone_no 手机电话,usr_type 状态 ",
-						" from  Employee e join partment p on p.id=e.dep_no "
+						" from  Employee e join partment p on p.deptcode=e.deptcode "
 								+ whee.toString() + " order by e.id ",
 						param.toArray()));
 		setAttr("collist", new String[] { "编号", "姓名", "性别", "手机电话", "状态" });
@@ -102,7 +102,7 @@ public class EmployeeController extends BaseController {
 		Long id = getParaToLong(1, 0L);
 		Long pid = getParaToLong(0, 0L);
 		//Long orgid = getParaToLong(0, 0L);
-		pojo.set("dep_no", pid);
+		pojo.set("deptcode", pid);
 		//pojo.set("orgid", orgid);
 		if (id != 0) {
 			pojo = Employee.dao.findById(id);
@@ -116,7 +116,7 @@ public class EmployeeController extends BaseController {
 		Employee pojo = new Employee();
 		Long id = getParaToLong(0, 0L);
 		pojo = Employee.dao.findById(id);
-		setAttr("part",Partment.dao.findById(pojo.get("dep_no")));
+		setAttr("part",Partment.dao.findById(pojo.get("deptcode")));
 //		setAttr("org",Organization.dao.findById(pojo.get("orgid")));
 		setAttr("pojo", pojo);
 		render("show.html");

@@ -24,11 +24,11 @@ public class OrgSelectTarget extends BaseTarget {
 	@Override
 	public void execute(Environment env, Map args, TemplateModel[] arg2,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
-		List<Organization> list= Organization.dao.find("select id,name,num from Organization order by sortnum asc");
+		List<Organization> list= Organization.dao.find("select id,name,orgcode from Organization order by sortnum asc");
 		Writer out= env.getOut();
 		for(Organization o:list){
 			out.append("<option value='"+o.getLong("id")+"'>");
-			out.append(o.getStr("name")+"["+o.getStr("num")+"]");
+			out.append(o.getStr("name")+"["+o.getStr("orgcode")+"]");
 			out.append("</option>");
 		}
 	}

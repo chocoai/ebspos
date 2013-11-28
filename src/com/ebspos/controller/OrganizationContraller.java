@@ -29,7 +29,7 @@ public class OrganizationContraller extends BaseController {
 		setAttr("name", name);
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),
 							getParaToInt("numPerPage", 20),
-				"select o.id,o.name 名称,o.num 编号,o.addr 地址,o.remark 备注 ",
+				"select o.id,o.name 名称,o.orgcode 编号,o.addr 地址,o.remark 备注 ",
 				" from  organization o where 1=1 "+whee.toString(),param.toArray()));
 		setAttr("collist", new String[]{"编号","名称","地址","备注"});
 		render("index.html");

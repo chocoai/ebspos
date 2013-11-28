@@ -13,13 +13,13 @@ style="float: left; overflow: auto; width: 200px; border: solid 1px #CCC; line-h
 <li><a href="javascript:void(0);">机构</a>
 <ul>
 <#list org as o>
-<li><a href="javascript:void(0);" url="${path}/employee/list/${o.id!}" target="ajax" rel="empbox">${o.name!}[${o.num!}]</a>
+<li><a href="javascript:void(0);" url="${path}/employee/list/${o.id!}" target="ajax" rel="empbox">${o.name!}[${o.orgcode!}]</a>
 <ul>
 <#list part as p><#if !p.pid??>
-<li><a href="javascript:void(0);" url="${path}/employee/list/${o.id!}-${p.id!}" target="ajax" rel="empbox">${p.name!}[${p.num!}]</a>
+<li><a href="javascript:void(0);" url="${path}/employee/list/${o.id!}-${p.deptcode!}" target="ajax" rel="empbox">${p.name!}[${p.deptcode!}]</a>
 <ul>
 <#list part as p1><#if p1.pid??&&p1.pid=p.id>
-<li><a href="javascript:void(0);" url="${path}/employee/list/${o.id!}-${p.id!}-${p1.id!}" target="ajax" rel="empbox" >${p1.name!}[${p1.num!}]</a></li> </#if> </#list>
+<li><a href="javascript:void(0);" url="${path}/employee/list/${o.id!}-${p.deptcode!}-${p1.id!}" target="ajax" rel="empbox" >${p1.name!}[${p1.deptcode!}]</a></li> </#if> </#list>
 </ul></li>
 </#if>
 </#list>

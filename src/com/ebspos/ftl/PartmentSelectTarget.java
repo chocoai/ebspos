@@ -25,11 +25,11 @@ public class PartmentSelectTarget extends BaseTarget {
 	@Override
 	public void execute(Environment env, Map args, TemplateModel[] arg2,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
-		List<Organization> orglist=Organization.dao.find("select id,name,num from Organization");
+		List<Organization> orglist=Organization.dao.find("select id,name,orgcode from Organization");
 		List<Partment> list= Partment.dao.find("select id,name,orgid from Partment");
 		Writer out= env.getOut();
 		for(Organization org:orglist){
-			out.append("<optgroup label='"+org.getStr("name")+"["+org.getStr("num")+"]'>");
+			out.append("<optgroup label='"+org.getStr("name")+"["+org.getStr("orgcode")+"]'>");
 			for(Partment o:list){
 				if(org.getLong("id")==o.getLong("orgid")){
 					out.append("<option value='"+o.getLong("id")+"'>");
