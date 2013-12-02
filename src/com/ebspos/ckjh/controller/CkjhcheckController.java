@@ -48,35 +48,46 @@ public class CkjhcheckController extends BaseController {
 	}
 	
 	private void select() {
-		StringBuffer whee=new StringBuffer();
-		List<Object> param = new ArrayList<Object>();
-		String startTime = getPara("startTime");
-		if(startTime!=null&&!"".equals(startTime.trim())){
-			whee.append(" and UNIX_TIMESTAMP(p.OrderDate) >= UNIX_TIMESTAMP(?)");
-			param.add(startTime);
-		}
-		setAttr("startTime", startTime);
-		String endTime = getPara("endTime");
-		if(endTime!=null&&!"".equals(endTime.trim())){
-			whee.append(" and UNIX_TIMESTAMP(p.OrderDate) <= UNIX_TIMESTAMP(?)");
-			param.add(endTime);
-		}
-		setAttr("endTime", endTime);
-		String supplierCode = getPara("supplier.supplierCode");
-		if(supplierCode!=null && !"".equals(supplierCode.trim())){
-			whee.append(" and p.SupplierNo = ?");
-			param.add(Long.parseLong(supplierCode));
-		}
-		setAttr("supplierCode", supplierCode);
-		setAttr("supplierName", getPara("supplier.supplierName"));
-		
-		String storeCd = getPara("store.StoreCode");
-		if(storeCd!=null && !"".equals(storeCd.trim())){
-			whee.append(" and p.StoreNo = ?");
-			param.add(Long.parseLong(storeCd));
-		}
-		setAttr("StoreCode", storeCd);
-		setAttr("StoreName", getPara("store.StoreName"));
+        String urlPara = getPara();
+        StringBuffer whee=new StringBuffer();
+        List<Object> param = new ArrayList<Object>();
+        if (urlPara != null) {
+        	// 首次
+        	String supplierCode = getPara(0);
+    		whee.append(" and p.SupplierNo = ?");
+    		param.add(Long.parseLong(supplierCode));
+        	setAttr("supplierCode", supplierCode);
+        	Jbsupplier jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", supplierCode);
+        	setAttr("supplierName", jbsupplier.get("supplierName"));
+        } else {
+        	String startTime = getPara("startTime");
+        	if(startTime!=null&&!"".equals(startTime.trim())){
+        		whee.append(" and UNIX_TIMESTAMP(p.OrderDate) >= UNIX_TIMESTAMP(?)");
+        		param.add(startTime);
+        	}
+        	setAttr("startTime", startTime);
+        	String endTime = getPara("endTime");
+        	if(endTime!=null&&!"".equals(endTime.trim())){
+        		whee.append(" and UNIX_TIMESTAMP(p.OrderDate) <= UNIX_TIMESTAMP(?)");
+        		param.add(endTime);
+        	}
+        	setAttr("endTime", endTime);
+        	String supplierCode = getPara("supplier.supplierCode");
+        	if(supplierCode!=null && !"".equals(supplierCode.trim())){
+        		whee.append(" and p.SupplierNo = ?");
+        		param.add(Long.parseLong(supplierCode));
+        	}
+        	setAttr("supplierCode", supplierCode);
+        	setAttr("supplierName", getPara("supplier.supplierName"));
+        	
+        	String storeCd = getPara("store.StoreCode");
+        	if(storeCd!=null && !"".equals(storeCd.trim())){
+        		whee.append(" and p.StoreNo = ?");
+        		param.add(Long.parseLong(storeCd));
+        	}
+        	setAttr("StoreCode", storeCd);
+        	setAttr("StoreName", getPara("store.StoreName"));
+        }
 		String sql = " from ckjhcheck p  left join  jbsupplier b on p.SupplierNo = b.supplierCode ";
 		sql += " left join  jbstore c on p.StoreNo = c.StoreCode ";
 		sql += " left join  employee d on d.usr_no = p.EmployeeNo ";
