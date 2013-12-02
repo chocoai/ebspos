@@ -1,15 +1,26 @@
 <#macro lookupmulttbl layouth="135" width="700" tid="lookupxxx">
+<script>
+function checkall${tid!}(ckx){
+	var $ckx=$(ckx);
+	var $cks=$("."+$ckx.attr("for"));
+	var ckxed=$ckx.attr("checked");
+	$.each($cks,function(i,ck){
+		$(ck).attr("checked",ckx.checked);
+	});
+}
+</script>
 <table id="${tid!}" class="table"  width="${width!}px"  layouth="${layouth!}"  targetType="dialog" >
 <thead><tr>
+<th width="50px"><input type="checkbox"  for="ck_${tid!}" onclick="checkall${tid!}(this);">行号</th>
 <#list collist as t>
 <th width="40">${t!}</th>
 </#list>
-<th width="80">查找带回</th>
 </tr></thead>
 <#if page??&&page.list??>
 <tbody>
 <#list page.list as d>
 <tr target="sid_key" rel="${d.id!}">
+<td><input type="checkbox" name="ordNo"  class="ck_${tid!}"  value="{OrderNo:'${d.get('订单号')!}'}"/></td>
 <#list collist as t>
 <td>${d.get(t)!}</td>
 </#list>
