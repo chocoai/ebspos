@@ -20,7 +20,7 @@
 <td><a class="btnSelect"  href="javascript:$.bringBack({StoreCode:'${d.get('仓库编号')!}', StoreName:'${d.get('仓库名称')!}'})" title="查找带回">选择</a></td>
 </#if>
 <#if tid="lookupsupplier">
-<td><a class="btnSelect"  href="javascript:$.bringBack({supplierCode:'${d.get('供应商代码')!}', supplierName:'${d.get('供应商名称')!}'})" title="查找带回">选择</a></td>
+<td><a class="btnSelect"  href="javascript:$.bringBack({supplierCode:'${d.get('供应商代码')!}', supplierName:'${d.get('供应商名称')!}',AdvanceAmount:'${d.get('预付款')!}'})" title="查找带回">选择</a></td>
 </#if>
 <#if tid="cgordlisttable">
 <td><a class="btnSelect"  href="javascript:$.bringBack({OrderNo:'${d.get('订单号')!}'});$.pdialog.reload('/ckjhcheck/cgInStore/${d.get('订单号')!}', {data:{type:1}, dialogId:'ckjhadd', callback:null})" title="查找带回">选择</a></td>

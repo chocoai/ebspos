@@ -49,7 +49,7 @@ public class JbsupplierController extends BaseController {
 		setAttr("suppliercode",suppliercode);
 		setAttr("suppliername",suppliername);
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
-				"select p.id,p.suppliercode 供应商代码, p.suppliername 供应商名称,p.suppliertypeno 供应商类别,p.stopflag 停用,p.remark 备注",
+				"select p.id,p.suppliercode 供应商代码, p.suppliername 供应商名称,p.suppliertypeno 供应商类别,p.stopflag 停用,p.remark 备注,p.AdvanceAmount 预付款",
 				" from  jbsupplier p where 1=1  "+whee.toString(),param.toArray()));
 	}
 	

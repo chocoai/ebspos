@@ -1,12 +1,49 @@
 package com.util;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 public class BsUtil {
-	
+	    // 应付款
+	    public static int NEED_PAY = 45;
+	    // 预付款
+	    public static int ADV_PAY = 47;
+	    // 预付冲应付
+	    public static int ADV_TO_NEED_PAY = 48;
+	    // 应付转预付
+	    public static int NEED_TO_ADV_PAY = 49;
+	    // 直接付款
+	    public static int DIR_PAY = 50;
+	    
+	    public static Double add(BigDecimal... params) {
+			Double total = 0.0;
+            for (int i = 0; i < params.length; i++) {
+            	if (params[i] != null) {
+            		total += params[i].doubleValue();
+            	}
+			}
+			return total;
+	    }
+	    
+	    public static Double plus(BigDecimal... params) {
+	    	Double total = 0.0;
+	    	for (int i = 0; i < params.length; i++) {
+	    		if (i == 0) {
+	    			if (params[0] != null) {
+	    				total = params[0].doubleValue();
+	    			}
+	    		} else {
+	    			if (params[i] != null) {
+	    				total -= params[i].doubleValue();
+	    			}
+	    		}
+	    	}
+	    	return total;
+	    }
+	    
          public static String getMaxOrdNo(String fieldNm,String prefix,String tblNm) {
         	    String ordCdNw;
 				String selectMaxOrdCd = "select max(" + fieldNm  +") as ordcd from " + tblNm  +" where " + fieldNm + " like '%" +  prefix +"-" + DateUtil.date2String(new Date(), DateUtil.FORMAT_DATE_1)+ "%'";

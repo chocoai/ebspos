@@ -1,21 +1,26 @@
 package com.ebspos.pay.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import net.loyin.jFinal.anatation.RouteBind;
 
+import com.ebspos.cg.model.Cgorder;
 import com.ebspos.ckjh.model.Ckjhcheck;
+import com.ebspos.ckjh.model.Ckjhcheckdetail;
 import com.ebspos.controller.BaseController;
 import com.ebspos.ftl.EmployeeSelectTarget;
 import com.ebspos.ftl.InOutTypeNoSelectTarget;
 import com.ebspos.ftl.PartmentSelectTarget;
 import com.ebspos.ftl.PayTypeNoSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
+import com.ebspos.model.Jbgoods;
 import com.ebspos.model.Jbstore;
 import com.ebspos.model.Jbsupplier;
 import com.ebspos.pay.model.Jhpay;
+import com.ebspos.pay.model.Jhpaydetail;
 import com.jfinal.aop.Before;
 import com.jfinal.log.Logger;
 import com.jfinal.plugin.activerecord.Db;
@@ -97,7 +102,7 @@ public class JhpayController extends BaseController {
 			jhpay.set("OrderCode", ordCdNw);
 			jhpay.set("OrderDate", DateUtil.date2String(new Date(), DateUtil.FORMAT_DATE));
 			param = param.substring(0,param.length() - 1) + ")";
-			String sql = "select b.id,b.OrderNo 单据编号, a.OrderDate 单据日期,if(strcmp(left(b.OrderNo,2) =0 ,'PK'),'采购入库单','采购退库单') 单据类型,'" + ordCdNw +"' 付款单号,b.amount 单据金额,b.payAmount 已付金额,b.remark 备注 ";
+			String sql = "select b.id,b.OrderNo 单据编号, a.OrderDate 单据日期,if(strcmp(left(b.OrderNo,2) =0 ,'PK'),'采购入库单','采购退库单') 单据类型,'" + ordCdNw +"' 付款单号,sum(b.amount) 单据金额,sum(b.payAmount) 已付金额,b.remark 备注 ";
 			String sqlSelect = "  from ckjhcheckDetail b inner join ckjhcheck a on a.OrderNo = b.OrderNo "; 
 			sqlSelect += " where 1=1 ";
 			Page<Record> redLst = Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
@@ -122,11 +127,19 @@ public class JhpayController extends BaseController {
 		Long id = getParaToLong(0, 0L);
 		List<Object> param=new ArrayList<Object>();
 		StringBuffer whee=new StringBuffer();
-		whee.append(" and a.OrderCode = ?");
+		whee.append(" and a.PayOrderNo = ?");
 		if (id != 0) { // 修改
 			jhpay = Jhpay.dao.findById(id);
 			jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", jhpay.getStr("supplierCode"));
 			param.add(jhpay.get("OrderCode"));
+			setAttr("advamount", jbsupplier.getBigDecimal("AdvanceAmount"));
+			if (jhpay.getInt("PayType") == BsUtil.ADV_TO_NEED_PAY)  {
+				// 预付冲应付：付款金额 = 预付款
+				setAttr("paymount", jbsupplier.getBigDecimal("AdvanceAmount"));
+			} else {
+				// 付款金额
+				setAttr("paymount",0);
+			}
 		} else {
 			synchronized(lock) {
 				ordCdNw = BsUtil.getMaxOrdNo("OrderCode","CF","jhpay");
@@ -136,11 +149,11 @@ public class JhpayController extends BaseController {
 			// 默认日期
 			jhpay.set("OrderDate", DateUtil.date2String(new Date(), DateUtil.FORMAT_DATE));
 		}
-		String sql = "select a.id,a.OrderCode 单据编号,a.CollateType 单据类型,a.PayOrderNo 付款单号,b.amount 单据金额,a.NowCollated 本次付款金额,a.Adjust 抹零金额,a.Amount 已付金额,a.remark 备注";
-		String sqlSelect = " from jhpayDetail a inner join ckjhcheckDetail b on a.OrderCode = b.OrderNo"; 
+		String sql = "select a.id,a.OrderCode 单据编号,a.CollateType 单据类型,a.PayOrderNo 付款单号,sum(b.amount) 单据金额,0 本次付款金额,0 抹零金额,sum(b.payAmount) 已付金额,a.remark 备注";
+		String sqlSelect = " from jhpayDetail a inner join ckjhcheckDetail b on a.OrderCode = b.OrderNo";
 		sqlSelect += " where 1=1 ";
 		Page<Record> redLst = Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
-				sql, sqlSelect + whee.toString(),param.toArray());
+				sql, sqlSelect + whee.toString() + " group by b.OrderNo ",param.toArray());
 		setAttr("page", redLst);
 		setAttr("collist", new String[]{"单据类型","单据编号","单据日期","单据金额","已付金额","本次付款金额","抹零金额","本次实际付款额"});
 		setAttr("jhpay", jhpay);
@@ -151,10 +164,123 @@ public class JhpayController extends BaseController {
 	}
 	
 	public void save() {
-		Jhpay jhpay = getModel(Jhpay.class,"jhpay");
-		
-		
-		
+		try {
+			Jhpay jhpay = getModel(Jhpay.class,"jhpay");
+			Jbsupplier jbsupplier = getModel(Jbsupplier.class,"supplier");
+			Double amount = Double.parseDouble(getPara("amount"));
+			if (jhpay.getInt("PayType") == BsUtil.NEED_PAY) {
+				// 应付款
+				jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", jbsupplier.getStr("supplierCode"));
+				// 更新供应商的应付款：jbsupplier.needpay=jbsupplier.needpay-jhpay.amount
+				jbsupplier.set("needpay", BsUtil.plus(jbsupplier.getBigDecimal("needpay"), new BigDecimal(amount)));
+				int size = 100;
+				for (int i=0; i<size; i++) {
+					Jhpaydetail md = getModel(Jhpaydetail.class, "jpaydetail" + i);
+					Ckjhcheckdetail r = Ckjhcheckdetail.dao.findById(md.getLong("id"));
+					// 超过条数退出
+					if(r == null) break;
+					// 更新采购入/退库单的已付金额：ckjhcheck.payAmount=chjhcheck.payAmount+jhPayDetail. NowCollated(本次核销金额)
+					r.set("payAmount", BsUtil.add(r.getBigDecimal("payAmount"),md.getBigDecimal("NowCollated"),md.getBigDecimal("Adjust")));
+					md.set("PayOrderNo", jhpay.get("OrderCode"));
+					md.save();
+					r.update();
+				}
+				// 付款单主表jhpay金额
+				jhpay.set("Amount", amount);
+				// 供应商
+				jhpay.set("SupplierCode", jbsupplier.getStr("supplierCode"));
+			} else if (jhpay.getInt("PayType") == BsUtil.ADV_PAY) {
+				// 预付款
+				// 更新供应商预付款：jbsupplier. AdvanceAmount =jbsupplier. AdvanceAmount +jhpay.amount
+				jbsupplier.set("AdvanceAmount", BsUtil.add(jbsupplier.getBigDecimal("AdvanceAmount"),new BigDecimal(getPara("paymount"))));
+			} else if (jhpay.getInt("PayType") == BsUtil.ADV_TO_NEED_PAY) {
+				// 预付冲应付
+				amount = jbsupplier.getDouble("AdvanceAmount");
+				// 应付款
+				jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", jbsupplier.getStr("supplierCode"));
+				// 更新供应商的应付款：jbsupplier.needpay=jbsupplier.needpay-jhpay.amount
+				jbsupplier.set("needpay", BsUtil.plus(jbsupplier.getBigDecimal("needpay"), new BigDecimal(amount)));
+				int size = 100;
+				for (int i=0; i<size; i++) {
+					Jhpaydetail md = getModel(Jhpaydetail.class, "jpaydetail" + i);
+					if(md == null) break;
+					Ckjhcheck r = Ckjhcheck.dao.findById(md.getDouble("id"));
+					// 更新采购入/退库单的已付金额：ckjhcheck.payAmount=chjhcheck.payAmount+jhPayDetail. NowCollated(本次核销金额)
+					r.set("payAmount", BsUtil.add(r.getBigDecimal("payAmount"),md.getBigDecimal("NowCollated"),md.getBigDecimal("Adjust")));
+					// 单据类型
+					r.set("CollateType", jhpay.getInt("PayType"));
+					md.save();
+					r.save();
+				}
+				// 付款单主表jhpay金额
+				jhpay.set("Amount", amount);
+				// 供应商
+				jhpay.set("SupplierCode", jbsupplier.getStr("supplierCode"));
+			} else if (jhpay.getInt("PayType") == BsUtil.NEED_TO_ADV_PAY) {
+				// 应付转预付
+				// 审核过后供应商的应付款增加，同时供应商的预付账款也增加。
+				jbsupplier.set("needpay", BsUtil.add(jbsupplier.getBigDecimal("needpay"),new BigDecimal(amount)));
+				jbsupplier.set("AdvanceAmount", BsUtil.add(jbsupplier.getBigDecimal("AdvanceAmount"),new BigDecimal(amount)));
+			} else if (jhpay.getInt("PayType") == BsUtil.DIR_PAY) {
+				// 直接付款
+				// 审核过后将冲减供应商的应付款。
+				jbsupplier.set("needpay", BsUtil.plus(jbsupplier.getBigDecimal("needpay"),new BigDecimal(amount)));
+			}
+			jbsupplier.update();
+			jhpay.save();
+			toDwzJson(200, "保存成功！", navTabId,"closeCurrent");
+		} catch (Exception e) {
+			log.error("保存仓库分类异常", e);
+			toDwzJson(300, "保存异常！");
+		}
+	}
+	
+	// 审核
+	public void review() {
+		Long id = getParaToLong(0, 0L);
+		try {
+			if (id != null) {
+				Jhpay r = Jhpay.dao.findById(id);
+				if (r.getInt("CheckFlag") == null || r.getInt("CheckFlag") != 1) {
+					r.set("CheckFlag",1);
+					r.update();
+				}
+				toDwzJson(200, "审核通过！", navTabId);
+			}
+		} catch (Exception e) {
+			toDwzJson(300, "审核失败！");
+		}
+	}
+	
+	// 未审核
+	public void unreview() {
+		Long id = getParaToLong(0, 0L);
+		try {
+			if (id != null) {
+				Jhpay r = Jhpay.dao.findById(id);
+				if (r.getInt("CheckFlag") == null || r.getInt("CheckFlag") != 0) {
+					r.set("CheckFlag",0);
+					r.update();
+				}
+				toDwzJson(200, "反审核通过！", navTabId);
+			}
+		} catch (Exception e) {
+			toDwzJson(300, "反审核失败！");
+		}
+	}
+	
+	public void del() {
+		Long id = getParaToLong(0, 0L);
+		try {
+			if (id != null) {
+				Jhpay r = Jhpay.dao.findById(id);
+				Jhpay.dao.deleteById(id);
+				Db.update("delete from jhpaydetail where PayOrderNo=?", r.getStr("OrderCode"));
+			}
+			toDwzJson(200, "删除成功！", navTabId);
+		} catch (Exception e) {
+			toDwzJson(300, "删除失败！");
+		}
 	}
 
 }
