@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50145
 File Encoding         : 65001
 
-Date: 2013-12-06 17:39:01
+Date: 2013-12-11 17:44:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -567,7 +567,7 @@ CREATE TABLE `jbsupplier` (
   `SplusAmount` decimal(10,2) DEFAULT '0.00' COMMENT '往来余额',
   `StopFlag` smallint(6) DEFAULT '0' COMMENT '停止业务标志',
   `remark` varchar(150) DEFAULT '0' COMMENT '备注',
-  `needpay` decimal(10,0) DEFAULT NULL,
+  `needpay` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `supplierCode` (`supplierCode`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='供应商资料';
@@ -575,7 +575,7 @@ CREATE TABLE `jbsupplier` (
 -- ----------------------------
 -- Records of jbsupplier
 -- ----------------------------
-INSERT INTO `jbsupplier` VALUES ('1', '112', '2222', '0', '22', '2', '2', '2', '2', null, null, '2', '2', '2', '2', '22.00', '22', '222', '2.00', '100.00', '0.00', '0.00', null, '2', '-236');
+INSERT INTO `jbsupplier` VALUES ('1', '112', '2222', '0', '22', '2', '2', '2', '2', null, null, '2', '2', '2', '2', '22.00', '22', '222', '2.00', '100.00', '0.00', '0.00', null, '2', '235.58');
 
 -- ----------------------------
 -- Table structure for `jhpay`
@@ -598,11 +598,13 @@ CREATE TABLE `jhpay` (
   `BillOrderNo` varchar(20) DEFAULT NULL COMMENT '订单号',
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`,`OrderCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='采购付款单';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='采购付款单';
 
 -- ----------------------------
 -- Records of jhpay
 -- ----------------------------
+INSERT INTO `jhpay` VALUES ('1', 'CF-20131209-001', '2013-12-09', '112', '1', null, '系统管理员', '45', null, '0', null, null, '0.00', null, null);
+INSERT INTO `jhpay` VALUES ('3', 'CF-20131211-001', '2013-12-11', '112', '1', null, '系统管理员', '45', null, null, null, null, '34.42', null, null);
 
 -- ----------------------------
 -- Table structure for `jhpaydetail`
@@ -613,17 +615,25 @@ CREATE TABLE `jhpaydetail` (
   `OrderCode` varchar(20) NOT NULL COMMENT '付款单编号',
   `SerialNo` int(11) NOT NULL DEFAULT '1' COMMENT '序号',
   `CollateType` varchar(255) DEFAULT NULL,
-  `PayOrderNo` varchar(50) DEFAULT NULL,
+  `PayOrderNo` varchar(50) NOT NULL,
   `NowCollated` decimal(10,2) DEFAULT NULL COMMENT '本次付款金额',
   `Adjust` decimal(10,2) DEFAULT NULL COMMENT '抹零金额',
   `Amount` decimal(10,2) DEFAULT NULL COMMENT '金额',
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`,`OrderCode`,`SerialNo`)
+  PRIMARY KEY (`id`,`OrderCode`,`SerialNo`,`PayOrderNo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='采购付款单明细';
 
 -- ----------------------------
 -- Records of jhpaydetail
 -- ----------------------------
+INSERT INTO `jhpaydetail` VALUES ('11', 'PK-20131008-001', '1', '45', 'CF-20131209-001', '0.00', '0.00', '21.00', null);
+INSERT INTO `jhpaydetail` VALUES ('11', 'PK-20131008-001', '1', '45', 'CF-20131211-001', '21.00', '0.00', '21.00', null);
+INSERT INTO `jhpaydetail` VALUES ('13', 'PK-20131101-001', '1', '45', 'CF-20131209-001', '0.00', '0.00', '0.11', null);
+INSERT INTO `jhpaydetail` VALUES ('13', 'PK-20131101-001', '1', '45', 'CF-20131211-001', '0.11', '0.00', '0.11', null);
+INSERT INTO `jhpaydetail` VALUES ('14', 'PK-20131101-002', '1', '45', 'CF-20131209-001', '0.00', '0.00', '11.00', null);
+INSERT INTO `jhpaydetail` VALUES ('14', 'PK-20131101-002', '1', '45', 'CF-20131211-001', '11.00', '0.00', '11.00', null);
+INSERT INTO `jhpaydetail` VALUES ('15', 'PK-20131101-003', '1', '45', 'CF-20131209-001', '0.00', '0.00', '2.31', null);
+INSERT INTO `jhpaydetail` VALUES ('15', 'PK-20131101-003', '1', '45', 'CF-20131211-001', '2.31', '0.00', '2.31', null);
 
 -- ----------------------------
 -- Table structure for `menu`
