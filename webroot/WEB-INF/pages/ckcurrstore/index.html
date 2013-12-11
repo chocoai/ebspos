@@ -18,7 +18,7 @@ $("#cgordtable tr td:nth-child(10)").each(function(r,td){
 					<tr><th>商品名称</th><td>
 					    <input type="hidden" name="jbgoods.goodsCode"  value="${goodsCode!}">
 					    <input type="text" name="jbgoods.goodsName"   lookuppk="goodsCode"  class="textInput"  value="${goodsName!}" />
-					    <a class="btnLook"  url="/jbgoods/lookup"   lookupgroup="jbgoods"  lookuppk="goodsCode"  title="查找带回">查找带回</a>
+					    <a class="btnLook"  url="/jbgoods/lookuplst"   lookupgroup="jbgoods"  lookuppk="goodsCode"  title="查找带回">查找带回</a>
 					</td>
 					<th>订货仓库</th><td>
 					    <input type="hidden" name="store.StoreCode"  value="${StoreCode!}">
@@ -38,10 +38,7 @@ $("#cgordtable tr td:nth-child(10)").each(function(r,td){
 					target="dialog" height="580" width="1280" rel="cgordadd"><span>添加</span> </a></li>
 				<li><a class="edit" href="javascript:void(0);" url="${root!}/cgorder/add/{sid_key}"
 					title="修改采购订单" target="dialog" height="580" width="1280" rel="cgordupd"><span>修改</span>
-				</a></li>
-				<li><a class="arrow_redo" href="javascript:void(0);" url="${root!}/cgorder/review/{sid_key}" title="确定要审核通过该采购订单?" target="ajaxTodo"><span>审核</span> </a></li>
-				<li><a class="arrow_undo" href="javascript:void(0);" url="${root!}/cgorder/unreview/{sid_key}" title="确定要反审核该采购订单?" target="ajaxTodo"><span>反审核</span> </a></li>
-				<li><a class="delete" href="javascript:void(0);" url="${root!}/cgorder/del/{sid_key}" title="确定要删除该信息吗？" target="ajaxTodo"><span>删除</span></a></li>
+				</a></li>				
 				</@btnPower>
 			</ul>
 		</div>
