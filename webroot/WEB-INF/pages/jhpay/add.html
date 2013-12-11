@@ -6,7 +6,7 @@ function openCksltDlg() {
 				alertMsg.error('请选择供应商！')
 				return;
 			}
-			$.pdialog.open("${root!}/ckjhcheck/list/" + $(".spcd").val(), "cksltdlg", "选单", {width:800,height:480,drawable:true,fresh:true,mask:false,max:false,resizable:true});
+			$.pdialog.open("${root!}/ckjhcheck/list/" + $(".spcd").val(), "cksltdlg11", "选单", {width:800,height:480,drawable:true,fresh:true,mask:false,max:false,resizable:true});
 }
 function autoPay() {
 	var money,total=0;
@@ -48,7 +48,7 @@ $(function (){
 			for ( var i = 0; i < $("input").length; i++) {
 				$(".pageContent input[type=text]").attr("readonly","readonly");
 			}
-/* 		    $(".pageContent button[type=submit]").attr("disabled","disabled"); */
+ 		    $(".pageContent button[type=submit]").attr("disabled","disabled");
 		    $(".pageContent").removeClass("combox");
 /* 		    $(".pageContent select").attr("disabled","disabled").css({ "color":"#ccc"}); */
 		    $(".pageContent .btnDel").remove();
