@@ -27,7 +27,7 @@ $("#ckDetailTlb tr").each(function(){
 					<th>票据日期：</th><td><input type="text"  name="cKinitStore.OrderDate" class="date"  value="${ckt.OrderDate!}"><a class="inputDateButton" href="javascript:;">选择</a></td>
 				</tr>
 				<tr>                                                             
-					<th>仓库：</th><td><select name="cKinitStore.StoreNo" class="combox"  val="${ckt.storeno!}"><@storeSelect/></select></td>
+					<th>仓库：</th><td><select name="cKinitStore.storeno" class="combox"  val="${ckt.storeno!}"><@storeSelect/></select></td>
 					<th>部门：</th><td><select name="cKinitStore.DepartmentNo" class="combox"  val="${ckt.DepartmentNo!}"><@partSelect/></select></td>
 				</tr>
 				<tr>

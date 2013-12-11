@@ -3,6 +3,8 @@ package com.ebspos.controller;
 import java.util.ArrayList;
 import java.util.List;
 import net.loyin.jFinal.anatation.RouteBind;
+
+import com.ebspos.ftl.EmployeeSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
 import com.ebspos.model.Jbsupplier;
 import com.jfinal.aop.Before;
@@ -23,7 +25,7 @@ public class JbsupplierController extends BaseController {
 	@Override
 	public void index() {
 		getPageInfo();
-		setAttr("collist", new String[]{"供应商代码","供应商名称","供应商类别","停用","备注"});
+		setAttr("collist", new String[]{"供应商代码","供应商名称","停用","备注"});
 		render("index.html");
 	}
 	
@@ -49,7 +51,7 @@ public class JbsupplierController extends BaseController {
 		setAttr("suppliercode",suppliercode);
 		setAttr("suppliername",suppliername);
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
-				"select p.id,p.suppliercode 供应商代码, p.suppliername 供应商名称,p.suppliertypeno 供应商类别,p.stopflag 停用,p.remark 备注,p.AdvanceAmount 预付款",
+				"select p.id,p.suppliercode 供应商代码, p.suppliername 供应商名称,p.stopflag 停用,p.remark 备注",
 				" from  jbsupplier p where 1=1  "+whee.toString(),param.toArray()));
 	}
 	
@@ -60,7 +62,8 @@ public class JbsupplierController extends BaseController {
 			xtts = Jbsupplier.dao.findById(id);
 		}
         
-		setAttr("xtts", xtts);		
+		setAttr("xtts", xtts);
+		setAttr(EmployeeSelectTarget.targetName, new EmployeeSelectTarget());
 		render("add.html");
 	}
 	public void save() {

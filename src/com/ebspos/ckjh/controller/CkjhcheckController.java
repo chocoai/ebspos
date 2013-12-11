@@ -1,5 +1,6 @@
 package com.ebspos.ckjh.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,7 +8,6 @@ import java.util.List;
 import net.loyin.jFinal.anatation.RouteBind;
 
 import com.ebspos.cg.model.Cgorder;
-import com.ebspos.cg.model.Cgorderdetail;
 import com.ebspos.ckjh.model.Ckjhcheck;
 import com.ebspos.ckjh.model.Ckjhcheckdetail;
 import com.ebspos.controller.BaseController;
@@ -48,55 +48,45 @@ public class CkjhcheckController extends BaseController {
 	}
 	
 	private void select() {
-        String urlPara = getPara();
-        StringBuffer whee=new StringBuffer();
-        List<Object> param = new ArrayList<Object>();
-        if (urlPara != null) {
-        	// 首次
-        	String supplierCode = getPara(0);
-    		whee.append(" and p.SupplierNo = ?");
-    		param.add(Long.parseLong(supplierCode));
-        	setAttr("supplierCode", supplierCode);
-        	Jbsupplier jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", supplierCode);
-        	setAttr("supplierName", jbsupplier.get("supplierName"));
-        } else {
-        	String startTime = getPara("startTime");
-        	if(startTime!=null&&!"".equals(startTime.trim())){
-        		whee.append(" and UNIX_TIMESTAMP(p.OrderDate) >= UNIX_TIMESTAMP(?)");
-        		param.add(startTime);
-        	}
-        	setAttr("startTime", startTime);
-        	String endTime = getPara("endTime");
-        	if(endTime!=null&&!"".equals(endTime.trim())){
-        		whee.append(" and UNIX_TIMESTAMP(p.OrderDate) <= UNIX_TIMESTAMP(?)");
-        		param.add(endTime);
-        	}
-        	setAttr("endTime", endTime);
-        	String supplierCode = getPara("supplier.supplierCode");
-        	if(supplierCode!=null && !"".equals(supplierCode.trim())){
-        		whee.append(" and p.SupplierNo = ?");
-        		param.add(Long.parseLong(supplierCode));
-        	}
-        	setAttr("supplierCode", supplierCode);
-        	setAttr("supplierName", getPara("supplier.supplierName"));
-        	
-        	String storeCd = getPara("store.StoreCode");
-        	if(storeCd!=null && !"".equals(storeCd.trim())){
-        		whee.append(" and p.StoreNo = ?");
-        		param.add(Long.parseLong(storeCd));
-        	}
-        	setAttr("StoreCode", storeCd);
-        	setAttr("StoreName", getPara("store.StoreName"));
-        }
-		String sql = " from ckjhcheck p  left join  jbsupplier b on p.SupplierNo = b.supplierCode ";
-		sql += " left join  jbstore c on p.StoreNo = c.StoreCode ";
-		sql += " left join  employee d on d.usr_no = p.EmployeeNo ";
-		sql += " left join  partment e on e.id = p.DepartmentNo ";
+		StringBuffer whee=new StringBuffer();
+		List<Object> param = new ArrayList<Object>();
+		String startTime = getPara("startTime");
+		if(startTime!=null&&!"".equals(startTime.trim())){
+			whee.append(" and UNIX_TIMESTAMP(p.OrderDate) >= UNIX_TIMESTAMP(?)");
+			param.add(startTime);
+		}
+		setAttr("startTime", startTime);
+		String endTime = getPara("endTime");
+		if(endTime!=null&&!"".equals(endTime.trim())){
+			whee.append(" and UNIX_TIMESTAMP(p.OrderDate) <= UNIX_TIMESTAMP(?)");
+			param.add(endTime);
+		}
+		setAttr("endTime", endTime);
+		String supplierCode = getPara("supplier.supplierCode");
+		if(supplierCode!=null && !"".equals(supplierCode.trim())){
+			whee.append(" and p.SupplierCode = ?");
+			param.add(Long.parseLong(supplierCode));
+		}
+		setAttr("supplierCode", supplierCode);
+		setAttr("supplierName", getPara("supplier.supplierName"));
+		
+		String storeCd = getPara("store.StoreCode");
+		if(storeCd!=null && !"".equals(storeCd.trim())){
+			whee.append(" and p.StoreCode = ?");
+			param.add(Long.parseLong(storeCd));
+		}
+		setAttr("StoreCode", storeCd);
+		setAttr("StoreName", getPara("store.StoreName"));
+		String sql = " from ckjhcheck p  left join  jbsupplier b on p.SupplierCode = b.supplierCode ";
+		sql += " left join  jbstore c on p.StoreCode = c.StoreCode ";
+		sql += " left join  employee d on d.usr_no = p.EmpCode ";
+		sql += " left join  partment e on e.deptCode = p.deptCode ";
+		sql += " left join  types t on t.id=p.inoutTypeNo and t.function='入库类型'";
 		sql +=" where 1=1 ";
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
-				"select p.id,p.OrderNo 订单号, p.OrderDate 进货日期,p.remark 备注, p.InOutTypeNo 入库类型,p.BillOrderNo 采购单号,p.CKAmount 入库金额, p.Amount 购货金额, b.supplierName 供应商,c.StoreName 订货仓库,d.usr_name 业务员, e.`name` 部门 ",
+				"select p.id,p.Ordercode 订单号, p.OrderDate 进货日期,p.remark 备注, t.name 入库类型,p.BillOrderNo 采购单号,p.CKAmount 入库金额, p.payAmount 已付金额,p.checkflag 审核, b.supplierName 供应商,c.StoreName 订货仓库,d.usr_name 业务员, e.`name` 部门 ",
 				sql + whee.toString(),param.toArray()));
-		setAttr("collist", new String[]{"订单号","进货日期","供应商","业务员","部门","收货日期","订货仓库","入库类型","采购单号","入库金额","购货金额","备注"});
+		setAttr("collist", new String[]{"订单号","进货日期","供应商","业务员","部门","收货日期","订货仓库","入库类型","采购单号","入库金额","已付金额","审核","备注"});
 	}
 	
 	// 采购入库
@@ -106,22 +96,22 @@ public class CkjhcheckController extends BaseController {
 		Jbstore jbstore = new Jbstore();
 		List<Object> param=new ArrayList<Object>();
 		// 采购入库单号
-		String ordCdNw = null;
+		//String ordCdNw = null;
 		String obj = getPara();
-		// 由采购订单导入
-		ordCdNw = "PK" + obj.substring(4);
+		// 由采购订单导入,入库单号不用改
+		//ordCdNw = "PK" + obj.substring(4);
 		Cgorder cgOrd = new Cgorder();
 		cgOrd = Cgorder.dao.findFirst("select * from cgorder where orderCode = ?", new Object[]{obj});
 		jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", cgOrd.getStr("supplierCode"));
-		jbstore = Jbstore.dao.findFirst("select * from jbstore where StoreCode = ?", cgOrd.getInt("StoreCode"));
-		ckjhcheck.set("OrderNo", ordCdNw);
+		jbstore = Jbstore.dao.findFirst("select * from jbstore where StoreCode = ?", cgOrd.getStr("StoreCode"));
+		//ckjhcheck.set("OrderCode", ordCdNw);
 		ckjhcheck.set("OrderDate", cgOrd.getDate("DeliveryDate"));
-		ckjhcheck.set("SupplierNo", cgOrd.getStr("supplierCode"));
-		ckjhcheck.set("StoreNo", cgOrd.getInt("StoreCode"));
-		ckjhcheck.set("InOutTypeNo", "52");
+		ckjhcheck.set("supplierCode", cgOrd.getStr("supplierCode"));
+		ckjhcheck.set("StoreCode", cgOrd.getStr("StoreCode"));
+		//ckjhcheck.set("InOutTypeNo", "52");
 		ckjhcheck.set("BillOrderNo", cgOrd.getStr("orderCode"));
-		ckjhcheck.set("DepartmentNo", cgOrd.getInt("partmentNo"));
-		ckjhcheck.set("EmployeeNo", cgOrd.getStr("EmployeeNo"));
+		ckjhcheck.set("deptCode", cgOrd.getStr("deptcode"));
+		ckjhcheck.set("Empcode", cgOrd.getStr("Empcode"));
 		ckjhcheck.set("Operator", cgOrd.getStr("Operator"));
 		ckjhcheck.set("CheckFlag", 1);
 		StringBuffer whee=new StringBuffer();
@@ -161,23 +151,30 @@ public class CkjhcheckController extends BaseController {
 		Long id = getParaToLong(0, 0L);
 		List<Object> param=new ArrayList<Object>();
 		StringBuffer whee=new StringBuffer();
-		whee.append(" and a.OrderNo = ?");
+		whee.append(" and a.OrderCode = ?");
 		if (id != 0) { // 修改
 			ckjhcheck = Ckjhcheck.dao.findById(id);
-			jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", ckjhcheck.getStr("SupplierNo"));
-			jbstore = Jbstore.dao.findFirst("select * from jbstore where StoreCode = ?", ckjhcheck.getInt("StoreNo"));
+			jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", ckjhcheck.getStr("SupplierCode"));
+			jbstore = Jbstore.dao.findFirst("select * from jbstore where StoreCode = ?", ckjhcheck.getStr("StoreCode"));
 			param.add(ckjhcheck.get("OrderNo"));
 		} else {
 			synchronized(lock) {
-				ordCdNw = BsUtil.getMaxOrdNo("OrderNo","PK","ckjhcheck");
+				ordCdNw = BsUtil.getMaxOrdNo("OrderCode","PK","ckjhcheck");
 			}
-			ckjhcheck.set("OrderNo", ordCdNw);
+			ckjhcheck.set("OrderCode", ordCdNw);
 			param.add(ordCdNw);
+			//赋值当前时间
+			Date dt=new Date();
+			SimpleDateFormat ckDate=new SimpleDateFormat("yyyy-MM-dd");
+			ckjhcheck.set("orderdate", ckDate.format(dt));
+			//赋值制单人
+			Record m=getCurrentUser();
+			ckjhcheck.set("operator",m.getStr("usr_name"));
 		}
 		String sql = "select a.id,b.GoodsCode 商品编号,b.GoodsName 商品名称,b.Model 商品规格,b.BaseUnit 基本单位,b.BRefPrice 原价,a.Discount 折扣,a.OrigPrice 单价, a.Quantity 数量,";
 		sql += " a.TaxRate 税率,a.TaxAmount 税额,a.Amount 金额";
 		String sqlSelect = " from ckjhcheckdetail a"; 
-		sqlSelect += " left join jbgoods b on a.GoodsNo = b.GoodsCode where 1=1 ";
+		sqlSelect += " left join jbgoods b on a.GoodsCode = b.GoodsCode where 1=1 ";
 		Page<Record> redLst = Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
 				sql, sqlSelect + whee.toString(),param.toArray());
 		int size = redLst.getList().size();
@@ -204,8 +201,8 @@ public class CkjhcheckController extends BaseController {
 			Ckjhcheck m = getModel(Ckjhcheck.class,"ckjhcheck");
 			Jbsupplier supplier = getModel(Jbsupplier.class,"supplier");
 			Jbstore store = getModel(Jbstore.class,"store");
-			m.set("SupplierNo", supplier.getStr("supplierCode"));
-			m.set("StoreNo", store.getStr("StoreCode"));
+			m.set("SupplierCode", supplier.getStr("supplierCode"));
+			m.set("StoreCode", store.getStr("StoreCode"));
 			if (getPara("typeFlg") != null && !getPara("typeFlg").equals("")) {
 				m.set("SettleTypeFlag", getParaToInt("typeFlg"));
 				settleTypeFlag = true;
@@ -223,12 +220,12 @@ public class CkjhcheckController extends BaseController {
 			if(settleTypeFlag) {
 				Double amount = Double.parseDouble(getPara("amount"));
 			}
-			String orderNo = getPara("ckjhcheck.OrderNo");
+			String orderCode = getPara("ckjhcheck.OrderCode");
 			// 保存明细
 			int size = 0;
 			// 通过【新建商品明细】按钮新追加记录
 			String[] index = getParaValues("lineId");
-			size = Db.queryLong("select count(*)  from ckjhcheckdetail where orderNo = '" +  orderNo + "'").intValue();
+			size = Db.queryLong("select count(*)  from ckjhcheckdetail where orderCode = '" +  orderCode + "'").intValue();
 			if (!(index == null || index.length == 0)) {
 				size = size + index.length;
 			}
@@ -240,12 +237,12 @@ public class CkjhcheckController extends BaseController {
 				Ckjhcheckdetail md = getModel(Ckjhcheckdetail.class, "ckjhcheckDetail" + i);
 				Jbgoods goods = getModel(Jbgoods.class,"goods" + i);
 				if (goods.getStr("GoodsCode") != null) {
-					md.set("GoodsNo", goods.get("GoodsCode"));
+					md.set("GoodsCode", goods.get("GoodsCode"));
 					Ckjhcheckdetail tmp = Ckjhcheckdetail.dao.findById(md.getLong("id"));
 					if (tmp != null ) {
 						md.update();
 					} else {
-						md.set("orderNo", orderNo);
+						md.set("ordercode", orderCode);
 						md.save();
 					}
 					// 当面付模式
@@ -267,12 +264,60 @@ public class CkjhcheckController extends BaseController {
 			if (id != null) {
 				Ckjhcheck r = Ckjhcheck.dao.findById(id);
 				Ckjhcheck.dao.deleteById(id);
-				Db.update("delete from ckjhcheckdetail where OrderNo=?", r.getStr("OrderNo"));
+				Db.update("delete from ckjhcheckdetail where OrderCode=?", r.getStr("OrderCode"));
 			}
 			toDwzJson(200, "删除成功！", navTabId);
 		} catch (Exception e) {
 			toDwzJson(300, "删除失败！");
 		}
 	}
+	// 审核
+		public void review() {
+			Long id = getParaToLong(0, 0L);
+			try {
+				if (id != null) {
+					Ckjhcheck r = Ckjhcheck.dao.findById(id);
+					/*
+					if (r.getInt("SettleTypeFlag") == 2) {
+						toDwzJson(300, "已清货不能审核！", navTabId);
+						return;
+					}
+					*/
+					if (r.getInt("CheckFlag") != 1) {
+						r.set("CheckFlag",1);
+						//登录人即审核者
+						Record m=getCurrentUser();					
+						r.set("checkman", m.getStr("usr_name"));
+						r.update();
+					}
+					toDwzJson(200, "审核通过！", navTabId);
+				}
+			} catch (Exception e) {
+				toDwzJson(300, "审核失败！"+e.getMessage());
+			}
+		}
+		
+		// 未审核
+		public void unreview() {
+			Long id = getParaToLong(0, 0L);
+			try {
+				if (id != null) {
+					Ckjhcheck r = Ckjhcheck.dao.findById(id);
+					/*
+					if (r.getInt("SettleTypeFlag") == 2) {
+						toDwzJson(300, "已清货不能反审核！", navTabId);
+						return;
+					}
+					*/
+					if (r.getInt("CheckFlag") != 0) {
+						r.set("CheckFlag",0);
+						r.update();
+					}
+					toDwzJson(200, "反审核通过！", navTabId);
+				}
+			} catch (Exception e) {
+				toDwzJson(300, "删除失败！");
+			}
+		}
 
 }

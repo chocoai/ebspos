@@ -23,7 +23,7 @@ $(function (){
 		$("#cgOrdTbl tr")
 				.each(
 						function() {
-							var brefprice = 0, discount = 0, origprice = 0, quantity = 0, taxrate = 0, taxamount = 0, amount = 0;
+							var brefprice = 0, discount = 0, price = 0, quantity = 0, taxrate = 0, taxamount = 0, amount = 0;
 							// 有数据【商品编号】
 							if ($(this).find('td').eq(1).find('input').val()) {
 								// 税率默认值17%
@@ -54,21 +54,21 @@ $(function (){
 											.val()
 									&& $(this).find('td').eq(9).find('input')
 											.val()) {
-								origprice = (new Number($(this).find('td')
+								price = (new Number($(this).find('td')
 										.eq(7).find('input').val()));
 								quantity = (new Number($(this).find('td').eq(8)
 										.find('input').val()));
 								taxrate = (new Number($(this).find('td').eq(9)
 										.find('input').val()) / 100);
 								$(this).find('td').eq(10).find('input').val(
-										new Number(origprice * taxrate
+										new Number(price * taxrate
 												* quantity).toFixed(2));
 							}
 							if ($(this).find('td').eq(10).find('input').val()) {
 								taxamount = (new Number($(this).find('td').eq(
 										10).find('input').val()));
 								$(this).find('td').eq(11).find('input').val(
-										new Number(origprice * quantity
+										new Number(price * quantity
 												+ taxamount).toFixed(2));
 								amount = (new Number($(this).find('td').eq(11)
 										.find('input').val()));
@@ -107,37 +107,37 @@ $(function (){
 			<tbody><tr>
 			<th style="width:50px"></th>
 			<th valign="top">
-			   <div style="width:90px;text-align:left;">进货订单</div>
+			   <div style="width:90px;text-align:left;">采购订单</div>
 			 </th>
 			 <th style="width:500px"></th>
-			  <th>单据编号</th><td><input type="text"  name="cgOrd.ordercode"  readonly="readonly"  value="${cgOrd.ordercode!}"></td>
+			  <th>单据编号：</th><td><input type="text"  name="cgOrd.ordercode"  readonly="readonly"  value="${cgOrd.ordercode!}"></td>
 			  <td>&nbsp;&nbsp;</td>
-			 <th>单据日期</th><td><input type="text" name="cgOrd.orderDate" class="date" readonly="true"  dateFmt="yyyy-M-d"   value="${cgOrd.orderDate!}"/>
+			 <th>单据日期：</th><td><input type="text" name="cgOrd.orderDate" class="date" readonly="true"  dateFmt="yyyy-MM-dd"   value="${cgOrd.orderDate!}"/>
 						   <a class="inputDateButton" href="javascript:;">选择</a></td>
 			  <td>&nbsp;&nbsp;</td>
-			  <th>制单人</th><td><input type="text"  readonly="readonly"  name="cgOrd.Operator"  value="管理员"></td>
+			  <th>制单人：</th><td><input type="text"  readonly="readonly"  name="cgOrd.Operator"  value="${cgOrd.operator!}"></td>
 		 </tr></tbody>
 		 </table>
 		 <div style="border: 1px solid rgb(183, 183, 183);box-shadow: 1px 2px 2px rgb(255, 255, 255);margin-bottom: 5px;text-align: left;">
 		 <table style="margin-top:5px;margin-bottom:5px;padding:5px;">
-		 <tr height="30"><th>供货商</th><td>
+		 <tr height="30"><th>供货商：</th><td>
 					    <input type="hidden" name="supplier.supplierCode"  lookupgroup="supplier"  value="${supplier.supplierCode!}">
 					    <input type="text"  class="required textInput valid"  readonly="readonly"  name="supplier.supplierName"   lookuppk="supplierNo"  value="${supplier.supplierName!}" />
 					    <a class="btnLook"  url="/jbsupplier/lookuplst"   lookupgroup="supplier"  lookuppk="supplierNo"  title="查找带回">查找带回</a>
 					    </td>
-				 <th>订货仓库</th><td><input type="hidden" name="store.StoreCode"
+				 <th>订货仓库：</th><td><input type="hidden" name="store.StoreCode"
 							lookupgroup="store" value="${store.StoreCode!}">
 							<input autocomplete="off" name="store.StoreName"  readonly="readonly" 
 							suggestfields="StoreCode,storeName" suggesturl=""
 							lookupgroup="store" type="text" value="${store.StoreName!}" />
 							<a class="btnLook" url="/jbstore/lookuplst" title="查找带回" lookupgroup="store" lookuppk="storeCode">查找带回</a></td>
-			       <th>交货日期</th><td><input type="text" name="cgOrd.DeliveryDate" class="date"  dateFmt="yyyy-M-d"  readonly="true" value="${cgOrd.DeliveryDate!}" />
+			       <th>交货日期：</th><td><input type="text" name="cgOrd.DeliveryDate" class="date"  dateFmt="yyyy-M-d"  readonly="true" value="${cgOrd.DeliveryDate!}" />
 						   <a class="inputDateButton" href="javascript:;">选择</a></td>
 		</tr>
 		<tr>
-			<th>部门：</th><td><select name="cgOrd.partmentNo" class="combox"  val="${cgOrd.partmentNo!}"><@partSelect/></select></td>
-			<th>管理员：</th><td><select name="cgOrd.EmployeeNo" class="combox"  val="${cgOrd.EmployeeNo!}"><@empSelect/></select></td>
-			<th>备注</th><td><input type="text" name="cgOrd.remark" value="${cgOrd.remark!}" ></td>
+			<th>采购部门：</th><td><select name="cgOrd.deptcode" class="combox"  val="${cgOrd.deptcode!}"><@partSelect/></select></td>
+			<th>业务员：</th><td><select name="cgOrd.empcode" class="combox"  val="${cgOrd.empcode!}"><@empSelect/></select></td>
+			<th>备注：</th><td><input type="text" name="cgOrd.remark" value="${cgOrd.remark!}" ></td>
 		</tr>
 	</table>
    </div>
@@ -163,7 +163,7 @@ $(function (){
 						defaultval="0" >原价</th>
 					<th type="text" name="cgOrdDetail#index#.Discount" size="12"
 						defaultval="100"  numFmt="##.##%">折扣%</th>
-					<th type="text" name="cgOrdDetail#index#.OrigPrice" size="12"
+					<th type="text" name="cgOrdDetail#index#.Price" size="12"
 						defaultval="0" >单价</th>
 					<th type="text" name="cgOrdDetail#index#.Quantity"
 						defaultval="0" size="12"  fieldclass="number" >数量</th>
@@ -199,7 +199,7 @@ $(function (){
 				  <!-- 折扣 -->
 				  <td><input type="text" name="cgOrdDetail${d_index}.Discount" value="${d.折扣!}"  size="12"  defaultValue="0.0"  numFmt="##.##%" class="number" ></td>
 				  <!-- 单价 -->
-				  <td><input type="text" name="cgOrdDetail${d_index}.OrigPrice" value="${d.单价!}"  size="12"  defaultValue="0"  class="number" ></td>
+				  <td><input type="text" name="cgOrdDetail${d_index}.Price" value="${d.单价!}"  size="12"  defaultValue="0"  class="number" ></td>
 				  <!-- 数量 -->
 				  <td><input type="text" name="cgOrdDetail${d_index}.Quantity" value="${d.数量!}" size="12"  defaultValue="0"  class="number" ></td>
 				  	<!-- 税率 -->
@@ -208,7 +208,7 @@ $(function (){
 				  <td><input type="text" name="cgOrdDetail${d_index}.TaxAmount" value="${d.税额!}"  size="12"  defaultval="0"  readonly="readonly" ></td>
 				  	<!-- 金额 -->
 				  <td><input type="text" name="cgOrdDetail${d_index}.Amount" value="${d.税后金额!}" size="12"  defaultval="0"  readonly="readonly" ></td>
-				  <td><a class="btnDel"  href="${path}/cgdOrd/delDetail/${d.id!}"  title="确定要删除期初入库单吗？" target="ajaxTodo"><span>删除</span></a></td>
+				  <td><a class="btnDel"  href="${path}/cgdOrd/delDetail/${d.id!}"  title="确定要删除该条记录吗？" target="ajaxTodo"><span>删除</span></a></td>
 				</tr>
 				</#list>
 			</tbody>
@@ -226,7 +226,7 @@ $(function (){
 		         <input type="checkBox"  id="checkTypeFlag" onclick="if ($('#CheckFlag').prop('checked')==true) {$('#CheckFlag').val(1);}"  <#if cgOrd.CheckFlag??&&cgOrd.CheckFlag==1> checked="checked" disabled</#if> />
 		         </td>
 		         <th>数量合计：</th><td width="120"><span id ="total" ></span></td>
-		         <th>金额合计：</th><td width="120"><input type="hidden"   id="amount"   name="amount"><span id ="all" ></span></td>
+		         <th>金额合计：</th><td width="120"><input type="hidden"   id="amount"   name="cgOrd.Amount" value="${cgOrd.Amount!}"><span id ="all" ></span></td>
 		         <th></th><td width="120">
 		         <input type="hidden"   id="typeFlg"   name="typeFlg"  value="${cgOrd.SettleTypeFlag!}"/>
 		         <input type="checkBox"  id="settleTypeFlag" onclick="if ($('#settleTypeFlag').prop('checked')==true) {$('#typeFlg').val(2);}"  <#if cgOrd.SettleTypeFlag??&&cgOrd.SettleTypeFlag==2> checked="checked"</#if> />清货</td>

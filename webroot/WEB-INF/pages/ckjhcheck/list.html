@@ -2,11 +2,11 @@
 <@layout>
 <script type="text/javascript">
 initQueryForm();
-$("#cgordtable tr td:nth-child(12)").each(function(r,td){
+$("#ckjhlisttable tr td:nth-child(12)").each(function(r,td){
 	var num=(new Number($(td).text()));
 	$(td).html(checkFlg[num]);
 });
-$("#cgordtable tr td:nth-child(13)").each(function(r,td){
+$("#ckjhlisttable tr td:nth-child(13)").each(function(r,td){
 	var num=(new Number($(td).text()));
 	$(td).html(storeStopFlg[num]);
 });

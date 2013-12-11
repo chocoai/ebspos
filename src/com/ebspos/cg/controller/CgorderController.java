@@ -1,5 +1,6 @@
 package com.ebspos.cg.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -84,12 +85,12 @@ public class CgorderController extends BaseController {
 		sql +=" where 1=1 ";
 		if (type.equals("lookup")) {
 			whee.append(" and p.CheckFlag = 1");
-			setAttr("collist", new String[]{"订单号","订单日期","供应商","业务员","部门","收货日期","订货仓库","税后金额"});
+			setAttr("collist", new String[]{"订单号","订单日期","供应商","业务员","部门","收货日期","订货仓库","订单金额"});
 		} else {
-			setAttr("collist", new String[]{"订单号","订单日期","供应商","业务员","部门","收货日期","订货仓库","折前金额","折后金额","税后金额","审核","停用","备注"});
+			setAttr("collist", new String[]{"订单号","订单日期","供应商","业务员","部门","收货日期","订货仓库","订单金额","审核","备注"});
 		}
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
-				"select p.id,p.ordercode 订单号, p.orderdate 订单日期,p.stopflag 停用, p.CheckFlag 审核, p.DeliveryDate 收货日期,p.remark 备注, b.supplierName 供应商,c.StoreName 订货仓库,d.usr_name 业务员, e.`name` 部门 ",
+				"select p.id,p.ordercode 订单号, p.orderdate 订单日期, p.CheckFlag 审核, p.DeliveryDate 收货日期,p.amount 订单金额,p.remark 备注, b.supplierName 供应商,c.StoreName 订货仓库,d.usr_name 业务员, e.`name` 部门 ",
 				sql + whee.toString(),param.toArray()));
 	}
 	
@@ -104,7 +105,7 @@ public class CgorderController extends BaseController {
 		if (id != 0) { // 修改
 			cgOrd = Cgorder.dao.findById(id);
 			jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", cgOrd.getStr("supplierCode"));
-			jbstore = Jbstore.dao.findFirst("select * from jbstore where StoreCode = ?", cgOrd.getInt("StoreCode"));
+			jbstore = Jbstore.dao.findFirst("select * from jbstore where StoreCode = ?", cgOrd.getStr("StoreCode"));
 			param.add(cgOrd.get("orderCode"));
 		} else {
 			String ordCdNw;
@@ -113,8 +114,16 @@ public class CgorderController extends BaseController {
 			}
 			cgOrd.set("orderCode", ordCdNw);
 			param.add(ordCdNw);
+			//赋值当前时间
+			Date dt=new Date();
+			SimpleDateFormat cgDate=new SimpleDateFormat("yyyy-MM-dd");
+			cgOrd.set("orderdate", cgDate.format(dt));
+			//赋值制单人
+			Record m=getCurrentUser();
+			cgOrd.set("operator",m.getStr("usr_name"));
+			
 		}
-		String sql = "select a.id,b.GoodsCode 商品编号,b.GoodsName 商品名称,b.Model 商品规格,b.BaseUnit 基本单位,b.BRefPrice 原价,a.Discount 折扣,a.OrigPrice 单价, a.Quantity 数量,";
+		String sql = "select a.id,b.GoodsCode 商品编号,b.GoodsName 商品名称,b.Model 商品规格,b.BaseUnit 基本单位,a.OrigPrice 原价,a.Discount 折扣,a.Price 单价, a.Quantity 数量,";
 		sql += " a.TaxRate 税率,a.TaxAmount 税额,a.Amount 税后金额";
 		String sqlSelect = " from cgorderdetail a"; 
 		sqlSelect += " left join jbgoods b on a.GoodsCode = b.GoodsCode where 1=1 ";
@@ -142,16 +151,16 @@ public class CgorderController extends BaseController {
 		Ckjhcheck ckjhcheck = new Ckjhcheck();
 		String ordCdNw;
 		synchronized(lock) {
-			ordCdNw = BsUtil.getMaxOrdNo("OrderNo","PK","ckjhcheck");
-			ckjhcheck.set("OrderNo", ordCdNw);
+			ordCdNw = BsUtil.getMaxOrdNo("Ordercode","PK","ckjhcheck");
+			ckjhcheck.set("Ordercode", ordCdNw);
 		}
 		ckjhcheck.set("OrderDate", m.getDate("DeliveryDate"));
-		ckjhcheck.set("SupplierNo", m.getStr("supplierCode"));
-		ckjhcheck.set("StoreNo", m.getInt("StoreCode"));
+		ckjhcheck.set("Suppliercode", m.getStr("supplierCode"));
+		ckjhcheck.set("Storecode", m.getStr("StoreCode"));
 		ckjhcheck.set("InOutTypeNo", "1");
 		ckjhcheck.set("BillOrderNo", m.getStr("orderCode"));
-		ckjhcheck.set("DepartmentNo", m.getInt("partmentNo"));
-		ckjhcheck.set("EmployeeNo", m.getStr("EmployeeNo"));
+		ckjhcheck.set("deptcode", m.getStr("deptcode"));
+		ckjhcheck.set("Empcode", m.getStr("Empcode"));
 		ckjhcheck.set("Operator", m.getStr("Operator"));
 		// 入库金额
 		ckjhcheck.set("CKAmount", amount);
@@ -164,9 +173,9 @@ public class CgorderController extends BaseController {
 	// 采购入库明细信息
 	private void initCkjhcheckDetail(Cgorderdetail md,String ordNo) {
 		Ckjhcheckdetail ckjhcheckDetail = new Ckjhcheckdetail();
-		ckjhcheckDetail.set("OrderNo", ordNo);
+		ckjhcheckDetail.set("Ordercode", ordNo);
 		ckjhcheckDetail.set("SerialNo", md.getInt("SerialNo"));
-		ckjhcheckDetail.set("GoodsNo", md.getStr("GoodsCode"));
+		ckjhcheckDetail.set("Goodscode", md.getStr("GoodsCode"));
 		ckjhcheckDetail.set("Quantity", md.getBigDecimal("Quantity"));
 		ckjhcheckDetail.set("OrigPrice", md.getBigDecimal("OrigPrice"));
 		ckjhcheckDetail.set("Price", md.getBigDecimal("Price"));
@@ -189,7 +198,7 @@ public class CgorderController extends BaseController {
 			Jbstore store = getModel(Jbstore.class,"store");
 			m.set("supplierCode", supplier.getStr("supplierCode"));
 			m.set("StoreCode", store.getStr("StoreCode"));
-			if (getPara("typeFlg") != null && !getPara("typeFlg").equals("")) {
+			if (getPara("typeFlg").equals("2")){ //= null && !getPara("typeFlg").equals("")) {
 				m.set("SettleTypeFlag", getParaToInt("typeFlg"));
 				settleTypeFlag = true;
 				// 清货状态自动审核
@@ -208,12 +217,12 @@ public class CgorderController extends BaseController {
 				// 生成采购入库单
 				initCkjhcheck = initCkjhcheck(m,amount);
 			}
-			String orderNo = getPara("cgOrd.ordercode");
+			String orderCode = getPara("cgOrd.ordercode");
 			// 保存明细
 			int size = 0;
 			// 通过【新建商品明细】按钮新追加记录
 			String[] index = getParaValues("lineId");
-			size = Db.queryLong("select count(*)  from cgorderdetail where orderCode = '" +  orderNo + "'").intValue();
+			size = Db.queryLong("select count(*)  from cgorderdetail where orderCode = '" +  orderCode + "'").intValue();
 			if (!(index == null || index.length == 0)) {
 				size = size + index.length;
 			}
@@ -227,15 +236,18 @@ public class CgorderController extends BaseController {
 				if (goods.getStr("GoodsCode") != null) {
 					md.set("GoodsCode", goods.get("GoodsCode"));
 					if (md.getLong("id") != null) {
+						md.set("OrigPrice",goods.get("BRefPrice"));
 						md.update();
 						md = Cgorderdetail.dao.findById(md.getLong("id"));
 					} else {
-						md.set("ordercode", orderNo);
+						md.set("ordercode", orderCode);
+						md.set("OrigPrice",goods.get("BRefPrice"));
 						md.save();
 					}
+					Db.update("update jbgoods set BRefPrice=? where goodsCode=?",goods.get("BRefPrice"),goods.getStr("GoodsCode"));
 					// 清货模式
 					if(settleTypeFlag) {
-						initCkjhcheckDetail(md,initCkjhcheck.getStr("OrderNo"));
+						initCkjhcheckDetail(md,initCkjhcheck.getStr("OrderCode"));
 					}
 				}
 			}
@@ -258,12 +270,15 @@ public class CgorderController extends BaseController {
 				}
 				if (r.getInt("CheckFlag") != 1) {
 					r.set("CheckFlag",1);
+					//登录人即审核者
+					Record m=getCurrentUser();					
+					r.set("checkman", m.getStr("usr_name"));
 					r.update();
 				}
 				toDwzJson(200, "审核通过！", navTabId);
 			}
 		} catch (Exception e) {
-			toDwzJson(300, "删除失败！");
+			toDwzJson(300, "审核失败！");
 		}
 	}
 	

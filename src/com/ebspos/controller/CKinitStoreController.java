@@ -57,7 +57,7 @@ public class CKinitStoreController extends BaseController {
 		String sql = "select a.id,a.orderno 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
 				+ "c.name 部门,d.usr_name 员工,a.operator 操作人,a.ckamount 库存数量,a.checkdate 审核日期,a.checkman 审核人,a.recordcount 记录数,a.Memo 备注,a.checkflag 审核";
 		String sqlSelect = "from ckinitstore a ";
-		sqlSelect += " inner join jbstore b on a.storeno = b.storeno ";
+		sqlSelect += " inner join jbstore b on a.storecode = b.storecode ";
 		sqlSelect += " inner join partment c on a.DepartmentNo = c.id ";
 		sqlSelect += " inner join employee d on a.EmployeeNo = d.usr_no where 1=1 ";
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
@@ -89,17 +89,17 @@ public class CKinitStoreController extends BaseController {
 			param.add(orderNo);
 		}
 		setAttr("orderNo", orderNo);
-		String storeNo = getPara("storeNo");
-		if(storeNo!=null&&!"".equals(storeNo.trim())){
-			whee.append(" and a.storeNo = ?");
-			param.add(storeNo);
+		String storecode = getPara("storecode");
+		if(storecode!=null&&!"".equals(storecode.trim())){
+			whee.append(" and a.storecode = ?");
+			param.add(storecode);
 		}
-		setAttr("storeNo", storeNo);
+		setAttr("storecode", storecode);
         setAttr(StoreSelectTarget.targetName, new StoreSelectTarget());
 		String sql = "select a.id,a.orderno 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
 				+ "c.name 部门,d.usr_name 员工,a.operator 操作人,a.ckamount 库存数量,a.checkdate 审核日期,a.checkman 审核人,a.recordcount 记录数,a.Memo 备注";
 		String sqlSelect = "from ckinitstore a ";
-		sqlSelect += " inner join jbstore b on a.storeno = b.storeno ";
+		sqlSelect += " inner join jbstore b on a.storecode = b.storecode ";
 		sqlSelect += " inner join partment c on a.DepartmentNo = c.id ";
 		sqlSelect += " inner join employee d on a.EmployeeNo = d.usr_no where 1=1 ";
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
@@ -131,12 +131,12 @@ public class CKinitStoreController extends BaseController {
 			param.add(orderNo);
 		}
 		setAttr("orderNo", orderNo);
-		String storeNo = getPara("storeNo");
-		if(storeNo!=null&&!"".equals(storeNo.trim())){
-			whee.append(" and a.storeNo = ?");
-			param.add(storeNo);
+		String storecode = getPara("storecode");
+		if(storecode!=null&&!"".equals(storecode.trim())){
+			whee.append(" and a.storecode = ?");
+			param.add(storecode);
 		}
-		setAttr("storeNo", storeNo);
+		setAttr("storecode", storecode);
 		String goodsNo = getPara("goodsNo");
 		if(goodsNo!=null&&!"".equals(goodsNo.trim())){
 			whee.append(" and c.GoodsNo = ?");
@@ -153,7 +153,7 @@ public class CKinitStoreController extends BaseController {
 		String sql = "select a.id,a.orderno 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
 				+ "c.GoodsNo 商品编号,c.GoodsName 商品名称,c.Unit 单位,c.Quantity 数量, c.CKPrice 成本价,c.memo 备注,a.operator 操作人,a.ckamount 库存数量,a.checkdate 审核日期,a.checkman 审核人,a.recordcount 记录数";
 		String sqlSelect = "from ckinitstore a ";
-		sqlSelect += " inner join jbstore b on a.storeno = b.storeno ";
+		sqlSelect += " inner join jbstore b on a.storecode = b.storecode ";
 		sqlSelect += " inner join ckinitstoredetail c on a.orderno = c.OrderNo where 1=1";
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
 				sql, sqlSelect + whee.toString(),param.toArray()));
@@ -183,7 +183,7 @@ public class CKinitStoreController extends BaseController {
 		String sql = "select c.id,a.orderno 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
 				+ "c.GoodsNo 商品编号,c.GoodsName 商品名称,c.Unit 单位,c.Quantity 数量, c.CKPrice 成本价,c.memo 备注,a.operator 操作人,a.ckamount 库存数量,a.checkdate 审核日期,a.checkman 审核人,a.recordcount 记录数";
 		String sqlSelect = "from ckinitstore a ";
-		sqlSelect += " inner join jbstore b on a.storeno = b.storeno ";
+		sqlSelect += " inner join jbstore b on a.storecode = b.storecode ";
 		sqlSelect += " inner join ckinitstoredetail c on a.orderno = c.OrderNo where 1=1";
 		Page<Record> redLst = Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
 				sql, sqlSelect + whee.toString(),param.toArray());
