@@ -26,6 +26,7 @@ import com.jfinal.log.Logger;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.util.BsUtil;
 import com.util.DateUtil;
 
@@ -163,71 +164,70 @@ public class JhpayController extends BaseController {
 		render("add.html");
 	}
 	
+	@Before(Tx.class)
 	public void save() {
 		try {
+			boolean exist = false;
 			Jhpay jhpay = getModel(Jhpay.class,"jhpay");
+			List<Jhpay> existJhpay = Jhpay.dao.find("select * from jhpay where OrderCode = ?", jhpay.getStr("OrderCode"));
+			if (existJhpay != null && existJhpay.size() > 0) {
+				exist = true;
+			}
 			Jbsupplier jbsupplier = getModel(Jbsupplier.class,"supplier");
 			Double amount = Double.parseDouble(getPara("amount"));
 			if (jhpay.getInt("PayType") == BsUtil.NEED_PAY) {
-				// 应付款
-				jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", jbsupplier.getStr("supplierCode"));
-				// 更新供应商的应付款：jbsupplier.needpay=jbsupplier.needpay-jhpay.amount
-				jbsupplier.set("needpay", BsUtil.plus(jbsupplier.getBigDecimal("needpay"), new BigDecimal(amount)));
 				int size = 100;
 				for (int i=0; i<size; i++) {
 					Jhpaydetail md = getModel(Jhpaydetail.class, "jpaydetail" + i);
 					Ckjhcheckdetail r = Ckjhcheckdetail.dao.findById(md.getLong("id"));
 					// 超过条数退出
 					if(r == null) break;
-					// 更新采购入/退库单的已付金额：ckjhcheck.payAmount=chjhcheck.payAmount+jhPayDetail. NowCollated(本次核销金额)
-					r.set("payAmount", BsUtil.add(r.getBigDecimal("payAmount"),md.getBigDecimal("NowCollated"),md.getBigDecimal("Adjust")));
 					md.set("PayOrderNo", jhpay.get("OrderCode"));
-					md.save();
+					// 单据类型
+					md.set("CollateType", jhpay.getInt("PayType"));
+					List<Jhpaydetail> jhpaydetail = Jhpaydetail.dao.find("select * from jhpaydetail where OrderCode = ? and PayOrderNo = ?", md.getStr("OrderCode"),md.getStr("PayOrderNo"));
+					if (jhpaydetail != null && jhpaydetail.size() > 0) {
+                       md.update();						
+					} else {
+						md.save();
+					}
 					r.update();
 				}
-				// 付款单主表jhpay金额
-				jhpay.set("Amount", amount);
-				// 供应商
-				jhpay.set("SupplierCode", jbsupplier.getStr("supplierCode"));
 			} else if (jhpay.getInt("PayType") == BsUtil.ADV_PAY) {
-				// 预付款
-				// 更新供应商预付款：jbsupplier. AdvanceAmount =jbsupplier. AdvanceAmount +jhpay.amount
-				jbsupplier.set("AdvanceAmount", BsUtil.add(jbsupplier.getBigDecimal("AdvanceAmount"),new BigDecimal(getPara("paymount"))));
+				
 			} else if (jhpay.getInt("PayType") == BsUtil.ADV_TO_NEED_PAY) {
 				// 预付冲应付
 				amount = jbsupplier.getDouble("AdvanceAmount");
-				// 应付款
-				jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", jbsupplier.getStr("supplierCode"));
-				// 更新供应商的应付款：jbsupplier.needpay=jbsupplier.needpay-jhpay.amount
-				jbsupplier.set("needpay", BsUtil.plus(jbsupplier.getBigDecimal("needpay"), new BigDecimal(amount)));
 				int size = 100;
 				for (int i=0; i<size; i++) {
 					Jhpaydetail md = getModel(Jhpaydetail.class, "jpaydetail" + i);
 					if(md == null) break;
 					Ckjhcheck r = Ckjhcheck.dao.findById(md.getDouble("id"));
-					// 更新采购入/退库单的已付金额：ckjhcheck.payAmount=chjhcheck.payAmount+jhPayDetail. NowCollated(本次核销金额)
-					r.set("payAmount", BsUtil.add(r.getBigDecimal("payAmount"),md.getBigDecimal("NowCollated"),md.getBigDecimal("Adjust")));
+					md.set("PayOrderNo", jhpay.get("OrderCode"));
 					// 单据类型
-					r.set("CollateType", jhpay.getInt("PayType"));
-					md.save();
-					r.save();
+					md.set("CollateType", jhpay.getInt("PayType"));
+					List<Jhpaydetail> jhpaydetail = Jhpaydetail.dao.find("select * from jhpaydetail where OrderCode = ? and PayOrderNo = ?", md.getStr("OrderCode"),md.getStr("PayOrderNo"));
+					if (jhpaydetail != null && jhpaydetail.size() > 0) {
+                       md.update();						
+					} else {
+						md.save();
+					}
+					r.update();
 				}
-				// 付款单主表jhpay金额
-				jhpay.set("Amount", amount);
-				// 供应商
-				jhpay.set("SupplierCode", jbsupplier.getStr("supplierCode"));
 			} else if (jhpay.getInt("PayType") == BsUtil.NEED_TO_ADV_PAY) {
-				// 应付转预付
-				// 审核过后供应商的应付款增加，同时供应商的预付账款也增加。
-				jbsupplier.set("needpay", BsUtil.add(jbsupplier.getBigDecimal("needpay"),new BigDecimal(amount)));
-				jbsupplier.set("AdvanceAmount", BsUtil.add(jbsupplier.getBigDecimal("AdvanceAmount"),new BigDecimal(amount)));
+				
 			} else if (jhpay.getInt("PayType") == BsUtil.DIR_PAY) {
-				// 直接付款
-				// 审核过后将冲减供应商的应付款。
-				jbsupplier.set("needpay", BsUtil.plus(jbsupplier.getBigDecimal("needpay"),new BigDecimal(amount)));
+			
 			}
-			jbsupplier.update();
-			jhpay.save();
+			// 付款单主表jhpay金额
+			jhpay.set("Amount", amount);
+			// 供应商
+			jhpay.set("SupplierCode", jbsupplier.getStr("supplierCode"));
+			if (exist) {
+                jhpay.update();				
+			} else {
+				jhpay.save();
+			}
 			toDwzJson(200, "保存成功！", navTabId,"closeCurrent");
 		} catch (Exception e) {
 			log.error("保存仓库分类异常", e);
@@ -240,12 +240,59 @@ public class JhpayController extends BaseController {
 		Long id = getParaToLong(0, 0L);
 		try {
 			if (id != null) {
-				Jhpay r = Jhpay.dao.findById(id);
-				if (r.getInt("CheckFlag") == null || r.getInt("CheckFlag") != 1) {
-					r.set("CheckFlag",1);
-					r.update();
+				Jhpay jhpay = Jhpay.dao.findById(id);
+				if (jhpay.getInt("CheckFlag") == null || jhpay.getInt("CheckFlag") != 1) {
+					// 应付款
+					Jbsupplier jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", jhpay.getStr("SupplierCode"));
+					if (jhpay.getInt("PayType") == BsUtil.NEED_PAY) {
+						// 更新供应商的应付款：jbsupplier.needpay=jbsupplier.needpay-jhpay.amount
+						jbsupplier.set("needpay", BsUtil.plus(jbsupplier.getBigDecimal("needpay"), jhpay.getBigDecimal("amount")));
+						List<Jhpaydetail> mds = Jhpaydetail.dao.find("select * from jhpaydetail where PayOrderNo = ?", jhpay.getStr("OrderCode"));
+						for (int i=0; i<mds.size(); i++) {
+							Jhpaydetail md = mds.get(i);
+							Ckjhcheckdetail r = Ckjhcheckdetail.dao.findById(md.getLong("id"));
+							// 超过条数退出
+							if(r == null) break;
+							// 更新采购入/退库单的已付金额：ckjhcheck.payAmount=chjhcheck.payAmount+jhPayDetail. NowCollated(本次核销金额)
+							r.set("payAmount", BsUtil.add(r.getBigDecimal("payAmount"),md.getBigDecimal("NowCollated"),md.getBigDecimal("Adjust")));
+							r.update();
+						}
+					} else if (jhpay.getInt("PayType") == BsUtil.ADV_PAY) {
+						// 预付款
+						// 更新供应商预付款：jbsupplier. AdvanceAmount =jbsupplier. AdvanceAmount +jhpay.amount
+						jbsupplier.set("AdvanceAmount", BsUtil.add(jbsupplier.getBigDecimal("AdvanceAmount"),jhpay.getBigDecimal("amount")));
+					} else if (jhpay.getInt("PayType") == BsUtil.ADV_TO_NEED_PAY) {
+						// 预付冲应付
+						// 应付款
+						jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", jbsupplier.getStr("supplierCode"));
+						// 更新供应商的应付款：jbsupplier.needpay=jbsupplier.needpay-jhpay.amount
+						jbsupplier.set("needpay", BsUtil.plus(jbsupplier.getBigDecimal("needpay"), jbsupplier.getBigDecimal("AdvanceAmount")));
+						List<Jhpaydetail> mds = Jhpaydetail.dao.find("select * from jhpaydetail where PayOrderNo = ?", jhpay.getStr("OrderCode"));
+						for (int i=0; i<mds.size(); i++) {
+							Jhpaydetail md = mds.get(i);
+							if(md == null) break;
+							Ckjhcheck r = Ckjhcheck.dao.findById(md.getDouble("id"));
+							// 更新采购入/退库单的已付金额：ckjhcheck.payAmount=chjhcheck.payAmount+jhPayDetail. NowCollated(本次核销金额)
+							r.set("payAmount", BsUtil.add(r.getBigDecimal("payAmount"),md.getBigDecimal("NowCollated"),md.getBigDecimal("Adjust")));
+							// 单据类型
+							r.set("CollateType", jhpay.getInt("PayType"));
+							r.save();
+						}
+					} else if (jhpay.getInt("PayType") == BsUtil.NEED_TO_ADV_PAY) {
+						// 应付转预付
+						// 审核过后供应商的应付款增加，同时供应商的预付账款也增加。
+						jbsupplier.set("needpay", BsUtil.add(jbsupplier.getBigDecimal("needpay"),jhpay.getBigDecimal("amount")));
+						jbsupplier.set("AdvanceAmount", BsUtil.add(jbsupplier.getBigDecimal("AdvanceAmount"),jhpay.getBigDecimal("amount")));
+					} else if (jhpay.getInt("PayType") == BsUtil.DIR_PAY) {
+						// 直接付款
+						// 审核过后将冲减供应商的应付款。
+						jbsupplier.set("needpay", BsUtil.plus(jbsupplier.getBigDecimal("needpay"),jhpay.getBigDecimal("amount")));
+					}
+					jbsupplier.update();
+					jhpay.set("CheckFlag",1);
+					jhpay.update();
+					toDwzJson(200, "审核通过！", navTabId);
 				}
-				toDwzJson(200, "审核通过！", navTabId);
 			}
 		} catch (Exception e) {
 			toDwzJson(300, "审核失败！");
@@ -257,12 +304,61 @@ public class JhpayController extends BaseController {
 		Long id = getParaToLong(0, 0L);
 		try {
 			if (id != null) {
-				Jhpay r = Jhpay.dao.findById(id);
-				if (r.getInt("CheckFlag") == null || r.getInt("CheckFlag") != 0) {
-					r.set("CheckFlag",0);
-					r.update();
+				Jhpay jhpay = Jhpay.dao.findById(id);
+				if (jhpay.getInt("CheckFlag") == null || jhpay.getInt("CheckFlag") != 0) {
+					// 应付款
+					Jbsupplier jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", jhpay.getStr("SupplierCode"));
+					if (jhpay.getInt("PayType") == BsUtil.NEED_PAY) {
+						// 更新供应商的应付款：jbsupplier.needpay=jbsupplier.needpay-jhpay.amount
+						jbsupplier.set("needpay", BsUtil.add(jbsupplier.getBigDecimal("needpay"), jhpay.getBigDecimal("amount")));
+						List<Jhpaydetail> mds = Jhpaydetail.dao.find("select * from jhpaydetail where PayOrderNo = ?", jhpay.getStr("OrderCode"));
+						for (int i=0; i<mds.size(); i++) {
+							Jhpaydetail md = mds.get(i);
+							Ckjhcheckdetail r = Ckjhcheckdetail.dao.findById(md.getLong("id"));
+							// 超过条数退出
+							if(r == null) break;
+							// 更新采购入/退库单的已付金额：ckjhcheck.payAmount=chjhcheck.payAmount+jhPayDetail. NowCollated(本次核销金额)
+							r.set("payAmount", BsUtil.plus(r.getBigDecimal("payAmount"),md.getBigDecimal("NowCollated"),md.getBigDecimal("Adjust")));
+							r.update();
+						}
+					} else if (jhpay.getInt("PayType") == BsUtil.ADV_PAY) {
+						// 预付款
+						// 更新供应商预付款：jbsupplier. AdvanceAmount =jbsupplier. AdvanceAmount +jhpay.amount
+						jbsupplier.set("AdvanceAmount", BsUtil.plus(jbsupplier.getBigDecimal("AdvanceAmount"),jhpay.getBigDecimal("amount")));
+					} else if (jhpay.getInt("PayType") == BsUtil.ADV_TO_NEED_PAY) {
+						// 预付冲应付
+						// 应付款
+						jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", jbsupplier.getStr("supplierCode"));
+						// 更新供应商的应付款：jbsupplier.needpay=jbsupplier.needpay-jhpay.amount
+						jbsupplier.set("needpay", BsUtil.add(jbsupplier.getBigDecimal("needpay"), jbsupplier.getBigDecimal("AdvanceAmount")));
+						List<Jhpaydetail> mds = Jhpaydetail.dao.find("select * from jhpaydetail where PayOrderNo = ?", jhpay.getStr("OrderCode"));
+						for (int i=0; i<mds.size(); i++) {
+							Jhpaydetail md = mds.get(i);
+							if(md == null) break;
+							Ckjhcheck r = Ckjhcheck.dao.findById(md.getDouble("id"));
+							// 更新采购入/退库单的已付金额：ckjhcheck.payAmount=chjhcheck.payAmount+jhPayDetail. NowCollated(本次核销金额)
+							r.set("payAmount", BsUtil.plus(r.getBigDecimal("payAmount"),md.getBigDecimal("NowCollated"),md.getBigDecimal("Adjust")));
+							// 单据类型
+							r.set("CollateType", jhpay.getInt("PayType"));
+							r.save();
+						}
+					} else if (jhpay.getInt("PayType") == BsUtil.NEED_TO_ADV_PAY) {
+						// 应付转预付
+						// 审核过后供应商的应付款增加，同时供应商的预付账款也增加。
+						jbsupplier.set("needpay", BsUtil.plus(jbsupplier.getBigDecimal("needpay"),jhpay.getBigDecimal("amount")));
+						jbsupplier.set("AdvanceAmount", BsUtil.plus(jbsupplier.getBigDecimal("AdvanceAmount"),jhpay.getBigDecimal("amount")));
+					} else if (jhpay.getInt("PayType") == BsUtil.DIR_PAY) {
+						// 直接付款
+						// 审核过后将冲减供应商的应付款。
+						jbsupplier.set("needpay", BsUtil.add(jbsupplier.getBigDecimal("needpay"),jhpay.getBigDecimal("amount")));
+					}
+					jbsupplier.update();
+					if (jhpay.getInt("CheckFlag") == null || jhpay.getInt("CheckFlag") != 0) {
+						jhpay.set("CheckFlag",0);
+					}
+					jhpay.update();
+					toDwzJson(200, "反审核通过！", navTabId);
 				}
-				toDwzJson(200, "反审核通过！", navTabId);
 			}
 		} catch (Exception e) {
 			toDwzJson(300, "反审核失败！");
