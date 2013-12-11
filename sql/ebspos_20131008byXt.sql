@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50145
 File Encoding         : 65001
 
-Date: 2013-11-11 17:33:11
+Date: 2013-12-06 17:39:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -329,6 +329,7 @@ CREATE TABLE `ckjhcheckdetail` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `OrderNo` varchar(20) NOT NULL DEFAULT '0' COMMENT '进货单号',
   `SerialNo` int(11) NOT NULL DEFAULT '1' COMMENT '进货单序号',
+  `payAmount` decimal(10,2) DEFAULT NULL,
   `GoodsNo` varchar(20) DEFAULT NULL COMMENT '商品编号',
   `Quantity` decimal(10,2) DEFAULT NULL COMMENT '数量',
   `OrigPrice` decimal(10,2) DEFAULT NULL,
@@ -355,11 +356,11 @@ CREATE TABLE `ckjhcheckdetail` (
 -- ----------------------------
 -- Records of ckjhcheckdetail
 -- ----------------------------
-INSERT INTO `ckjhcheckdetail` VALUES ('11', 'PK-20131008-001', '1', '1111', '1.00', null, '11.00', '100.00', null, '17.00', '1.87', '11.00', '10.50', null, null, null, null, null, null, null, null, null, null);
-INSERT INTO `ckjhcheckdetail` VALUES ('12', 'PK-20131008-001', '1', '1111', '1.00', null, '10.00', '100.00', null, '17.00', '1.70', '10.00', '10.50', null, null, null, null, null, null, null, null, null, null);
-INSERT INTO `ckjhcheckdetail` VALUES ('13', 'PK-20131101-001', '1', '1111', '1.00', null, null, '1.00', null, '17.00', '0.02', '0.11', null, null, null, null, null, null, null, null, null, null, null);
-INSERT INTO `ckjhcheckdetail` VALUES ('14', 'PK-20131101-002', '1', '1111', '1.00', null, null, '100.00', null, '17.00', '1.87', '11.00', null, null, null, null, null, null, null, null, null, null, null);
-INSERT INTO `ckjhcheckdetail` VALUES ('15', 'PK-20131101-003', '1', '1111', '1.00', null, null, '21.00', null, '17.00', '0.39', '2.31', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `ckjhcheckdetail` VALUES ('11', 'PK-20131008-001', '1', '21.00', '1111', '1.00', null, '11.00', '100.00', null, '17.00', '1.87', '11.00', '10.50', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `ckjhcheckdetail` VALUES ('12', 'PK-20131008-001', '1', '0.00', '1111', '1.00', null, '10.00', '100.00', null, '17.00', '1.70', '10.00', '10.50', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `ckjhcheckdetail` VALUES ('13', 'PK-20131101-001', '1', '0.11', '1111', '1.00', null, null, '1.00', null, '17.00', '0.02', '0.11', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `ckjhcheckdetail` VALUES ('14', 'PK-20131101-002', '1', '11.00', '1111', '1.00', null, null, '100.00', null, '17.00', '1.87', '11.00', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `ckjhcheckdetail` VALUES ('15', 'PK-20131101-003', '1', '2.31', '1111', '1.00', null, null, '21.00', null, '17.00', '0.39', '2.31', null, null, null, null, null, null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for `comment`
@@ -389,7 +390,7 @@ CREATE TABLE `employee` (
   `usr_no` varchar(20) NOT NULL COMMENT '员工编号',
   `usr_name` varchar(50) DEFAULT NULL COMMENT '姓名',
   `pwd` varchar(50) DEFAULT NULL COMMENT '密码',
-  `dep_no` varchar(20) DEFAULT NULL COMMENT '部门',
+  `deptcode` varchar(20) DEFAULT NULL COMMENT '部门',
   `age` tinyint(4) DEFAULT NULL COMMENT '年龄',
   `gender` varchar(20) DEFAULT NULL COMMENT '籍贯',
   `edu_bg` varchar(50) DEFAULT NULL COMMENT '学历',
@@ -413,20 +414,19 @@ CREATE TABLE `employee` (
   `del_flg` tinyint(4) DEFAULT '0' COMMENT '删除标志',
   PRIMARY KEY (`id`,`usr_no`),
   UNIQUE KEY `usr_no` (`usr_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of employee
 -- ----------------------------
-INSERT INTO `employee` VALUES ('1', 'admin', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '1', '1', '男', '本科', '2013-06-28', '2013-06-28', '36010319880999', null, '13809876543', 'vasdfasdfadsf', '导购员', '100000', 'xxxx@163.com', '0', '弄阿克苏打发第三方', '1', '1', '2013-08-07 21:06:02', null, null, null, null);
-INSERT INTO `employee` VALUES ('2', 'pk', '彭科', 'e10adc3949ba59abbe56e057f20f883e', '1', null, '男', '高中', '2013-07-24', '2013-07-31', '23412343324', null, null, null, '业务员', null, null, null, null, null, '1', '2013-07-09 14:44:39', null, null, null, null);
-INSERT INTO `employee` VALUES ('3', 'wcc', '吴春明', 'e10adc3949ba59abbe56e057f20f883e', '1', '5', '女', '本科', '2013-07-23', '2013-07-26', '188888888', '13241324', '2341234', 'qer123r', '导购员', '10', '2@124.com', '20', '来这个啊京东方卡迪夫', null, null, '2013-07-18 10:53:54', null, null, null, '0');
-INSERT INTO `employee` VALUES ('4', 'zyh', '湛原红', 'e10adc3949ba59abbe56e057f20f883e', '1', '30', '男', '高中', '1980-07-27', '2013-08-01', '1234567890', null, '111111', '呃呃呃', '业务员', '5000', 'hczyh_888@163.com', '20', '呃呃呃', null, null, '2013-08-06 10:37:40', null, null, null, '0');
-INSERT INTO `employee` VALUES ('5', 'zs', '张三', 'e10adc3949ba59abbe56e057f20f883e', '1', '11', null, '高中', '1971-10-10', '2013-08-06', '11111', null, null, null, '业务员', '1111', null, '10', null, null, null, '2013-08-07 21:17:10', null, null, null, '0');
-INSERT INTO `employee` VALUES ('13', '123', '123', 'e10adc3949ba59abbe56e057f20f883e', '2', null, null, '高中', null, null, '123', null, null, null, '业务员', null, null, null, null, null, '1', '2013-09-26 16:11:29', null, null, null, '0');
-INSERT INTO `employee` VALUES ('17', 'test100', 'jjm', 'e10adc3949ba59abbe56e057f20f883e', '2', null, null, '高中', null, null, '234123513245', null, null, null, '业务员', null, null, null, null, null, '1', '2013-10-09 10:27:18', null, null, null, '0');
-INSERT INTO `employee` VALUES ('18', 'test101', 'adf', 'e10adc3949ba59abbe56e057f20f883e', '2', null, null, '高中', null, null, '23412343324', null, null, null, '业务员', null, null, null, null, null, '1', '2013-10-09 10:31:43', null, null, null, '0');
-INSERT INTO `employee` VALUES ('19', '3241324', 'sdafad', 'e10adc3949ba59abbe56e057f20f883e', '1', null, null, '高中', null, null, '23412343324', null, null, null, '业务员', null, null, null, null, null, '1', '2013-11-01 09:01:52', null, null, null, '0');
+INSERT INTO `employee` VALUES ('1', 'admin', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '001', '1', '男', '本科', '2013-06-28', '2013-06-28', '36010319880999', null, '13809876543', 'vasdfasdfadsf', '导购员', '100000', 'xxxx@163.com', '0', '弄阿克苏打发第三方', '1', '1', '2013-08-07 21:06:02', null, null, null, null);
+INSERT INTO `employee` VALUES ('2', 'pk', '彭科', 'e10adc3949ba59abbe56e057f20f883e', '001', null, '男', '高中', '2013-07-24', '2013-07-31', '23412343324', null, null, null, '业务员', null, null, null, null, null, '1', '2013-07-09 14:44:39', null, null, null, null);
+INSERT INTO `employee` VALUES ('3', 'wcc', '吴春明', 'e10adc3949ba59abbe56e057f20f883e', '001', '5', '女', '本科', '2013-07-23', '2013-07-26', '188888888', '13241324', '2341234', 'qer123r', '导购员', '10', '2@124.com', '20', '来这个啊京东方卡迪夫', null, null, '2013-07-18 10:53:54', null, null, null, '0');
+INSERT INTO `employee` VALUES ('4', 'zyh', '湛原红', 'e10adc3949ba59abbe56e057f20f883e', '001', '30', '男', '高中', '1980-07-27', '2013-08-01', '1234567890', null, '111111', '呃呃呃', '业务员', '5000', 'hczyh_888@163.com', '20', '呃呃呃', null, null, '2013-08-06 10:37:40', null, null, null, '0');
+INSERT INTO `employee` VALUES ('5', 'zs', '张三', 'e10adc3949ba59abbe56e057f20f883e', '001', '11', null, '高中', '1971-10-10', '2013-08-06', '11111', null, null, null, '业务员', '1111', null, '10', null, null, null, '2013-08-07 21:17:10', null, null, null, '0');
+INSERT INTO `employee` VALUES ('13', '123', '123', 'e10adc3949ba59abbe56e057f20f883e', '002', null, null, '高中', null, null, '123', null, null, null, '业务员', null, null, null, null, null, '1', '2013-09-26 16:11:29', null, null, null, '0');
+INSERT INTO `employee` VALUES ('16', 'uy', 'ftv', 'e10adc3949ba59abbe56e057f20f883e', '002', null, null, '高中', null, null, '78', null, null, null, '业务员', null, null, null, null, null, '1', '2013-09-26 16:27:21', null, null, null, '0');
+INSERT INTO `employee` VALUES ('17', '33333', '3333', 'e10adc3949ba59abbe56e057f20f883e', '001', '33', '男', '高中', null, null, '3333333', null, null, null, '业务员', null, null, null, null, null, '1', '2013-11-08 16:50:01', null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for `jbclient`
@@ -567,6 +567,7 @@ CREATE TABLE `jbsupplier` (
   `SplusAmount` decimal(10,2) DEFAULT '0.00' COMMENT '往来余额',
   `StopFlag` smallint(6) DEFAULT '0' COMMENT '停止业务标志',
   `remark` varchar(150) DEFAULT '0' COMMENT '备注',
+  `needpay` decimal(10,0) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `supplierCode` (`supplierCode`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='供应商资料';
@@ -574,37 +575,30 @@ CREATE TABLE `jbsupplier` (
 -- ----------------------------
 -- Records of jbsupplier
 -- ----------------------------
-INSERT INTO `jbsupplier` VALUES ('1', '112', '2222', '0', '22', '2', '2', '2', '2', null, null, '2', '2', '2', '2', '22.00', '22', '222', '2.00', '0.00', '0.00', '0.00', null, '2');
+INSERT INTO `jbsupplier` VALUES ('1', '112', '2222', '0', '22', '2', '2', '2', '2', null, null, '2', '2', '2', '2', '22.00', '22', '222', '2.00', '100.00', '0.00', '0.00', null, '2', '-236');
 
 -- ----------------------------
 -- Table structure for `jhpay`
 -- ----------------------------
 DROP TABLE IF EXISTS `jhpay`;
 CREATE TABLE `jhpay` (
-  `OrderNo` varchar(20) NOT NULL COMMENT '付款单号',
-  `OrderDate` datetime DEFAULT NULL COMMENT '付款日期',
-  `SupplierNo` varchar(20) DEFAULT NULL COMMENT '供应商',
-  `DepartmentNo` varchar(20) DEFAULT NULL COMMENT '部门',
-  `EmployeeNo` varchar(20) DEFAULT NULL COMMENT '经手人',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `OrderCode` varchar(20) NOT NULL COMMENT '付款单号',
+  `OrderDate` date DEFAULT NULL COMMENT '付款日期',
+  `SupplierCode` varchar(20) DEFAULT NULL COMMENT '供应商',
+  `DeptCode` varchar(20) DEFAULT NULL COMMENT '部门',
+  `EmpCode` varchar(20) DEFAULT NULL COMMENT '经手人',
   `Operator` varchar(50) DEFAULT NULL COMMENT '制单人',
   `PayType` smallint(6) DEFAULT NULL COMMENT '账户类型',
-  `RePayType` varchar(20) DEFAULT NULL,
   `BankNo` varchar(20) DEFAULT NULL COMMENT '账号',
   `CheckFlag` smallint(6) DEFAULT NULL COMMENT '审核标志',
   `CheckMan` varchar(50) DEFAULT NULL COMMENT '审核人',
   `CheckDate` datetime DEFAULT NULL COMMENT '审核日期',
-  `LastAmount` decimal(10,2) DEFAULT NULL,
   `Amount` decimal(10,2) DEFAULT NULL COMMENT '金额',
-  `TAdjustAmount` decimal(10,2) DEFAULT NULL,
-  `RecordCount` int(11) DEFAULT NULL,
   `BillOrderNo` varchar(20) DEFAULT NULL COMMENT '订单号',
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
-  `RedFlag` smallint(6) DEFAULT NULL,
-  `RedDate` datetime DEFAULT NULL,
-  `RedMan` varchar(50) DEFAULT NULL,
-  `HasRed` smallint(6) DEFAULT NULL,
-  PRIMARY KEY (`OrderNo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购付款单';
+  PRIMARY KEY (`id`,`OrderCode`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='采购付款单';
 
 -- ----------------------------
 -- Records of jhpay
@@ -615,15 +609,17 @@ CREATE TABLE `jhpay` (
 -- ----------------------------
 DROP TABLE IF EXISTS `jhpaydetail`;
 CREATE TABLE `jhpaydetail` (
-  `OrderNo` varchar(20) NOT NULL COMMENT '付款单编号',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `OrderCode` varchar(20) NOT NULL COMMENT '付款单编号',
   `SerialNo` int(11) NOT NULL DEFAULT '1' COMMENT '序号',
+  `CollateType` varchar(255) DEFAULT NULL,
   `PayOrderNo` varchar(50) DEFAULT NULL,
   `NowCollated` decimal(10,2) DEFAULT NULL COMMENT '本次付款金额',
   `Adjust` decimal(10,2) DEFAULT NULL COMMENT '抹零金额',
   `Amount` decimal(10,2) DEFAULT NULL COMMENT '金额',
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`OrderNo`,`SerialNo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购付款单明细';
+  PRIMARY KEY (`id`,`OrderCode`,`SerialNo`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='采购付款单明细';
 
 -- ----------------------------
 -- Records of jhpaydetail
@@ -668,7 +664,7 @@ INSERT INTO `menu` VALUES ('1019', '定义类别', 'types', '1', '2', null, '6',
 INSERT INTO `menu` VALUES ('1021', '采购管理', null, '1', '1', null, '0', null, '2', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1022', '采购订单', 'cgorder', '1', '2', null, '0', null, '1021', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1023', '采购入库单', 'ckjhcheck', '1', '2', null, '1', null, '1021', '0', null, '1', null);
-INSERT INTO `menu` VALUES ('1024', '采购付款单', '#', '1', '2', null, '2', null, '1021', '0', null, '1', null);
+INSERT INTO `menu` VALUES ('1024', '采购付款单', 'jhpay', '1', '2', null, '2', null, '1021', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1025', '销售管理', null, '1', '1', null, '0', null, '3', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1026', '销售订单', '#', '1', '2', null, '0', null, '1025', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1027', '销售出库单', '#', '1', '2', null, '1', null, '1025', '0', null, '1', null);
@@ -735,20 +731,20 @@ INSERT INTO `module` VALUES ('6', 'github ：）', null, '3');
 DROP TABLE IF EXISTS `organization`;
 CREATE TABLE `organization` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `num` varchar(20) DEFAULT NULL COMMENT '编号',
+  `orgcode` varchar(20) DEFAULT NULL COMMENT '编号',
   `name` varchar(30) DEFAULT NULL COMMENT '名称',
   `addr` varchar(50) DEFAULT NULL COMMENT '地址',
   `picid` bigint(20) DEFAULT NULL,
   `sortnum` smallint(6) DEFAULT NULL COMMENT '排序',
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `num` (`num`)
+  UNIQUE KEY `num` (`orgcode`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='组织';
 
 -- ----------------------------
 -- Records of organization
 -- ----------------------------
-INSERT INTO `organization` VALUES ('2', '001', '昶源软件', '上海市', null, null, null);
+INSERT INTO `organization` VALUES ('2', '001', '昶源软件', '上海市', null, null, 'fdsafdsfds');
 
 -- ----------------------------
 -- Table structure for `partment`
@@ -756,14 +752,14 @@ INSERT INTO `organization` VALUES ('2', '001', '昶源软件', '上海市', null
 DROP TABLE IF EXISTS `partment`;
 CREATE TABLE `partment` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `num` varchar(20) NOT NULL COMMENT '部门编号',
+  `deptCode` varchar(20) NOT NULL COMMENT '部门编号',
   `name` varchar(50) DEFAULT NULL COMMENT '名称',
   `picid` bigint(20) DEFAULT NULL,
   `orgid` bigint(20) DEFAULT NULL COMMENT '组织ID',
   `remark` varchar(250) DEFAULT NULL,
   `pid` bigint(10) DEFAULT NULL COMMENT '父级部门id',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `num` (`num`)
+  UNIQUE KEY `num` (`deptCode`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='部门';
 
 -- ----------------------------
@@ -987,7 +983,7 @@ CREATE TABLE `types` (
   `path` varchar(100) DEFAULT NULL COMMENT '全路径',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`,`function`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='定义类别';
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='定义类别';
 
 -- ----------------------------
 -- Records of types
@@ -1016,6 +1012,12 @@ INSERT INTO `types` VALUES ('37', '其它', '表类别', null, '34', 'qt', null,
 INSERT INTO `types` VALUES ('38', '入库类型', '表类别', null, '0', 'InOutTypeNo', null, null);
 INSERT INTO `types` VALUES ('42', '进货入库', '表类别', null, '38', 'bygoods', null, null);
 INSERT INTO `types` VALUES ('43', '订单入库', '表类别', null, '38', 'byord', null, null);
+INSERT INTO `types` VALUES ('44', '付款类型', '表类别', null, '0', 'paytype', null, null);
+INSERT INTO `types` VALUES ('45', '应付款', '表类别', null, '44', 'yfk', null, null);
+INSERT INTO `types` VALUES ('47', '预付款', '表类别', null, '44', 'ybfk', null, null);
+INSERT INTO `types` VALUES ('48', '预付冲应付', '表类别', null, '44', 'yfcyf', null, null);
+INSERT INTO `types` VALUES ('49', '应付转预付', '表类别', null, '44', 'yfzyf', null, null);
+INSERT INTO `types` VALUES ('50', '直接付款', '表类别', null, '44', 'zjfk', null, null);
 
 -- ----------------------------
 -- Table structure for `user`

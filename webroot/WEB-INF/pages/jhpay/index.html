@@ -2,6 +2,10 @@
 <@layout>
 <script type="text/javascript">
 initQueryForm();
+$("#jhpaytable tr td:nth-child(7)").each(function(r,td){
+	var num=(new Number($(td).text()));
+	$(td).html(checkFlg[num]);
+});
 </script>
 <div class="pageHeader">
 		<form action="${root!}/jhpay" method="post" id="jhpay_pagerForm"
@@ -37,6 +41,8 @@ initQueryForm();
 				<li><a class="edit" href="javascript:void(0);" url="${root!}/jhpay/add/{sid_key}"
 					title="修改客户资料" target="dialog" height="580" width="1280" rel="ckjhupd"><span>修改</span>
 				</a></li>
+				<li><a class="arrow_redo" href="javascript:void(0);" url="${root!}/jhpay/review/{sid_key}" title="确定要审核通过该采购订单?" target="ajaxTodo"><span>审核</span> </a></li>
+				<li><a class="arrow_undo" href="javascript:void(0);" url="${root!}/jhpay/unreview/{sid_key}" title="确定要反审核该采购订单?" target="ajaxTodo"><span>反审核</span> </a></li>
 				<li><a class="delete" href="javascript:void(0);" url="${root!}/jhpay/del/{sid_key}" title="确定要删除采购付款单吗？" target="ajaxTodo"><span>删除</span> </a></li>
 				</@btnPower>
 			</ul>
