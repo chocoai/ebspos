@@ -9,23 +9,16 @@ $("#cgordtable tr td:nth-child(10)").each(function(r,td){
 
 </script>
 <div class="pageHeader">
-		<form action="${root!}/cgorder" method="post" id="cgorder_pagerForm"
+		<form action="${root!}/ckcurrstore" method="post" id="ckcurrstore_pagerForm"
 			onsubmit=" return navTabSearch(this)">
 			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> 
 			<input type="hidden" name="numPerPage" value="${page.pageSize!}" />
 			<div class="searchBar pageFormContent">				
-					<table ><tr><th>开始日期：</th><td>
-						<input type="text" name="startTime" class="date" readonly="true"  value="${startTime!}"/>
-						<a class="inputDateButton" href="javascript:;">选择</a>
-					</td>
-					<th>结束日期：</th><td>
-						<input type="text" name="endTime" class="date" readonly="true"  value="${endTime!}"/>
-						<a class="inputDateButton" href="javascript:;">选择</a>
-					</td></tr>
-					<tr><th>供货商</th><td>
-					    <input type="hidden" name="supplier.supplierCode"  value="${supplierCode!}">
-					    <input type="text" name="supplier.supplierName"   lookuppk="supplierCode"  class="textInput"  value="${supplierName!}" />
-					    <a class="btnLook"  url="/jbsupplier/lookuplst"   lookupgroup="supplier"  lookuppk="supplierCode"  title="查找带回">查找带回</a>
+					<table >
+					<tr><th>商品名称</th><td>
+					    <input type="hidden" name="jbgoods.goodsCode"  value="${goodsCode!}">
+					    <input type="text" name="jbgoods.goodsName"   lookuppk="goodsCode"  class="textInput"  value="${goodsName!}" />
+					    <a class="btnLook"  url="/jbgoods/lookup"   lookupgroup="jbgoods"  lookuppk="goodsCode"  title="查找带回">查找带回</a>
 					</td>
 					<th>订货仓库</th><td>
 					    <input type="hidden" name="store.StoreCode"  value="${StoreCode!}">
@@ -53,6 +46,7 @@ $("#cgordtable tr td:nth-child(10)").each(function(r,td){
 			</ul>
 		</div>
 		<div layouth="150" style="overflow:visible">
+		
 		<@table layouth="150" width="1000" tid="cgordtable"/>
 		</div>
 	</div>

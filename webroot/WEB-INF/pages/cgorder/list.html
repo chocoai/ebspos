@@ -6,10 +6,12 @@ $("#cgordtable tr td:nth-child(12)").each(function(r,td){
 	var num=(new Number($(td).text()));
 	$(td).html(checkFlg[num]);
 });
+/*
 $("#cgordtable tr td:nth-child(13)").each(function(r,td){
 	var num=(new Number($(td).text()));
 	$(td).html(storeStopFlg[num]);
 });
+*/
 </script>
 <div class="pageHeader">
 		<form action="${root!}/cgorder/select" method="post" id="cgorderList_pagerForm"

@@ -88,15 +88,14 @@ $(function (){
 			<tbody><tr>
 			<th style="width:50px"></th>			
 			<th valign="top">
-			   <div style="width:90px;text-align:left;"><h1>采购入库单</h1></div>
+			   <div style="width:90px;text-align:left;"><h1>采购入/退库单</h1></div>
 			 </th>
 			 <th style="width:500px"></th>
-			  <th>单据编号</th><td><input type="text"  name="ckjhcheck.OrderNo"  lookupgroup="ckjhcheck"  readonly="readonly"  value="${ckjhcheck.OrderNo!}"></td>
-			  <td>&nbsp;<a href="javascript:void(0);" url="${root!}/cgorder/select"  lookupgroup="ckjhcheck"  rel="cgordselect" title="已审核采购订单"><img width="16px"  height="21px" src="${root!}/ht/dwz/css/images/toolbar_icons16/application_view_list.png"/></td>
+			  <th>单据编号</th><td><input type="text"  name="ckjhcheck.ordercode"  readonly="readonly"  value="${ckjhcheck.ordercode!}"></td>			  
 			 <th>单据日期</th><td><input type="text" name="ckjhcheck.OrderDate" class="date" readonly="readonly"  dateFmt="yyyy-M-d"   value="${ckjhcheck.OrderDate!}"/>
 						   <a class="inputDateButton" href="javascript:;">选择</a></td>
 			  <td>&nbsp;&nbsp;</td>
-			  <th>制单人</th><td><input type="text"  name="ckjhcheck.Operator"  value="系统管理员"  readonly="true" ></td>
+			  <th>制单人</th><td><input type="text"  name="ckjhcheck.Operator"  value="${ckjhcheck.operator!}"  readonly="true" ></td>
 		 </tr></tbody>
 		 </table>
 		 <div style="border: 1px solid rgb(183, 183, 183);box-shadow: 1px 2px 2px rgb(255, 255, 255);margin-bottom: 5px;text-align: left;">
@@ -105,8 +104,8 @@ $(function (){
 		       <th>入库类型</th><td><select name="ckjhcheck.InOutTypeNo" class="combox"  val="${ckjhcheck.InOutTypeNo!}"><@inOutTypeNoSelect/></td>
 		       <th>供货商</th><td>
 					    <input type="hidden" name="supplier.supplierCode"  lookupgroup="supplier"  value="${supplier.supplierCode!}">
-					    <input type="text"  class="required textInput valid" name="supplier.supplierName"   readonly="readonly"  lookuppk="supplierNo"  value="${supplier.supplierName!}" />
-					    <a class="btnLook"  url="/jbsupplier/lookuplst"   lookupgroup="supplier"  lookuppk="supplierNo"  title="查找带回">查找带回</a>
+					    <input type="text"  class="required textInput valid" name="supplier.supplierName"   readonly="readonly"  lookuppk="supplierCode"  value="${supplier.supplierName!}" />
+					    <a class="btnLook"  url="/jbsupplier/lookuplst"   lookupgroup="supplier"  lookuppk="supplierCode"  title="查找带回">查找带回</a>
 					    </td>
 				 <th>订货仓库</th><td><input type="hidden" name="store.StoreCode"
 							lookupgroup="store" value="${store.StoreCode!}">
@@ -114,11 +113,14 @@ $(function (){
 							suggestfields="StoreCode,storeName" suggesturl=""
 							lookupgroup="store" type="text" value="${store.StoreName!}" />
 							<a class="btnLook" url="/jbstore/lookuplst" title="查找带回" lookupgroup="store" lookuppk="storeCode">查找带回</a></td>
+		      <th>订单编号</th>
+		      <td><input type="text"  name="ckjhcheck.BillorderNo"  lookupgroup="ckjhcheck"  readonly="readonly"  value="${ckjhcheck.BillorderNo!}"></td>
+			  <td>&nbsp;<a href="javascript:void(0);" url="${root!}/cgorder/select"  lookupgroup="ckjhcheck"  rel="cgordselect" title="已审核采购订单"><img width="16px"  height="21px" src="${root!}/ht/dwz/css/images/toolbar_icons16/application_view_list.png"/></td>
 		</tr>
 		<tr>
-			<th>部门：</th><td><select name="ckjhcheck.DepartmentNo" class="combox"  val="${ckjhcheck.DepartmentNo!}"><@partSelect/></select></td>
-			<th>业务员：</th><td><select name="ckjhcheck.EmployeeNo" class="combox"  val="${ckjhcheck.EmployeeNo!}"><@empSelect/></select></td>
-			<th>备注</th><td><input type="text" name="ckjhcheck.remark" value="${ckjhcheck.remark!}" ></td>
+			<th>部门：</th><td><select name="ckjhcheck.DeptCode" class="combox"  val="${ckjhcheck.DepCode!}"><@partSelect/></select></td>
+			<th>业务员：</th><td><select name="ckjhcheck.EmpCode" class="combox"  val="${ckjhcheck.EmpCode!}"><@empSelect/></select></td>
+			<th>备注</th><td colspan="2"><input type="text" name="ckjhcheck.remark" value="${ckjhcheck.remark!}" ></td>
 		</tr>
 	</table>
    </div>
@@ -189,7 +191,7 @@ $(function (){
 				  <td><input type="text" name="ckjhcheckDetail${d_index}.TaxAmount" value="${d.税额!}"  size="12"  defaultval="0"  readonly="readonly" ></td>
 				  	<!-- 金额 -->
 				  <td><input type="text" name="ckjhcheckDetail${d_index}.Amount" value="${d.金额!}" size="12"  defaultval="0"  readonly="readonly" ></td>
-				  <td><a class="btnDel"  href="${path}/cgdOrd/delDetail/${d.id!}"  title="确定要删除期初入库单吗？" target="ajaxTodo"><span>删除</span></a></td>
+				  <td><a class="btnDel"  href="${path}/cgdOrd/delDetail/${d.id!}"  title="确定要删除该条记录吗？" target="ajaxTodo"><span>删除</span></a></td>
 				</tr>
 				</#list>
 			</tbody>

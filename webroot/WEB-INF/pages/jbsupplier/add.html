@@ -19,9 +19,8 @@ $(function (){
 					<th>供应商名称</th>
 					<td><input type="text" name="jbsupplier.suppliername"
 						value="${xtts.suppliername!}" class="required" /></td>
-					<th>业务员</th>
-					<td><input type="text" name="jbsupplier.employeeno"
-						value="${xtts.employeeno!}" /></td>
+					<th>业务员</th>					
+					<td><select name="jbsupplier.empcode" class="combox"  val="${xtts.empcode!}"><@empSelect/></select></td>
 				</tr>
 				<tr>
 					<th>联系地址</th>
@@ -55,9 +54,7 @@ $(function (){
 					<td><input type="text" name="jbsupplier.url" value="${xtts.url!}" /></td>
 					<th>信用天数</th>
 					<td><input type="number" name="jbsupplier.pdaymax" val="${xtts.pdaymax!}" /></td>
-					<th>供应商类别</th>
-					<td><select name="jbsupplier.suppliertypeno" val="${xtts.suppliertypeno!}"
-						class="combox">	</select></td>
+					
 				</tr>
 				<tr>
 					<th>信用金额</th>
