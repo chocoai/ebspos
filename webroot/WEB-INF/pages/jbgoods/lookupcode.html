@@ -1,0 +1,32 @@
+<#include "../inc/_layout.html"/>
+<@layout>
+<script type="text/javascript">
+initQueryForm(); 
+</script>
+<div id="lookupbox">
+<div class="pageHeader">
+		<form action="${path}/jbgoods/lookuplst" method="post"   id="pagerForm"
+			onsubmit="return dwzSearch(this, 'dialog');">
+			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> <input
+				type="hidden" name="numPerPage" value="${page.pageSize!}" />
+			<div class="searchBar">
+				<ul class="searchContent">
+					<li>
+						<label>商品编号</label>
+						<input type="text" name="goodscode" value="${goodscode!}">
+					</li>
+					<li>
+						<label>商品名称</label>
+						<input type="text" name="goodsname" value="${goodsname!}">
+					</li>
+				</ul>
+				<@searchBar/>
+			</div>
+		</form>
+	<div class="pageContent">
+		<@lookuptbl layouth="118"  width="800" tid="lookupgoodcode"/>
+	</div>
+<@dialogpaginate rel="lookupbox"/>
+</div>
+</div>
+</@layout>

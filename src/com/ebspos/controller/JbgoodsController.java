@@ -67,7 +67,28 @@ public class JbgoodsController extends BaseController {
 		setAttr("collist", new String[]{"商品编码","商品名称","基本单位","参考进价","品牌","产地","规格","条码"});
 		render("lookup.html");
 	}
-	
+	public void lookupcodelst() {
+		StringBuffer whee=new StringBuffer();
+		List<Object> param = new ArrayList<Object>();
+		String goodscode=getPara("goodscode");
+		String goodname=getPara("goodname");
+		if(goodscode!=null && !"".equals(goodscode.trim())){
+			whee.append(" and p.goodscode like ?");
+			param.add("%"+goodscode+"%");			
+		}
+		if(goodscode!=null && !"".equals(goodscode.trim())){
+			whee.append(" and p.goodsname like ?");
+			param.add("%"+goodname+"%");			
+		}
+		setAttr("goodscode",goodscode);
+		setAttr("goodname",goodname);
+		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
+				"select p.id,p.goodscode 商品编码, p.goodsname 商品名称, p.BaseUnit 基本单位," +
+				" p2.name 品牌,p.ProduceArea 产地,p.model 规格,p.barcode 条码,p.BRefPrice 参考进价 ",
+				" from  jbgoods p left join types p2 on p.brandno=p2.id left join types p3 on p.baseunit=p3.id  where 1=1  "+whee.toString(),param.toArray()));
+		setAttr("collist", new String[]{"商品编码","商品名称","基本单位","参考进价","品牌","产地","规格","条码"});
+		render("lookupcode.html");
+	}
 	public void add() {
 		Jbgoods xtts = new Jbgoods();
 		Long id = getParaToLong(0, 0L);

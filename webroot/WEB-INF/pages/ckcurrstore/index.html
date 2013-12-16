@@ -18,7 +18,7 @@ $("#cgordtable tr td:nth-child(10)").each(function(r,td){
 					<tr><th>商品名称</th><td>
 					    <input type="hidden" name="jbgoods.goodsCode"  value="${goodsCode!}">
 					    <input type="text" name="jbgoods.goodsName"   lookuppk="goodsCode"  class="textInput"  value="${goodsName!}" />
-					    <a class="btnLook"  url="/jbgoods/lookuplst"   lookupgroup="jbgoods"  lookuppk="goodsCode"  title="查找带回">查找带回</a>
+					    <a class="btnLook"  url="/jbgoods/lookupcodelst"   lookupgroup="jbgoods"  lookuppk="goodsCode"  title="查找带回">查找带回</a>
 					</td>
 					<th>订货仓库</th><td>
 					    <input type="hidden" name="store.StoreCode"  value="${StoreCode!}">
