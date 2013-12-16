@@ -18,6 +18,8 @@ import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
+import com.jfinal.plugin.activerecord.tx.TxByActionKeys;
+import com.jfinal.plugin.activerecord.tx.TxByRegex;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.druid.DruidStatViewHandler;
 import com.jfinal.plugin.druid.IDruidStatViewAuth;
@@ -38,8 +40,8 @@ public class JFWebConfig extends JFinalConfig {
 		me.setError404View("/404.html");
 		me.setError500View("/500.html");
 		me.setBaseViewPath("/WEB-INF/pages/");
-        // url分隔符
-        me.setUrlParaSeparator("&");
+//        // url分隔符
+//        me.setUrlParaSeparator("&");
 	}
 	
 	/**
@@ -89,6 +91,8 @@ public class JFWebConfig extends JFinalConfig {
 	 */
 	public void configInterceptor(Interceptors me) {
 //		me.add(new SessionInViewInterceptor());//解决session在freemarker中不能取得的问题 获取方法：${session["manager"].username}
+//		me.add(new TxByRegex(".*save.*"));
+//		me.add(new TxByActionKeys("/cash/trans"));
 	}
 	
 	/**
