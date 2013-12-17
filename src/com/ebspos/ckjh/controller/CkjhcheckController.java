@@ -84,7 +84,7 @@ public class CkjhcheckController extends BaseController {
 		sql += " left join  types t on t.id=p.inoutTypeNo and t.function='入库类型'";
 		sql +=" where 1=1 ";
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
-				"select p.id,p.Ordercode 订单号, p.OrderDate 进货日期,p.remark 备注, t.name 入库类型,p.BillOrderNo 采购单号,p.CKAmount 入库金额, p.payAmount 已付金额,p.checkflag 审核, b.supplierName 供应商,c.StoreName 订货仓库,d.usr_name 业务员, e.`name` 部门 ",
+				"select p.id,p.OrderCode 订单号, p.OrderDate 进货日期,p.remark 备注, t.name 入库类型,p.BillOrderNo 采购单号,p.CKAmount 入库金额, p.payAmount 已付金额,p.checkflag 审核, b.supplierName 供应商,c.StoreName 订货仓库,d.usr_name 业务员, e.`name` 部门 ",
 				sql + whee.toString(),param.toArray()));
 		setAttr("collist", new String[]{"订单号","进货日期","供应商","业务员","部门","收货日期","订货仓库","入库类型","采购单号","入库金额","已付金额","审核","备注"});
 	}
@@ -156,7 +156,7 @@ public class CkjhcheckController extends BaseController {
 			ckjhcheck = Ckjhcheck.dao.findById(id);
 			jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", ckjhcheck.getStr("SupplierCode"));
 			jbstore = Jbstore.dao.findFirst("select * from jbstore where StoreCode = ?", ckjhcheck.getStr("StoreCode"));
-			param.add(ckjhcheck.get("OrderNo"));
+			param.add(ckjhcheck.get("orderCode"));
 		} else {
 			synchronized(lock) {
 				ordCdNw = BsUtil.getMaxOrdNo("OrderCode","PK","ckjhcheck");
