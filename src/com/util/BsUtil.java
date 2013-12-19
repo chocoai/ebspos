@@ -17,6 +17,10 @@ public class BsUtil {
 	    public static int NEED_TO_ADV_PAY = 49;
 	    // 直接付款
 	    public static int DIR_PAY = 50;
+	    // 查看类型
+	    public static String VIEW_INDEX = "index";
+	    // 查看类型
+	    public static String VIEW_LOOKUP = "lookup";
 	    
 	    public static Double add(BigDecimal... params) {
 			Double total = 0.0;
