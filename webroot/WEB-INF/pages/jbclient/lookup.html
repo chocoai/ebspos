@@ -4,27 +4,27 @@
 initQueryForm(); 
 </script>
 <div class="pageHeader">
-		<form action="${path}/jbstore/lookuplst" method="post"   id="lookupForm"
+		<form action="${path}/jbclient/lookuplst" method="post"   id="lookupForm"
 			onsubmit="return dwzSearch(this, 'dialog');">
 			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> <input
 				type="hidden" name="numPerPage" value="${page.pageSize!}" />
 			<div class="searchBar">
 				<ul class="searchContent">
 					<li>
-						<label>仓库编号</label>
-						<input type="text" name="storeCode" value="${storeCode!}">
+						<label>客户编号</label>
+						<input type="text" name="clientcode" value="${clientcode!}">
 					</li>
 					<li>
-						<label>仓库名称</label>
-						<input type="text" name="storeName" value="${storeName!}">
+						<label>客户名称</label>
+						<input type="text" name="clientname" value="${clientname!}">
 					</li>
 				</ul>
 				<@searchBar/>
 			</div>
 		</form>
 	<div class="pageContent">
-		<@lookuptbl layouth="118"  tid="lookupstore"/>
+		<@lookuptbl layouth="118"  tid="lookupclient"/>
 	</div>
-<@dialogpaginate rel="lookupstore"/>
+<@dialogpaginate rel="lookupclient"/>
 </div>
 </@layout>

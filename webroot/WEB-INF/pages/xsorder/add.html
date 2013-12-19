@@ -1,0 +1,268 @@
+<#include "../inc/_layout.html"/><#include "../inc/_nation.html"/>
+<@layout>
+<script type="text/javascript">
+$(function (){
+		initQueryForm();
+		if ($("#typeFlg").val() == 2 || $("#CheckFlag").val() == 1) {
+			// 如果清货状态，各输入框不可改
+			for ( var i = 0; i < $("input").length; i++) {
+				$(".pageContent input[type=text]").attr("disabled","disabled");
+			}
+		    $(".pageContent button[type=submit]").attr("disabled","disabled");
+		    $("#settleTypeFlag").attr("disabled","disabled");
+		    $(".pageContent select").attr("disabled","disabled").css({ "color":"#ccc"});
+		    $(".pageContent .btnDel").remove();
+		    $(".pageContent .btnLook").remove();
+		    $(".pageContent .inputDateButton").remove();
+		}
+	    reloadData();
+	});
+	//采购单初始
+	function reloadData() {
+		var total = 0, all = 0;
+		$("#xsOrdTbl tr")
+				.each(
+						function() {
+							var brefprice = 0, discount = 0, price = 0, quantity = 0, taxrate = 0, taxamount = 0, amount = 0;
+							// 有数据【商品编号】
+							if ($(this).find('td').eq(1).find('input').val()) {
+								// 税率默认值17%
+								if (!$(this).find('td').eq(9).find('input')
+										.val()) {
+									$(this).find('td').eq(9).find('input').val(
+											"17");
+								}
+								// 折扣默认值100%
+								if (!$(this).find('td').eq(6).find('input')
+										.val()) {
+									$(this).find('td').eq(6).find('input').val(
+											"100");
+								}
+							}
+							if ($(this).find('td').eq(5).find('input').val()
+									&& $(this).find('td').eq(6).find('input')
+											.val()) {
+								brefprice = (new Number($(this).find('td')
+										.eq(5).find('input').val()));
+								discount = (new Number($(this).find('td').eq(6)
+										.find('input').val()) / 100);
+								$(this).find('td').eq(7).find('input').val(
+										brefprice * discount);
+							}
+							if ($(this).find('td').eq(7).find('input').val()
+									&& $(this).find('td').eq(8).find('input')
+											.val()
+									&& $(this).find('td').eq(9).find('input')
+											.val()) {
+								price = (new Number($(this).find('td')
+										.eq(7).find('input').val()));
+								quantity = (new Number($(this).find('td').eq(8)
+										.find('input').val()));
+								taxrate = (new Number($(this).find('td').eq(9)
+										.find('input').val()) / 100);
+								$(this).find('td').eq(10).find('input').val(
+										new Number(price * taxrate
+												* quantity).toFixed(2));
+							}
+							if ($(this).find('td').eq(10).find('input').val()) {
+								taxamount = (new Number($(this).find('td').eq(
+										10).find('input').val()));
+								$(this).find('td').eq(11).find('input').val(
+										new Number(price * quantity
+												+ taxamount).toFixed(2));
+								amount = (new Number($(this).find('td').eq(11)
+										.find('input').val()));
+							}
+							total += quantity;
+							all += amount;
+							// 原价
+							$(this).find('td').eq(5).find('input').attr(
+									"onblur", "reloadData();return false;");
+							// 折扣
+							$(this).find('td').eq(6).find('input').attr(
+									"onblur", "reloadData();return false;");
+							// 单价
+							$(this).find('td').eq(7).find('input').attr(
+									"onblur", "reloadData();return false;");
+							// 数量
+							$(this).find('td').eq(8).find('input').attr(
+									"onblur", "reloadData();return false;");
+							// 税率
+							$(this).find('td').eq(9).find('input').attr(
+									"onblur", "reloadData();return false;");
+							/* alert("tr=" + $(this).index() + ";" + "num=" + num + ";" + "price=" + price + ";" + "total=" + total + ";" + "amount=" + amount +";");  */
+						});
+		$("#total").text(total);
+		$("#all").text(all.toFixed(2));
+		$("#amount").val(all.toFixed(2));
+	}
+</script>
+<div class="pageContent">
+	<form method="post" action="${root!}/xsorder/save"
+		id="xsOrder_pagerForm" class="pageForm required-validate"
+		onsubmit="return validateCallback(this, dialogAjaxDone);">
+		<input name="xsOrd.id" type="hidden" value="${xsOrd.id!}">
+		<div class="pageFormContent" id="xsOrdSave" >	
+		<table style="margin-top:5px;margin-bottom:5px;border:0px;" >
+			<tbody><tr>
+			<th style="width:50px"></th>
+			<th valign="top">
+			   <div style="width:90px;text-align:left;">采购订单</div>
+			 </th>
+			 <th style="width:500px"></th>
+			  <th>单据编号：</th><td><input type="text"  name="xsOrd.ordercode"  readonly="readonly"  value="${xsOrd.ordercode!}"></td>
+			  <td>&nbsp;&nbsp;</td>
+			 <th>单据日期：</th><td><input type="text" name="xsOrd.orderDate" class="date" readonly="true"  dateFmt="yyyy-MM-dd"   value="${xsOrd.orderDate!}"/>
+						   <a class="inputDateButton" href="javascript:;">选择</a></td>
+			  <td>&nbsp;&nbsp;</td>
+			  <th>制单人：</th><td><input type="text"  readonly="readonly"  name="xsOrd.Operator"  value="${xsOrd.operator!}"></td>
+		 </tr></tbody>
+		 </table>
+		 <div style="border: 1px solid rgb(183, 183, 183);box-shadow: 1px 2px 2px rgb(255, 255, 255);margin-bottom: 5px;text-align: left;">
+		 <table style="margin-top:5px;margin-bottom:5px;padding:5px;">
+		 <tr height="30"><th>客户名称：</th><td>
+					    <input type="hidden" name="client.ClientCode"  lookupgroup="client"  value="${client.ClientCode!}">
+					    <input type="text"  class="required textInput valid"  readonly="readonly"  name="client.ClientName"   lookuppk="ClientCode"  value="${client.ClientName!}" />
+					    <a class="btnLook"  url="/jbclient/lookuplst"   lookupgroup="client"  lookuppk="ClientCode"  title="查找带回">查找带回</a>
+					    </td>
+				 <th>订货仓库：</th><td><input type="hidden" name="store.StoreCode"
+							lookupgroup="store" value="${store.StoreCode!}">
+							<input autocomplete="off" name="store.StoreName"  readonly="readonly" 
+							suggestfields="StoreCode,storeName" suggesturl=""
+							lookupgroup="store" type="text" value="${store.StoreName!}" />
+							<a class="btnLook" url="/jbstore/lookuplst" title="查找带回" lookupgroup="store" lookuppk="storeCode">查找带回</a></td>
+			       <th>送货日期：</th><td><input type="text" name="xsOrd.DeliveryDate" class="date"  dateFmt="yyyy-M-d"  readonly="true" value="${xsOrd.DeliveryDate!}" />
+						   <a class="inputDateButton" href="javascript:;">选择</a></td>
+		</tr>
+		<tr>
+			<th>部门：</th><td><select name="xsOrd.deptcode" class="combox"  val="${xsOrd.deptcode!}"><@partSelect/></select></td>
+			<th>业务员：</th><td><select name="xsOrd.empcode" class="combox"  val="${xsOrd.empcode!}"><@empSelect/></select></td>
+			<th>备注：</th><td><input type="text" name="xsOrd.Memo" value="${xsOrd.Memo!}" ></td>
+		</tr>
+	</table>
+   </div>
+   <div inited="1000" style="height: 320px;overflow: auto;display: block;">
+		<table class="list nowrap itemDetail"  addbutton="新建商品明细" 
+			width="100%" style="clear: both;" id="xsOrdTbl">
+			<thead>
+				<tr>
+					<th type="text" name="lineId" 
+						defaultval="#index#" size="5"  fieldclass="digits">行号</th>
+					<th type="lookup" name="goods#index#.GoodsCode"
+						lookupgroup="goods#index#"
+						lookupurl="/jbgoods/lookuplst/1"
+	                    size="12">商品编号</th>
+					<th type="text" name="goods#index#.GoodsName" size="12" 
+						fieldclass="readonly textInput valid"  readonly="readonly"
+						fieldattrs="{remote:'validate_remote.html', maxlength:10}">商品名称</th>
+					<th type="text" name="goods#index#.Model" size="12"
+						>商品规格</th>
+					<th type="text" name="goods#index#.BaseUnit" size="12"
+						>基本单位</th>
+					<th type="text" name="goods#index#.BRefPrice" size="12"
+						defaultval="0" >原价</th>
+					<th type="text" name="xsOrdDetail#index#.Discount" size="12"
+						defaultval="100"  numFmt="##.##%">折扣%</th>
+					<th type="text" name="xsOrdDetail#index#.Price" size="12"
+						defaultval="0" >单价</th>
+					<th type="text" name="xsOrdDetail#index#.Quantity"
+						defaultval="0" size="12"  fieldclass="number" >数量</th>
+					<th type="text" name="xsOrdDetail#index#.TaxRate" size="12"
+						 fieldclass="number"  defaultval="17"  numFmt="##.##%">税率%</th>
+					<th type="text" name="xsOrdDetail#index#.TaxAmount" size="12"
+						 fieldclass="readonly textInput valid" defaultval="0"  readonly="readonly" >税额</th>
+					<th type="text" name="xsOrdDetail#index#.Amount" size="12"
+						 fieldclass="readonly textInput valid" defaultval="0"  readonly="readonly" >金额</th>
+					<th type="del" width="60">操作</th>
+				</tr>
+			</thead>		
+			<#if page??&&page.list??>
+			<tbody>
+				<#list page.list as d>
+				<tr target="sid_key"  rel="${d.id!}">
+				<!-- 行号 -->
+				<td><input type="hidden"  name="xsOrdDetail${d_index}.id"  value="${d.id!}">
+					<input type="checkbox" name="idds"  value="${d.id!}">${d_index+1}</td>
+			    <!-- 商品编号 -->
+				<td><input type="text" name="goods${d_index}.GoodsCode"  lookuppk="GoodsCode" size="12"
+						class="textInput"  value="${d.商品编号!}"><a class="btnLook"
+						url="/jbgoods/lookuplst/1" lookupgroup="goods${d_index}" lookuppk="id"
+						title="查找带回">查找带回</a></td>
+				  <!-- 商品名称 -->
+				  <td><input type="text"  name="goods${d_index}.GoodsName"  value="${d.商品名称!}"  readonly="readonly"  size="12" ></td>
+				  <!-- 商品规格 -->
+				  <td><input type="text" name="goods${d_index}.Model" value="${d.商品规格!}"  size="12" ></td>
+				  <!-- 基本单位 -->
+				  <td><input type="text" name="goods${d_index}.BaseUnit" value="${d.基本单位!}" size="12" ></td>
+				  <!-- 原价 -->
+				  <td><input type="text" name="goods${d_index}.SRefPrice" value="${d.原价!}" size="12"  defaultValue="0"  class="number" ></td>
+				  <!-- 折扣 -->
+				  <td><input type="text" name="xsOrdDetail${d_index}.Discount" value="${d.折扣!}"  size="12"  defaultValue="0.0"  numFmt="##.##%" class="number" ></td>
+				  <!-- 单价 -->
+				  <td><input type="text" name="xsOrdDetail${d_index}.Price" value="${d.单价!}"  size="12"  defaultValue="0"  class="number" ></td>
+				  <!-- 数量 -->
+				  <td><input type="text" name="xsOrdDetail${d_index}.Quantity" value="${d.数量!}" size="12"  defaultValue="0"  class="number" ></td>
+				  	<!-- 税率 -->
+				  <td><input type="text" name="xsOrdDetail${d_index}.TaxRate" value="${d.税率!}"  size="12"  defaultValue="0" numFmt="##.##%" class="number" ></td>
+				  	<!-- 税额 -->
+				  <td><input type="text" name="xsOrdDetail${d_index}.TaxAmount" value="${d.税额!}"  size="12"  defaultval="0"  readonly="readonly" ></td>
+				  	<!-- 金额 -->
+				  <td><input type="text" name="xsOrdDetail${d_index}.Amount" value="${d.税后金额!}" size="12"  defaultval="0"  readonly="readonly" ></td>
+				    <!-- 成本价 -->
+				  <td><input type="hidden" name="goods${d_index}.CostPrice" value="${d.成本!}" /></td>
+				  <td><a class="btnDel"  href="${path}/cgdOrd/delDetail/${d.id!}"  title="确定要删除该条记录吗？" target="ajaxTodo"><span>删除</span></a></td>
+				</tr>
+				</#list>
+			</tbody>
+			</#if>
+		</table>
+	</div>
+	
+	<div style="background-color: #ebf0f5;height:30px">
+		<table>
+		<tbody>
+			<tr align="center">
+		         <th>审核人：</th><td width="120">${xsOrd.CheckMan!}</td> 
+				<th>审核日期：</th><td width="120">${xsOrd.CheckDate!}</td>
+		         <th>审核：</th><td width="120"><input type="hidden"   id="CheckFlag"   name="CheckFlag"  value="${xsOrd.CheckFlag!}"/>
+		         <input type="checkBox"  id="checkTypeFlag" onclick="if ($('#CheckFlag').prop('checked')==true) {$('#CheckFlag').val(1);}"  <#if xsOrd.CheckFlag??&&xsOrd.CheckFlag==1> checked="checked" disabled</#if> />
+		         </td>
+		         <th>数量合计：</th><td width="120"><span id ="total" ></span></td>
+		         <th>金额合计：</th><td width="120"><input type="hidden"   id="amount"   name="xsOrd.Amount" value="${xsOrd.Amount!}"><span id ="all" ></span></td>
+		         <th></th><td width="120">
+		         <input type="hidden"   id="typeFlg"   name="typeFlg"  value="${xsOrd.SettleTypeFlag!}"/>
+		         <input type="checkBox"  id="settleTypeFlag" onclick="if ($('#settleTypeFlag').prop('checked')==true) {$('#typeFlg').val(2);}"  <#if xsOrd.SettleTypeFlag??&&xsOrd.SettleTypeFlag==2> checked="checked"</#if> />清货</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	
+</div>
+		<div class="formBar">
+			<ul>
+				<@btnPower safecode="partsave">
+				<li><div class="buttonActive">
+						<div class="buttonContent">
+							<button type="submit">保存</button>
+						</div>
+					</div></li> </@btnPower>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="Button" class="close">打印</button>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="Button" class="close">关闭</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+</@layout>
+

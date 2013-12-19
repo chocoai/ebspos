@@ -1,0 +1,49 @@
+<#include "../inc/_layout.html"/>
+<@layout>
+<script type="text/javascript">
+initQueryForm();
+$("#cgordtable tr td:nth-child(12)").each(function(r,td){
+	var num=(new Number($(td).text()));
+	$(td).html(checkFlg[num]);
+});
+/*
+$("#cgordtable tr td:nth-child(13)").each(function(r,td){
+	var num=(new Number($(td).text()));
+	$(td).html(storeStopFlg[num]);
+});
+*/
+</script>
+<div class="pageHeader">
+		<form action="${root!}/cgorder/select" method="post" id="cgorderList_pagerForm"
+			onsubmit=" return dialogSearch(this)">
+			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> 
+			<input type="hidden" name="numPerPage" value="${page.pageSize!}" />
+			<div class="searchBar pageFormContent">				
+					<table ><tr><th>开始日期：</th><td>
+						<input type="text" name="startTime" class="date" readonly="true"  value="${startTime!}"/>
+						<a class="inputDateButton" href="javascript:;">选择</a>
+					</td>
+					<th>结束日期：</th><td>
+						<input type="text" name="endTime" class="date" readonly="true"  value="${endTime!}"/>
+						<a class="inputDateButton" href="javascript:;">选择</a>
+					</td></tr>
+					<tr><th>供货商</th><td>
+					    <input type="hidden" name="supplier.supplierCode"  value="${supplierCode!}">
+					    <input type="text" name="supplier.supplierName"   lookuppk="supplierCode"  class="textInput"  value="${supplierName!}" />
+					    <a class="btnLook"  url="/jbsupplier/lookuplst"   lookupgroup="supplier"  lookuppk="supplierCode"  title="查找带回">查找带回</a>
+					</td>
+					<th>订货仓库</th><td>
+					    <input type="hidden" name="store.StoreCode"  value="${StoreCode!}">
+					    <input type="text"   name="store.StoreName"  lookuppk="StoreCode"  class="textInput"  value="${StoreName!}"/>
+					    <a class="btnLook"  url="/jbstore/lookuplst"  lookupgroup="store"  lookuppk="StoreCode"  title="查找带回" >查找带回</a>
+					</td></tr>
+					</table>
+				<@searchBar/>
+			</div>
+		</form>
+	</div>
+	<div class="pageContent">
+		<@lookuptbl layouth="150" width="1500" tid="cgordlisttable"/>
+	</div>
+<@paginate rel="cgordlistBox"/>
+</@layout>
