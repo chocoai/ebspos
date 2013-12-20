@@ -51,27 +51,21 @@ public class JbstoreController extends BaseController {
 	}
 	
 	private void getPageInfo() {
-		Long typeNo = getParaToLong(0, 0L);
 		StringBuffer whee=new StringBuffer();
 		List<Object> param=new ArrayList<Object>();
-		String name=getPara("StoreName");
+		String name=getPara("storeName");
 		if(name!=null&&!"".equals(name.trim())){
 			whee.append(" and st.StoreName like ?");
 			param.add("%"+name+"%");
 		}
-		setAttr("StoreName", name);
+		setAttr("storeName", name);
 		
-		String num=getPara("StoreCode");
+		String num=getPara("storeCode");
 		if(num!=null&&!"".equals(num.trim())){
 			whee.append(" and st.StoreCode = ?");
 			param.add(num);
 		}
-		setAttr("StoreCode", num);
-		if (typeNo !=0)
-		{
-			whee.append(" and st.typeNo= ?");
-			param.add(typeNo);
-		}
+		setAttr("storeCode", num);
 	//	setAttr(OrgSelectTarget.targetName,new OrgSelectTarget());
 	//	setAttr(PartmentSelectTarget.targetName,new PartmentSelectTarget());
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),

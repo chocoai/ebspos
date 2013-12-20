@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50145
 File Encoding         : 65001
 
-Date: 2013-12-11 17:44:11
+Date: 2013-12-17 09:26:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -130,9 +130,9 @@ CREATE TABLE `cgorder` (
   `orderDate` date DEFAULT NULL COMMENT '订单日期',
   `Operator` varchar(50) DEFAULT '0' COMMENT '制单人',
   `supplierCode` varchar(11) DEFAULT '0' COMMENT '供应商编号',
-  `StoreCode` int(11) DEFAULT '0' COMMENT '仓库编号',
-  `partmentNo` int(11) DEFAULT '0' COMMENT '部门编号',
-  `EmployeeNo` varchar(20) DEFAULT '0' COMMENT '业务员编号',
+  `StoreCode` varchar(11) DEFAULT '0' COMMENT '仓库编号',
+  `deptCode` varchar(11) DEFAULT '0' COMMENT '部门编号',
+  `EmpCode` varchar(20) DEFAULT '0' COMMENT '业务员编号',
   `DeliveryDate` date DEFAULT NULL COMMENT '收货日期',
   `FinishFlag` smallint(6) DEFAULT '0' COMMENT '订单完成标志',
   `CheckFlag` smallint(6) DEFAULT '0' COMMENT '审核状态',
@@ -141,7 +141,7 @@ CREATE TABLE `cgorder` (
   `StopFlag` smallint(6) DEFAULT '0' COMMENT '停用标志',
   `StopMan` varchar(50) DEFAULT '0' COMMENT '终止人',
   `StopDate` date DEFAULT NULL COMMENT '终止日期',
-  `PreAmount` decimal(10,2) DEFAULT '0.00' COMMENT '预付金额',
+  `Amount` decimal(10,2) DEFAULT '0.00' COMMENT '总金额',
   `SettleTypeFlag` smallint(6) DEFAULT '0' COMMENT '0：什么都不选。1：预付 2：清货 3：货款结清',
   `remark` varchar(100) DEFAULT '0' COMMENT '备注',
   PRIMARY KEY (`id`,`orderCode`)
@@ -282,16 +282,16 @@ INSERT INTO `ckinitstoredetail` VALUES ('44', 'CK1377840751068', null, '1111', '
 DROP TABLE IF EXISTS `ckjhcheck`;
 CREATE TABLE `ckjhcheck` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `OrderNo` varchar(20) NOT NULL DEFAULT '0' COMMENT '进货单编号',
+  `OrderCode` varchar(20) NOT NULL DEFAULT '0' COMMENT '进货单编号',
   `OrderDate` date DEFAULT NULL COMMENT '进货日期',
   `JHPayOrderNo` varchar(20) DEFAULT NULL,
-  `SupplierNo` varchar(11) DEFAULT NULL COMMENT '供应商id',
-  `StoreNo` int(11) DEFAULT NULL COMMENT '仓库id',
+  `SupplierCode` varchar(11) DEFAULT NULL COMMENT '供应商id',
+  `StoreCode` int(11) DEFAULT NULL COMMENT '仓库id',
   `InOutTypeNo` varchar(20) DEFAULT NULL COMMENT '入库/退货类型',
   `BillOrderNo` varchar(20) DEFAULT NULL COMMENT '采购单号',
   `RelatedBillNo` varchar(20) DEFAULT NULL,
-  `DepartmentNo` int(11) DEFAULT NULL COMMENT '部门id',
-  `EmployeeNo` varchar(20) DEFAULT NULL COMMENT '经办人id',
+  `DeptCode` varchar(11) DEFAULT NULL COMMENT '部门id',
+  `EmpCode` varchar(20) DEFAULT NULL COMMENT '经办人id',
   `Operator` varchar(50) DEFAULT NULL COMMENT '制单人',
   `PayAmount` decimal(10,2) DEFAULT NULL COMMENT '已付金额',
   `AdjustAmount` decimal(10,2) DEFAULT NULL,
@@ -310,7 +310,7 @@ CREATE TABLE `ckjhcheck` (
   `RedMan` varchar(50) DEFAULT NULL,
   `SettleTypeFlag` smallint(6) DEFAULT '0' COMMENT '是否当面付，0：不付，1：付',
   `HasRed` smallint(6) DEFAULT NULL,
-  PRIMARY KEY (`id`,`OrderNo`)
+  PRIMARY KEY (`id`,`OrderCode`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='采购入库表';
 
 -- ----------------------------
@@ -327,10 +327,10 @@ INSERT INTO `ckjhcheck` VALUES ('24', 'PK-20131101-003', null, null, '112', '1',
 DROP TABLE IF EXISTS `ckjhcheckdetail`;
 CREATE TABLE `ckjhcheckdetail` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `OrderNo` varchar(20) NOT NULL DEFAULT '0' COMMENT '进货单号',
+  `OrderCode` varchar(20) NOT NULL DEFAULT '0' COMMENT '进货单号',
   `SerialNo` int(11) NOT NULL DEFAULT '1' COMMENT '进货单序号',
   `payAmount` decimal(10,2) DEFAULT NULL,
-  `GoodsNo` varchar(20) DEFAULT NULL COMMENT '商品编号',
+  `GoodsCode` varchar(20) DEFAULT NULL COMMENT '商品编号',
   `Quantity` decimal(10,2) DEFAULT NULL COMMENT '数量',
   `OrigPrice` decimal(10,2) DEFAULT NULL,
   `Price` decimal(10,2) DEFAULT NULL COMMENT '单价',
@@ -350,7 +350,7 @@ CREATE TABLE `ckjhcheckdetail` (
   `OrderSerialNo` int(11) DEFAULT NULL,
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
   `LastPrice` decimal(10,2) DEFAULT NULL COMMENT '最近进价',
-  PRIMARY KEY (`id`,`OrderNo`,`SerialNo`)
+  PRIMARY KEY (`id`,`OrderCode`,`SerialNo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='采购入库明细表';
 
 -- ----------------------------
@@ -434,7 +434,7 @@ INSERT INTO `employee` VALUES ('17', '33333', '3333', 'e10adc3949ba59abbe56e057f
 DROP TABLE IF EXISTS `jbclient`;
 CREATE TABLE `jbclient` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `ClientCode` varchar(20) DEFAULT '0' COMMENT '客户代码',
+  `ClientCode` varchar(20) NOT NULL DEFAULT '0' COMMENT '客户代码',
   `ClientName` varchar(50) DEFAULT '0' COMMENT '客户名称',
   `TypeNo` varchar(10) DEFAULT '0' COMMENT '客户类型序号',
   `EmployeeNo` varchar(10) DEFAULT '0' COMMENT '相关业务员序号',
@@ -462,6 +462,7 @@ CREATE TABLE `jbclient` (
   `SplusAmount` decimal(10,2) DEFAULT '0.00' COMMENT '往来余额',
   `StopFlag` smallint(6) DEFAULT '0' COMMENT '停止业务标记',
   `remark` varchar(150) DEFAULT '0' COMMENT '备注',
+  PRIMARY KEY (`id`,`ClientCode`),
   UNIQUE KEY `ClientCode` (`ClientCode`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='客户资料';
@@ -1067,6 +1068,63 @@ CREATE TABLE `userrole` (
 -- ----------------------------
 INSERT INTO `userrole` VALUES ('1', '2');
 INSERT INTO `userrole` VALUES ('1', '3');
+
+-- ----------------------------
+-- Table structure for `xsorder`
+-- ----------------------------
+DROP TABLE IF EXISTS `xsorder`;
+CREATE TABLE `xsorder` (
+  `id` bigint(20) NOT NULL,
+  `OrderCode` varchar(20) NOT NULL,
+  `OrderDate` date DEFAULT NULL,
+  `StoreCode` varchar(20) DEFAULT NULL,
+  `FinishFlag` smallint(6) DEFAULT NULL,
+  `DeptCode` varchar(20) DEFAULT NULL,
+  `EmpCode` varchar(20) DEFAULT NULL,
+  `DeliveryDate` date DEFAULT NULL,
+  `Operator` varchar(255) DEFAULT NULL,
+  `CheckFlag` smallint(6) DEFAULT NULL,
+  `CheckMan` varchar(255) DEFAULT NULL,
+  `CheckDate` date DEFAULT NULL,
+  `SettleTypeFlag` int(11) DEFAULT NULL,
+  `Amount` decimal(10,2) DEFAULT NULL,
+  `CKAmount` decimal(10,2) DEFAULT NULL,
+  `Memo` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`,`OrderCode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of xsorder
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `xsorderdetail`
+-- ----------------------------
+DROP TABLE IF EXISTS `xsorderdetail`;
+CREATE TABLE `xsorderdetail` (
+  `id` bigint(20) NOT NULL,
+  `OrderCode` varchar(20) NOT NULL,
+  `SerialNo` int(11) DEFAULT NULL,
+  `StoreCode` varchar(20) DEFAULT NULL,
+  `GoodsCode` varchar(20) DEFAULT NULL,
+  `OrigPrice` decimal(10,2) DEFAULT NULL,
+  `Discount` decimal(10,2) DEFAULT NULL,
+  `Price` decimal(10,2) DEFAULT NULL,
+  `Quantity` decimal(10,2) DEFAULT NULL,
+  `Unit` varchar(20) DEFAULT NULL,
+  `TaxRate` decimal(10,2) DEFAULT NULL,
+  `TaxAmount` decimal(10,2) DEFAULT NULL,
+  `Amount` decimal(10,2) DEFAULT NULL,
+  `OutStoreQty` decimal(10,2) DEFAULT NULL,
+  `ReturnQty` decimal(10,2) DEFAULT NULL,
+  `CKPrice` decimal(10,2) DEFAULT NULL,
+  `Memo` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of xsorderdetail
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `xttables`

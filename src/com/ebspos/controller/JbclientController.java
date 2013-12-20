@@ -22,21 +22,40 @@ public class JbclientController extends BaseController {
 	private static String navTabId = "jbclient";
 	@Override
 	public void index() {
-		StringBuffer whee=new StringBuffer();
-		List<Object> param = new ArrayList<Object>();
-		String clientcode=getPara("clientcode");
-		if(clientcode!=null && !"".equals(clientcode.trim())){
-			whee.append(" and p.clientcode like ?");
-			param.add("%"+clientcode+"%");			
-		}		
-		setAttr("suppliercode",clientcode);
-		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
-				"select p.id,p.clientcode 客户代码, p.clientname 客户名称,p.typeno 客户类别,p.stopflag 停用,p.remark 备注",
-				" from  jbclient p where 1=1  "+whee.toString(),param.toArray()));
+		getPageInfo();
 		setAttr("collist", new String[]{"客户代码","客户名称","客户类别","停用","备注"});
 		render("index.html");
-
 	}
+	
+	public void lookuplst() {
+		getPageInfo();
+		setAttr("collist", new String[]{"客户代码","客户名称","客户类别","客户级别"});
+		render("lookup.html");
+	}
+	
+	private void getPageInfo() {
+		StringBuffer whee=new StringBuffer();
+		List<Object> param=new ArrayList<Object>();
+		String name=getPara("clientname");
+		if(name!=null&&!"".equals(name.trim())){
+			whee.append(" and p.clientname like ?");
+			param.add("%"+name+"%");
+		}
+		setAttr("clientname", name);
+		
+		String num=getPara("clientcode");
+		if(num!=null&&!"".equals(num.trim())){
+			whee.append(" and p.clientcode = ?");
+			param.add(num);
+		}
+		setAttr("clientcode", num);
+	//	setAttr(OrgSelectTarget.targetName,new OrgSelectTarget());
+	//	setAttr(PartmentSelectTarget.targetName,new PartmentSelectTarget());
+		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
+				"select p.id,p.clientcode 客户代码, p.clientname 客户名称,p.typeno 客户类别,p.ClientLevelNo 客户级别,p.stopflag 停用,p.remark 备注",
+				" from  jbclient p where 1=1  "+whee.toString(),param.toArray()));
+	}
+	
 	public void add() {
 		Jbclient xtts = new Jbclient();
 		Long id = getParaToLong(0, 0L);
