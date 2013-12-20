@@ -2,14 +2,16 @@
 <@layout>
 <script type="text/javascript">
 initQueryForm();
-$("#ckjhlisttable tr td:nth-child(12)").each(function(r,td){
+
+$("#ckjhlisttable tr td:nth-child(13)").each(function(r,td){
 	var num=(new Number($(td).text()));
 	$(td).html(checkFlg[num]);
-});
+});/*
 $("#ckjhlisttable tr td:nth-child(13)").each(function(r,td){
 	var num=(new Number($(td).text()));
 	$(td).html(storeStopFlg[num]);
 });
+*/
 </script>
 <div class="pageHeader">
 		<form action="${root!}/ckjhcheck/list" method="post" id="ckjhcheckList_pagerForm"

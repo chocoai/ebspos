@@ -27,12 +27,12 @@ public class CkcurrstoreController extends BaseController {
 	private void getPageInfo() {
 		StringBuffer whee=new StringBuffer();
 		List<Object> param = new ArrayList<Object>();
-		String storecode=getPara("storecode");
+		String storecode=getPara("store.StoreCode");
 		if(storecode!=null && !"".equals(storecode.trim())){
 			whee.append(" and ck.storecode like ?");
 			param.add("%"+storecode+"%");			
 		}
-		String goodscode=getPara("goodscode");
+		String goodscode=getPara("jbgoods.GoodsCode");
 		if(goodscode!=null && !"".equals(goodscode.trim())){
 			whee.append(" and ck.goodscode like ?");
 			param.add("%"+goodscode+"%");			

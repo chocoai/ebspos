@@ -2,11 +2,6 @@
 <@layout>
 <script type="text/javascript">
 initQueryForm();
-$("#cgordtable tr td:nth-child(10)").each(function(r,td){
-	var num=(new Number($(td).text()));
-	$(td).html(checkFlg[num]);
-});
-
 </script>
 <div class="pageHeader">
 		<form action="${root!}/ckcurrstore" method="post" id="ckcurrstore_pagerForm"
@@ -16,9 +11,9 @@ $("#cgordtable tr td:nth-child(10)").each(function(r,td){
 			<div class="searchBar pageFormContent">				
 					<table >
 					<tr><th>商品名称</th><td>
-					    <input type="hidden" name="jbgoods.goodsCode"  value="${goodsCode!}">
-					    <input type="text" name="jbgoods.goodsName"   lookuppk="goodsCode"  class="textInput"  value="${goodsName!}" />
-					    <a class="btnLook"  url="/jbgoods/lookupcodelst"   lookupgroup="jbgoods"  lookuppk="goodsCode"  title="查找带回">查找带回</a>
+					    <input type="hidden" name="jbgoods.GoodsCode"  value="${GoodsCode!}">
+					    <input type="text" name="jbgoods.GoodsName"   lookuppk="GoodsCode"  class="textInput"  value="${GoodsName!}" />
+					    <a class="btnLook"  url="/jbgoods/lookupcodelst"   lookupgroup="jbgoods"  lookuppk="GoodsCode"  title="查找带回">查找带回</a>
 					</td>
 					<th>订货仓库</th><td>
 					    <input type="hidden" name="store.StoreCode"  value="${StoreCode!}">
@@ -34,18 +29,16 @@ $("#cgordtable tr td:nth-child(10)").each(function(r,td){
 		<div class="panelBar">
 			<ul class="toolBar">
 			<@btnPower safecode="partctrl">
-				<li><a class="add" href="javascript:void(0);" url="${root!}/cgorder/add" title="添加采购订单"
-					target="dialog" height="580" width="1280" rel="cgordadd"><span>添加</span> </a></li>
-				<li><a class="edit" href="javascript:void(0);" url="${root!}/cgorder/add/{sid_key}"
-					title="修改采购订单" target="dialog" height="580" width="1280" rel="cgordupd"><span>修改</span>
-				</a></li>				
+				<li><a  class="icon" title="实要导出这些记录吗?" targettype="navTab" target="dwzExport" href="${root}/doc/dwz-team.xls"
+				><span>导出Excel</span> </a></li>
+				<li><a  class="icon" href="javascript:$.printBox('ck_list')"><span>打印</span>
+				</a></li>
 				</@btnPower>
 			</ul>
 		</div>
-		<div layouth="150" style="overflow:visible">
-		
-		<@table layouth="150" width="1000" tid="cgordtable"/>
+		<div layouth="130" style="overflow:visible" id="ck_list">		
+		<@table layouth="150" width="1000" tid="cktable"/>
 		</div>
 	</div>
-<@paginate rel="cgordBox"/>
+<@paginate rel="ckBox"/>
 </@layout>

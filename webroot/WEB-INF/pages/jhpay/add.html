@@ -107,10 +107,10 @@ $(function (){
 			 <th style="width:500px"></th>
 			  <th>单据编号：</th><td><input type="text"  name="jhpay.OrderCode"  class="ord"  lookupgroup="jhpay"  readonly="readonly"  value="${jhpay.OrderCode!}"></td>
 			  <td>&nbsp;</td>
-			 <th>单据日期：</th><td><input type="text" name="jhpay.OrderDate" class="date" readonly="readonly"  dateFmt="yyyy-M-d"   value="${jhpay.OrderDate!}"/>
+			 <th>单据日期：</th><td><input type="text" name="jhpay.OrderDate" class="date" readonly="readonly"  dateFmt="yyyy-MM-dd"   value="${jhpay.OrderDate!}"/>
 						   <a class="inputDateButton" href="javascript:;">选择</a></td>
 			  <td>&nbsp;&nbsp;</td>
-			  <th>制单人：</th><td><input type="text"  name="jhpay.Operator"  value="系统管理员"  readonly="true" ></td>
+			  <th>制单人：</th><td><input type="text"  name="jhpay.Operator"  value="${jhpay.Operator!}"  readonly="true" ></td>
 		 </tr></tbody>
 		 </table>
 		 <div style="border: 1px solid rgb(183, 183, 183);box-shadow: 1px 2px 2px rgb(255, 255, 255);margin-bottom: 5px;text-align: left;">
