@@ -103,7 +103,7 @@ public class JhpayController extends BaseController {
 			jhpay.set("OrderCode", ordCdNw);
 			jhpay.set("OrderDate", DateUtil.date2String(new Date(), DateUtil.FORMAT_DATE));
 			param = param.substring(0,param.length() - 1) + ")";
-			String sql = "select b.id,b.OrderCode 单据编号, a.OrderDate 单据日期,if(strcmp(left(b.OrderCode,2) =0 ,'PK'),'采购入库单','采购退库单') 单据类型,'" + ordCdNw +"' 付款单号,sum(b.amount) 单据金额,sum(b.payAmount) 已付金额,b.remark 备注 ";
+			String sql = "select b.id,b.OrderCode 单据编号, a.OrderDate 单据日期,if(strcmp(left(b.OrderCode,2) =0 ,'PK'),'采购入库单','采购退库单') 单据类型,'" + ordCdNw +"' 付款单号,sum(b.amount) 单据金额,sum(a.payAmount) 已付金额,b.remark 备注 ";
 			String sqlSelect = "  from ckjhcheckDetail b inner join ckjhcheck a on a.OrderCode = b.OrderCode "; 
 			sqlSelect += " where 1=1 ";
 			Page<Record> redLst = Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
@@ -149,9 +149,12 @@ public class JhpayController extends BaseController {
 			param.add(ordCdNw);
 			// 默认日期
 			jhpay.set("OrderDate", DateUtil.date2String(new Date(), DateUtil.FORMAT_DATE));
+			//制单人
+			Record m=getCurrentUser();
+			jhpay.set("Operator", m.getStr("usr_name"));
 		}
-		String sql = "select a.id,a.OrderCode 单据编号,a.CollateType 单据类型,a.PayOrderNo 付款单号,sum(b.amount) 单据金额,0 本次付款金额,0 抹零金额,sum(b.payAmount) 已付金额,a.remark 备注";
-		String sqlSelect = " from jhpayDetail a inner join ckjhcheckDetail b on a.OrderCode = b.OrderCode";
+		String sql = "select a.id,a.OrderCode 单据编号,a.CollateType 单据类型,a.PayOrderNo 付款单号,sum(b.ckamount) 单据金额,0 本次付款金额,0 抹零金额,sum(b.payAmount) 已付金额,a.remark 备注";
+		String sqlSelect = " from jhpayDetail a inner join ckjhcheck b on a.OrderCode = b.OrderCode";
 		sqlSelect += " where 1=1 ";
 		Page<Record> redLst = Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
 				sql, sqlSelect + whee.toString() + " group by b.OrderCode ",param.toArray());
