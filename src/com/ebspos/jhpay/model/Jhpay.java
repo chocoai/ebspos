@@ -1,4 +1,5 @@
-package com.ebspos.pay.model;
+package com.ebspos.jhpay.model;
+
 
 import net.loyin.jFinal.anatation.TableBind;
 

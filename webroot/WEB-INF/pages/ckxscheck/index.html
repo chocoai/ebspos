@@ -2,14 +2,13 @@
 <@layout>
 <script type="text/javascript">
 initQueryForm();
-$("#cgordtable tr td:nth-child(10)").each(function(r,td){
+$("#ckxstable tr td:nth-child(11)").each(function(r,td){
 	var num=(new Number($(td).text()));
 	$(td).html(checkFlg[num]);
 });
-
 </script>
 <div class="pageHeader">
-		<form action="${root!}/xsorder" method="post" id="xsorder_pagerForm"
+		<form action="${root!}/ckxscheck" method="post" id="ckxscheck_pagerForm"
 			onsubmit=" return navTabSearch(this)">
 			<input type="hidden" name="pageNum" value="${page.pageNumber!}" /> 
 			<input type="hidden" name="numPerPage" value="${page.pageSize!}" />
@@ -41,20 +40,18 @@ $("#cgordtable tr td:nth-child(10)").each(function(r,td){
 		<div class="panelBar">
 			<ul class="toolBar">
 			<@btnPower safecode="partctrl">
-				<li><a class="add" href="javascript:void(0);" url="${root!}/xsorder/add" title="添加销售订单"
-					target="dialog" height="580" width="1280" rel="xsordadd"><span>添加</span> </a></li>
-				<li><a class="edit" href="javascript:void(0);" url="${root!}/xsorder/add/{sid_key}"
-					title="修改销售订单" target="dialog" height="580" width="1280" rel="cgordupd"><span>修改</span>
+				<li><a class="add" href="javascript:void(0);" url="${root!}/ckxscheck/add" title="添加销售出库单"
+					target="dialog" height="580" width="1280" rel="ckxsadd"><span>添加</span> </a></li>
+				<li><a class="edit" href="javascript:void(0);" url="${root!}/ckxscheck/add/{sid_key}"
+					title="修改销售出库单" target="dialog" height="580" width="1280" rel="ckjhupd"><span>修改</span>
 				</a></li>
-				<li><a class="arrow_redo" href="javascript:void(0);" url="${root!}/xsorder/review/{sid_key}" title="确定要审核通过该销售订单?" target="ajaxTodo"><span>审核</span> </a></li>
-				<li><a class="arrow_undo" href="javascript:void(0);" url="${root!}/xsorder/unreview/{sid_key}" title="确定要反审核该销售订单?" target="ajaxTodo"><span>反审核</span> </a></li>
-				<li><a class="delete" href="javascript:void(0);" url="${root!}/xsorder/del/{sid_key}" title="确定要删除该信息吗？" target="ajaxTodo"><span>删除</span></a></li>
+				<li><a class="arrow_redo" href="javascript:void(0);" url="${root!}/ckxscheck/review/{sid_key}" title="确定要审核通过该销售出库单?" target="ajaxTodo"><span>审核</span> </a></li>
+				<li><a class="arrow_undo" href="javascript:void(0);" url="${root!}/ckxscheck/unreview/{sid_key}" title="确定要反审核该销售出库单?" target="ajaxTodo"><span>反审核</span> </a></li>
+				<li><a class="delete" href="javascript:void(0);" url="${root!}/ckxscheck/del/{sid_key}" title="确定要删除该出库单吗？" target="ajaxTodo"><span>删除</span> </a></li>
 				</@btnPower>
 			</ul>
 		</div>
-		<div layouth="150" style="overflow:visible">
-		<@table layouth="150" width="1000" tid="xsordtable"/>
-		</div>
+		<@table layouth="137" width="1000" tid="ckxstable"/>
 	</div>
-<@paginate rel="xsordBox"/>
+<@paginate rel="ckxsBox"/>
 </@layout>
