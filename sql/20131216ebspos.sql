@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50145
 File Encoding         : 65001
 
-Date: 2013-12-30 17:41:05
+Date: 2014-01-06 16:18:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -145,7 +145,7 @@ CREATE TABLE `cgorder` (
   `SettleTypeFlag` smallint(6) DEFAULT '0' COMMENT '0：什么都不选。1：预付 2：清货 3：货款结清',
   `remark` varchar(100) DEFAULT '0' COMMENT '备注',
   PRIMARY KEY (`id`,`orderCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='采购订单';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='采购订单';
 
 -- ----------------------------
 -- Records of cgorder
@@ -154,6 +154,7 @@ INSERT INTO `cgorder` VALUES ('13', 'CGDD-20130918-001', '2013-09-19', 'dadf', '
 INSERT INTO `cgorder` VALUES ('14', 'CGDD-20130926-001', '2013-09-10', '系统管理员', '112', '239', '3', 'wcc', '2013-09-13', '0', '1', null, '2013-09-26', '0', '0', null, '0.00', '2', null);
 INSERT INTO `cgorder` VALUES ('15', 'CGDD-20131111-001', '2013-11-12', '123123', '112', '239', '1', 'admin', '2013-11-14', '0', '0', null, null, '0', '0', null, '0.00', '0', null);
 INSERT INTO `cgorder` VALUES ('16', 'CGDD-20131227-001', '2013-12-27', 'admin', '112', '1', '001', 'admin', '2013-12-25', '0', '1', 'admin', null, '0', '0', null, '81.32', '0', null);
+INSERT INTO `cgorder` VALUES ('17', 'CGDD-20140106-001', '2014-01-06', 'admin', '112', '1', '001', 'admin', '2014-01-01', '0', '0', null, null, '0', '0', null, '0.00', '0', 'gggg');
 
 -- ----------------------------
 -- Table structure for `cgorderdetail`
@@ -176,7 +177,7 @@ CREATE TABLE `cgorderdetail` (
   `Amount` decimal(10,2) DEFAULT NULL COMMENT '价税合计',
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`,`orderCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='采购订单明细';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='采购订单明细';
 
 -- ----------------------------
 -- Records of cgorderdetail
@@ -188,24 +189,27 @@ INSERT INTO `cgorderdetail` VALUES ('5', 'CGDD-20131111-001', '1', '1111', null,
 INSERT INTO `cgorderdetail` VALUES ('6', 'CGDD-20131227-001', '1', '1111', '11.00', '9.90', '2.00', '90.00', null, null, null, '17.00', '3.37', '23.17', null);
 INSERT INTO `cgorderdetail` VALUES ('7', 'CGDD-20131227-001', '1', 'dss', '10.00', '10.00', '2.00', '100.00', null, null, null, '17.00', '3.40', '23.40', null);
 INSERT INTO `cgorderdetail` VALUES ('8', 'CGDD-20131227-001', '1', '1111', '11.00', '9.90', '3.00', '90.00', null, null, null, '17.00', '5.05', '34.75', null);
+INSERT INTO `cgorderdetail` VALUES ('9', 'CGDD-20140106-001', '1', '1111', '11.00', null, null, null, null, null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for `ckcurrstore`
 -- ----------------------------
 DROP TABLE IF EXISTS `ckcurrstore`;
 CREATE TABLE `ckcurrstore` (
-  `StoreNo` varchar(20) NOT NULL COMMENT '仓库编号',
-  `GoodsNo` varchar(20) NOT NULL COMMENT '商品编号',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `StoreCode` varchar(20) NOT NULL COMMENT '仓库编号',
+  `GoodsCode` varchar(20) NOT NULL COMMENT '商品编号',
   `Quantity` decimal(10,2) DEFAULT NULL COMMENT '数量',
   `CostPrice` decimal(10,2) DEFAULT NULL COMMENT '单价',
   `Amount` decimal(10,2) DEFAULT NULL COMMENT '金额',
   `remark` varchar(50) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`StoreNo`,`GoodsNo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='库存表';
+  PRIMARY KEY (`id`,`StoreCode`,`GoodsCode`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='库存表';
 
 -- ----------------------------
 -- Records of ckcurrstore
 -- ----------------------------
+INSERT INTO `ckcurrstore` VALUES ('1', '1', '1111', '100.00', '11.50', null, '顶顶顶');
 
 -- ----------------------------
 -- Table structure for `ckinitstore`
@@ -213,9 +217,9 @@ CREATE TABLE `ckcurrstore` (
 DROP TABLE IF EXISTS `ckinitstore`;
 CREATE TABLE `ckinitstore` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `OrderNo` varchar(20) NOT NULL DEFAULT '',
+  `OrderCode` varchar(20) NOT NULL DEFAULT '',
   `OrderDate` varchar(20) DEFAULT NULL,
-  `StoreNo` varchar(20) DEFAULT NULL,
+  `StoreCode` varchar(20) DEFAULT NULL,
   `BillOrderNo` varchar(20) DEFAULT NULL,
   `RelatedBillNo` varchar(20) DEFAULT NULL,
   `DepartmentNo` varchar(20) DEFAULT NULL,
@@ -232,7 +236,7 @@ CREATE TABLE `ckinitstore` (
   `RedMan` varchar(50) DEFAULT NULL,
   `HasRed` smallint(6) DEFAULT NULL,
   `PriceType` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`,`OrderNo`)
+  PRIMARY KEY (`id`,`OrderCode`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -315,7 +319,7 @@ CREATE TABLE `ckjhcheck` (
   `SettleTypeFlag` smallint(6) DEFAULT '0' COMMENT '是否当面付，0：不付，1：付',
   `HasRed` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`id`,`OrderCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='采购入库表';
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='采购入库表';
 
 -- ----------------------------
 -- Records of ckjhcheck
@@ -324,6 +328,7 @@ INSERT INTO `ckjhcheck` VALUES ('21', 'PK-20131008-001', null, null, '112', '1',
 INSERT INTO `ckjhcheck` VALUES ('22', 'PK-20131101-001', null, null, '112', '239', '42', null, null, '1', 'admin', '系统管理员', null, null, null, null, null, '1', '2013-11-01 09:04:27', '系统管理员', null, null, null, null, null, null, null, '0', null);
 INSERT INTO `ckjhcheck` VALUES ('23', 'PK-20131101-002', '2013-11-12', null, '112', '1', '42', null, null, '1', 'admin', '系统管理员', null, null, null, null, null, '1', '2013-11-01 09:04:51', '系统管理员', null, null, null, null, null, null, null, '0', null);
 INSERT INTO `ckjhcheck` VALUES ('24', 'PK-20131101-003', null, null, '112', '1', '42', null, null, '1', 'admin', '系统管理员', null, null, null, null, null, '1', '2013-11-01 09:05:24', '系统管理员', null, null, null, null, null, null, null, '0', null);
+INSERT INTO `ckjhcheck` VALUES ('27', 'PK-20140106-002', '2013-12-25', null, '112', '1', '42', 'CGDD-20131227-001', null, '001', 'admin', 'admin', null, null, null, null, null, '1', '2014-01-06 15:15:15', 'admin', null, null, null, null, null, null, null, '0', null);
 
 -- ----------------------------
 -- Table structure for `ckjhcheckdetail`
@@ -360,11 +365,62 @@ CREATE TABLE `ckjhcheckdetail` (
 -- ----------------------------
 -- Records of ckjhcheckdetail
 -- ----------------------------
+INSERT INTO `ckjhcheckdetail` VALUES ('6', 'PK-20140106-002', '1', null, '1111', '2.00', null, null, '90.00', null, '17.00', '3.37', '19.80', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `ckjhcheckdetail` VALUES ('7', 'PK-20140106-002', '1', null, 'dss', '2.00', null, null, '100.00', null, '17.00', '3.40', '20.00', null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `ckjhcheckdetail` VALUES ('8', 'PK-20140106-002', '1', null, '1111', '3.00', null, null, '90.00', null, '17.00', '5.05', '29.70', null, null, null, null, null, null, null, null, null, null, null);
 INSERT INTO `ckjhcheckdetail` VALUES ('11', 'PK-20131008-001', '1', '42.00', '1111', '1.00', null, '11.00', '100.00', null, '17.00', '1.87', '11.00', '10.50', null, null, null, null, null, null, null, null, null, null);
 INSERT INTO `ckjhcheckdetail` VALUES ('12', 'PK-20131008-001', '1', '0.00', '1111', '1.00', null, '10.00', '100.00', null, '17.00', '1.70', '10.00', '10.50', null, null, null, null, null, null, null, null, null, null);
 INSERT INTO `ckjhcheckdetail` VALUES ('13', 'PK-20131101-001', '1', '0.22', '1111', '1.00', null, null, '1.00', null, '17.00', '0.02', '0.11', null, null, null, null, null, null, null, null, null, null, null);
 INSERT INTO `ckjhcheckdetail` VALUES ('14', 'PK-20131101-002', '1', '22.00', '1111', '1.00', null, null, '100.00', null, '17.00', '1.87', '11.00', null, null, null, null, null, null, null, null, null, null, null);
 INSERT INTO `ckjhcheckdetail` VALUES ('15', 'PK-20131101-003', '1', '4.62', '1111', '1.00', null, null, '21.00', null, '17.00', '0.39', '2.31', null, null, null, null, null, null, null, null, null, null, null);
+
+-- ----------------------------
+-- Table structure for `ckmove`
+-- ----------------------------
+DROP TABLE IF EXISTS `ckmove`;
+CREATE TABLE `ckmove` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Ordercode` varchar(20) NOT NULL,
+  `Orderdate` date DEFAULT NULL,
+  `instoreCode` varchar(20) DEFAULT NULL,
+  `outStoreCode` varchar(20) DEFAULT NULL,
+  `DeptCode` varchar(20) DEFAULT NULL,
+  `empCode` varchar(20) DEFAULT NULL,
+  `Operator` varchar(20) DEFAULT NULL,
+  `CkAmount` decimal(10,2) DEFAULT NULL,
+  `checkFlag` tinyint(4) DEFAULT NULL,
+  `checkDate` date DEFAULT NULL,
+  `checkMan` varchar(20) DEFAULT NULL,
+  `remark` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`,`Ordercode`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of ckmove
+-- ----------------------------
+INSERT INTO `ckmove` VALUES ('7', 'DB-20140103-004', '2014-01-03', '1', '1', '001', 'admin', 'admin', null, '1', '2014-01-03', 'admin', null);
+
+-- ----------------------------
+-- Table structure for `ckmovedetail`
+-- ----------------------------
+DROP TABLE IF EXISTS `ckmovedetail`;
+CREATE TABLE `ckmovedetail` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `orderCode` varchar(20) NOT NULL,
+  `SerialNo` int(11) DEFAULT NULL,
+  `GoodsCode` varchar(20) DEFAULT NULL,
+  `Quantity` decimal(10,2) DEFAULT NULL,
+  `ckPrice` decimal(10,2) DEFAULT NULL,
+  `ckAmount` decimal(10,2) DEFAULT NULL,
+  `RelatedOrderNo` varchar(20) DEFAULT NULL,
+  `remark` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`,`orderCode`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of ckmovedetail
+-- ----------------------------
+INSERT INTO `ckmovedetail` VALUES ('4', 'DB-20140103-004', null, '1111', '111.00', null, '1276.50', null, null);
 
 -- ----------------------------
 -- Table structure for `ckxscheck`
@@ -391,12 +447,13 @@ CREATE TABLE `ckxscheck` (
   `PayAmount` decimal(10,2) DEFAULT NULL COMMENT '已付金额',
   `CollateType` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`id`,`OrderCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ckxscheck
 -- ----------------------------
 INSERT INTO `ckxscheck` VALUES ('4', 'XC-20131219-001', '2013-12-31', '001', '239', 'admin', '001', '52', 'XD-20131219-001', null, 'admin', null, '25.74', '0', '2013-12-25', 'admin', null, null, null);
+INSERT INTO `ckxscheck` VALUES ('5', 'XC-20131219-001', '2013-12-31', '001', '239', 'admin', '001', '52', 'XD-20131219-001', null, '系统管理员', null, '25.74', '1', '2014-01-06', '系统管理员', null, null, null);
 
 -- ----------------------------
 -- Table structure for `ckxscheckdetail`
@@ -478,7 +535,7 @@ CREATE TABLE `employee` (
   `del_flg` tinyint(4) DEFAULT '0' COMMENT '删除标志',
   PRIMARY KEY (`id`,`usr_no`),
   UNIQUE KEY `usr_no` (`usr_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of employee
@@ -491,6 +548,7 @@ INSERT INTO `employee` VALUES ('5', 'zs', '张三', 'e10adc3949ba59abbe56e057f20
 INSERT INTO `employee` VALUES ('13', '123', '123', 'e10adc3949ba59abbe56e057f20f883e', '002', null, null, '高中', null, null, '123', null, null, null, '业务员', null, null, null, null, null, '1', '2013-09-26 16:11:29', null, null, null, '0');
 INSERT INTO `employee` VALUES ('16', 'uy', 'ftv', 'e10adc3949ba59abbe56e057f20f883e', '002', null, null, '高中', null, null, '78', null, null, null, '业务员', null, null, null, null, null, '1', '2013-09-26 16:27:21', null, null, null, '0');
 INSERT INTO `employee` VALUES ('17', '33333', '3333', 'e10adc3949ba59abbe56e057f20f883e', '001', '33', '男', '高中', null, null, '3333333', null, null, null, '业务员', null, null, null, null, null, '1', '2013-11-08 16:50:01', null, null, null, '0');
+INSERT INTO `employee` VALUES ('18', '007', '高富帅', 'e10adc3949ba59abbe56e057f20f883e', 'ejb', '31', '男', '硕士', '2013-12-30', '2014-01-07', '234523452435', null, null, null, '业务员', null, null, null, null, null, '1', '2014-01-06 16:12:59', null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for `jbclient`
@@ -572,7 +630,7 @@ CREATE TABLE `jbgoods` (
 -- Records of jbgoods
 -- ----------------------------
 INSERT INTO `jbgoods` VALUES ('1', '1111', '123', '30', '32', '33', '19', '1', '1', null, '1', '333', '14', '11.00', null, '11.00', null, '1', 'wwww', '1', '2011');
-INSERT INTO `jbgoods` VALUES ('2', 'dss', 'dsa', '30', '32', '33', '18', null, null, null, null, 'dsads', '14', '10.00', '12.00', '12.00', null, null, null, '1', '2011');
+INSERT INTO `jbgoods` VALUES ('2', 'dss', 'dsa', '30', '32', '33', '18', null, null, null, null, 'dsads', '14', '10.00', null, '12.00', null, null, null, '1', '2011');
 
 -- ----------------------------
 -- Table structure for `jbstore`
@@ -666,13 +724,12 @@ CREATE TABLE `jhpay` (
   `BillOrderNo` varchar(20) DEFAULT NULL COMMENT '订单号',
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`,`OrderCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='采购付款单';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='采购付款单';
 
 -- ----------------------------
 -- Records of jhpay
 -- ----------------------------
-INSERT INTO `jhpay` VALUES ('1', 'CF-20131209-001', '2013-12-09', '112', '1', null, '系统管理员', '45', null, '0', null, null, '0.00', null, null);
-INSERT INTO `jhpay` VALUES ('3', 'CF-20131211-001', '2013-12-11', '112', '1', null, '系统管理员', '45', null, '1', null, null, '34.42', null, null);
+INSERT INTO `jhpay` VALUES ('7', 'CF-20140106-001', '2014-01-06', '112', '001', null, null, '45', null, null, null, null, '11.11', null, null);
 
 -- ----------------------------
 -- Table structure for `jhpaydetail`
@@ -694,14 +751,8 @@ CREATE TABLE `jhpaydetail` (
 -- ----------------------------
 -- Records of jhpaydetail
 -- ----------------------------
-INSERT INTO `jhpaydetail` VALUES ('11', 'PK-20131008-001', '1', '45', 'CF-20131209-001', '0.00', '0.00', '21.00', null);
-INSERT INTO `jhpaydetail` VALUES ('11', 'PK-20131008-001', '1', '45', 'CF-20131211-001', '21.00', '0.00', '21.00', null);
-INSERT INTO `jhpaydetail` VALUES ('13', 'PK-20131101-001', '1', '45', 'CF-20131209-001', '0.00', '0.00', '0.11', null);
-INSERT INTO `jhpaydetail` VALUES ('13', 'PK-20131101-001', '1', '45', 'CF-20131211-001', '0.11', '0.00', '0.11', null);
-INSERT INTO `jhpaydetail` VALUES ('14', 'PK-20131101-002', '1', '45', 'CF-20131209-001', '0.00', '0.00', '11.00', null);
-INSERT INTO `jhpaydetail` VALUES ('14', 'PK-20131101-002', '1', '45', 'CF-20131211-001', '11.00', '0.00', '11.00', null);
-INSERT INTO `jhpaydetail` VALUES ('15', 'PK-20131101-003', '1', '45', 'CF-20131209-001', '0.00', '0.00', '2.31', null);
-INSERT INTO `jhpaydetail` VALUES ('15', 'PK-20131101-003', '1', '45', 'CF-20131211-001', '2.31', '0.00', '2.31', null);
+INSERT INTO `jhpaydetail` VALUES ('13', 'PK-20131101-001', '1', '45', 'CF-20140106-001', '0.11', '0.00', '0.11', null);
+INSERT INTO `jhpaydetail` VALUES ('14', 'PK-20131101-002', '1', '45', 'CF-20140106-001', '11.00', '0.00', '11.00', null);
 
 -- ----------------------------
 -- Table structure for `menu`
@@ -722,7 +773,7 @@ CREATE TABLE `menu` (
   `enable` smallint(6) DEFAULT '1',
   `remark` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1051 DEFAULT CHARSET=utf8 COMMENT='系统菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=1052 DEFAULT CHARSET=utf8 COMMENT='系统菜单';
 
 -- ----------------------------
 -- Records of menu
@@ -748,7 +799,7 @@ INSERT INTO `menu` VALUES ('1026', '销售订单', 'xsorder', '1', '2', null, '0
 INSERT INTO `menu` VALUES ('1027', '销售出库单', 'ckxscheck', '1', '2', null, '1', null, '1025', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1028', '销售收款单', 'xsReceive', '1', '2', null, '2', null, '1025', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1029', '仓库管理', null, '1', '1', null, '0', null, '4', '0', null, '1', null);
-INSERT INTO `menu` VALUES ('1030', '仓库调拨单', '#', '1', '2', null, '0', null, '1029', '0', null, '1', null);
+INSERT INTO `menu` VALUES ('1030', '仓库调拨单', 'ckmove', '1', '2', null, '0', null, '1029', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1031', '其它收发货单', '#', '1', '2', null, '1', null, '1029', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1032', '成本价调整', '#', '1', '2', null, '2', null, '1029', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1033', '盘点表', '#', '1', '2', null, '3', null, '1029', '0', null, '1', null);
@@ -766,6 +817,7 @@ INSERT INTO `menu` VALUES ('1047', '组织定义', 'organization', '1', '2', nul
 INSERT INTO `menu` VALUES ('1048', '部门定义', 'partment', '1', '2', null, '4', null, '1042', '0', 'partment', '1', null);
 INSERT INTO `menu` VALUES ('1049', '平台设置', 'platform/set', '1', '2', null, '5', null, '1042', '0', null, '1', null);
 INSERT INTO `menu` VALUES ('1050', '系统表', 'xttables', '1', '2', null, '6', null, '1042', '0', null, '1', null);
+INSERT INTO `menu` VALUES ('1051', '库存明细', 'ckcurrstore', '1', '2', null, '4', null, '1029', '0', null, '1', null);
 
 -- ----------------------------
 -- Table structure for `message`
@@ -940,6 +992,7 @@ INSERT INTO `powermenu` VALUES ('1047', '2', '1');
 INSERT INTO `powermenu` VALUES ('1048', '2', '1');
 INSERT INTO `powermenu` VALUES ('1049', '2', '1');
 INSERT INTO `powermenu` VALUES ('1050', '2', '1');
+INSERT INTO `powermenu` VALUES ('1051', '2', '1');
 
 -- ----------------------------
 -- Table structure for `project`
@@ -1168,12 +1221,13 @@ CREATE TABLE `xsorder` (
   `CKAmount` decimal(10,2) DEFAULT NULL,
   `Memo` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`,`OrderCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xsorder
 -- ----------------------------
 INSERT INTO `xsorder` VALUES ('3', 'XD-20131219-001', '2013-12-19', '001', '239', null, '001', 'admin', '2013-12-31', 'admin', '1', null, null, null, '25.74', null, null);
+INSERT INTO `xsorder` VALUES ('4', 'XD-20140106-001', '2014-01-06', '001', '1', null, '001', 'admin', '2014-01-07', 'admin', '0', null, null, null, '128.70', null, null);
 
 -- ----------------------------
 -- Table structure for `xsorderdetail`
@@ -1198,12 +1252,13 @@ CREATE TABLE `xsorderdetail` (
   `CKPrice` decimal(10,2) DEFAULT NULL,
   `Memo` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xsorderdetail
 -- ----------------------------
 INSERT INTO `xsorderdetail` VALUES ('2', 'XD-20131219-001', null, '239', '1111', '11.00', '100.00', '11.00', '2.00', null, '17.00', '3.74', '25.74', null, null, '11.00', null);
+INSERT INTO `xsorderdetail` VALUES ('3', 'XD-20140106-001', null, '1', 'dss', '12.00', '100.00', '10.00', '11.00', null, '17.00', '18.70', '128.70', null, null, '12.00', null);
 
 -- ----------------------------
 -- Table structure for `xsreceive`
@@ -1225,13 +1280,14 @@ CREATE TABLE `xsreceive` (
   `BillorderNo` varchar(20) DEFAULT NULL,
   `remark` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`,`ordercode`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xsreceive
 -- ----------------------------
 INSERT INTO `xsreceive` VALUES ('2', 'XF-20131230-001', '2013-12-30', '001', '001', 'admin', '系统管理员', '57', '0', null, null, '22.00', null, null);
 INSERT INTO `xsreceive` VALUES ('3', 'XF-20131230-002', '2013-12-30', '001', '001', 'admin', '系统管理员', '57', '0', null, null, '22.00', null, null);
+INSERT INTO `xsreceive` VALUES ('4', 'XF-20140106-001', '2014-01-06', '001', '001', 'admin', '系统管理员', '57', '0', null, null, '22.00', null, null);
 
 -- ----------------------------
 -- Table structure for `xsreceivedetail`
@@ -1255,6 +1311,7 @@ CREATE TABLE `xsreceivedetail` (
 -- ----------------------------
 INSERT INTO `xsreceivedetail` VALUES ('2', 'XC-20131219-001', '1', 'XF-20131230-001', '22.00', '0.00', '22.00', null, '57');
 INSERT INTO `xsreceivedetail` VALUES ('2', 'XC-20131219-001', '0', 'XF-20131230-002', '22.00', '0.00', '22.00', null, '销售出库单');
+INSERT INTO `xsreceivedetail` VALUES ('2', 'XC-20131219-001', '0', 'XF-20140106-001', '22.00', '0.00', '22.00', null, '销售出库单');
 
 -- ----------------------------
 -- Table structure for `xttables`

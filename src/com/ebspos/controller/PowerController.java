@@ -119,7 +119,7 @@ public class PowerController extends BaseController {
 						+ ") and m.id not in(select menuid from powermenu where objid="
 						+ objid + " and type=" + c + ")");
 			}
-			toDwzJson(200, "保存成功！");
+			toDwzJson(200, "保存成功！","closeCurrent");
 		} catch (Exception e) {
 			toDwzJson(300, "保存异常！");
 		}

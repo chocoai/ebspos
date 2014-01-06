@@ -83,7 +83,7 @@ public class TypesController extends BaseController {
 				m.save();
 			}
 			
-			toDwzJson(200, "保存成功！", navTabId);
+			toDwzJson(200, "保存成功！", navTabId , "closeCurrent");
 		} catch (Exception e) {
 			log.error("保存员工异常", e);
 			toDwzJson(300, "保存异常！");

@@ -94,7 +94,7 @@ public class JbstoreController extends BaseController {
 			} else {
 				m.save();
 			}
-			toDwzJson(200, "保存成功！", navTabId);
+			toDwzJson(200, "保存成功！", navTabId , "closeCurrent");
 		} catch (Exception e) {
 			log.error("保存仓库信息异常", e);
 			toDwzJson(300, "保存异常！");

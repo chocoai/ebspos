@@ -148,7 +148,7 @@ public class WebadminController extends BaseController {
 //				MemcacheTool.mcc.set(nowuser_token, m,new Date(new Date().getTime()+86400000));
 				CacheKit.put("mcc", nowuser_token, m);
 				fetchMenu(nowuser_token,m.getLong("id"));
-				this.toDwzJson(200, "登录成功");
+				this.toDwzJson(200, "登录成功","closeCurrent");
 			}else{
 				this.toDwzJson(300, "用户名或密码错误");
 			}

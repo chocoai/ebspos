@@ -35,6 +35,7 @@ import com.util.BsUtil;
 public class CkjhcheckController extends BaseController {
 	public static Logger log = Logger.getLogger(CkjhcheckController.class);
 	private static String navTabId = "ckjhcheck";
+	private String supplierCodePara = null;
 	private byte[] lock = new byte[0];
 	@Override
 	public void index() {
@@ -43,6 +44,7 @@ public class CkjhcheckController extends BaseController {
 	}
 	
 	public void list() {
+		supplierCodePara = getPara();
 		select();
 		render("list.html");
 	}
@@ -63,6 +65,7 @@ public class CkjhcheckController extends BaseController {
 		}
 		setAttr("endTime", endTime);
 		String supplierCode = getPara("supplier.supplierCode");
+		if (supplierCodePara != null)  supplierCode = supplierCodePara;
 		if(supplierCode!=null && !"".equals(supplierCode.trim())){
 			whee.append(" and p.SupplierCode = ?");
 			param.add(Long.parseLong(supplierCode));
@@ -96,10 +99,12 @@ public class CkjhcheckController extends BaseController {
 		Jbstore jbstore = new Jbstore();
 		List<Object> param=new ArrayList<Object>();
 		// 采购入库单号
-		//String ordCdNw = null;
+		String ordCdNw = null;
+		synchronized(lock) {
+			ordCdNw = BsUtil.getMaxOrdNo("OrderCode","PK","ckjhcheck");
+		}
+		ckjhcheck.set("OrderCode", ordCdNw);
 		String obj = getPara();
-		// 由采购订单导入,入库单号不用改
-		//ordCdNw = "PK" + obj.substring(4);
 		Cgorder cgOrd = new Cgorder();
 		cgOrd = Cgorder.dao.findFirst("select * from cgorder where orderCode = ?", new Object[]{obj});
 		jbsupplier = Jbsupplier.dao.findFirst("select * from jbsupplier where supplierCode = ?", cgOrd.getStr("supplierCode"));
@@ -220,7 +225,7 @@ public class CkjhcheckController extends BaseController {
 			if(settleTypeFlag) {
 				Double amount = Double.parseDouble(getPara("amount"));
 			}
-			String orderCode = getPara("ckjhcheck.OrderCode");
+			String orderCode = m.get("OrderCode");
 			// 保存明细
 			int size = 0;
 			// 通过【新建商品明细】按钮新追加记录

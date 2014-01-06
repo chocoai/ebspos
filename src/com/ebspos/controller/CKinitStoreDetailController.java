@@ -28,18 +28,18 @@ public class CKinitStoreDetailController extends BaseController {
 	}
 
     public void list() {
-		String orderNo = getPara(0);
+		String OrderCode = getPara(0);
 		StringBuffer whee=new StringBuffer();
 		List<Object> param=new ArrayList<Object>();
-		if (orderNo != null) {
-			whee.append(" and a.OrderNo = ?");
-			param.add(orderNo);
-			String sql = "select a.id,a.GoodsNo,b.GoodsName,a.Unit,a.Quantity, a.CKPrice";
-			String sqlSelect = " from ckinitstoredetail a inner join jbgoods b on a.GoodsNo=b.GoodsCode where 1=1 ";
+		if (OrderCode != null) {
+			whee.append(" and a.OrderCode = ?");
+			param.add(OrderCode);
+			String sql = "select a.id,a.goodsCode,b.GoodsName,a.Unit,a.Quantity, a.CKPrice";
+			String sqlSelect = " from ckinitstoredetail a inner join jbgoods b on a.goodsCode=b.GoodsCode where 1=1 ";
 			setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
 					sql, sqlSelect + whee.toString(),param.toArray()));
 		}
-		setAttr("orderNo", orderNo);
+		setAttr("OrderCode", OrderCode);
 		render("list.html");
     }
     
@@ -47,23 +47,23 @@ public class CKinitStoreDetailController extends BaseController {
 		try {
 			int size = 0;
 			String[] index = getParaValues("lineId");
-			String orderNo = getPara("orderNo");
-			size = Db.queryLong("select count(*)  from ckinitstoredetail where orderNo = '" +  orderNo + "'").intValue();
+			String OrderCode = getPara("OrderCode");
+			size = Db.queryLong("select count(*)  from ckinitstoredetail where OrderCode = '" +  OrderCode + "'").intValue();
 			if (!(index == null || index.length == 0)) {
 				size = size + index.length;
 			}
 			for (int i=0; i<size; i++) {
 				CKinitStoreDetail m = getModel(CKinitStoreDetail.class, "CKinitStoreDetail" + i);
-				if (m.getStr("goodsno") != null) {
+				if (m.getStr("goodsCode") != null) {
 					if (m.getLong("id") != null) {
 						m.update();
 					} else {
-						m.set("orderNo", orderNo);
+						m.set("OrderCode", OrderCode);
 						m.save();
 					}
 				}
 			}
-			toDwzJson(200, "保存成功！", navTabId);
+			toDwzJson(200, "保存成功！", navTabId, "closeCurrent");
 		} catch (Exception e) {
 			log.error("保存仓库分类异常", e);
 			toDwzJson(300, "保存异常！");

@@ -135,7 +135,7 @@ public class EmployeeController extends BaseController {
 				m.save();
 			}
 //			 Db.update("update employee e set e.orgid=(select p.orgid from partment p where p.id=e.partmentid)");
-			toDwzJson(200, "保存成功！", navTabId);
+			toDwzJson(200, "保存成功！", navTabId , "closeCurrent");
 		} catch (Exception e) {
 			log.error("保存员工异常", e);
 			toDwzJson(300, "保存异常！");
@@ -207,7 +207,7 @@ public class EmployeeController extends BaseController {
 				}
 				Db.batch("insert into userrole (userid,roleid) values("+id+",?)", objs,20);
 			}
-			toDwzJson(200, "保存成功！");
+			toDwzJson(200, "保存成功！" , "closeCurrent");
 		} catch (Exception e) {
 			toDwzJson(300, "保存异常！");
 		}

@@ -30,6 +30,8 @@ public class JbgoodsController extends BaseController {
 	private static Long XS = 1L;
 	// 采购
 	private static Long CG = 0L;
+	// 调拨
+	private static Long DB = 2L;
 	
 	@Override
 	public void index() {
@@ -66,14 +68,22 @@ public class JbgoodsController extends BaseController {
 		}
 		setAttr("goodscode",goodscode);
 		setAttr("goodname",goodname);
-		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
-				"select p.id,p.goodscode 商品编码, p.goodsname 商品名称, p.BaseUnit 基本单位," +
-				" p2.name 品牌,p.ProduceArea 产地,p.model 规格,p.barcode 条码,p.BRefPrice 参考进价,p.SRefPrice 参考销价,p.CostPrice 成本价 ",
-				" from  jbgoods p left join types p2 on p.brandno=p2.id left join types p3 on p.baseunit=p3.id  where 1=1  "+whee.toString(),param.toArray()));
-		if (type == XS) {
-			setAttr("collist", new String[]{"商品编码","商品名称","基本单位","参考销价","品牌","产地","规格","条码"});
+		if (type == DB) {
+			setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
+					"select p.id,p.goodscode 商品编码, p.goodsname 商品名称, p.BaseUnit 基本单位," +
+							" p2.name 品牌,p.ProduceArea 产地,p.model 规格,p.barcode 条码,p.BRefPrice 参考进价,p.SRefPrice 参考销价,ck.CostPrice 成本价 ",
+							" from  jbgoods p left join types p2 on p.brandno=p2.id left join types p3 on p.baseunit=p3.id  left join ckcurrstore ck on p.GoodsCode = ck.GoodsCode where 1=1  "+whee.toString(),param.toArray()));
+			setAttr("collist", new String[]{"商品编码","商品名称","基本单位","成本价","品牌","产地","规格","条码"});
 		} else {
-			setAttr("collist", new String[]{"商品编码","商品名称","基本单位","参考进价","品牌","产地","规格","条码"});
+			setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 10),
+					"select p.id,p.goodscode 商品编码, p.goodsname 商品名称, p.BaseUnit 基本单位," +
+							" p2.name 品牌,p.ProduceArea 产地,p.model 规格,p.barcode 条码,p.BRefPrice 参考进价,p.SRefPrice 参考销价,p.CostPrice 成本价 ",
+							" from  jbgoods p left join types p2 on p.brandno=p2.id left join types p3 on p.baseunit=p3.id  where 1=1  "+whee.toString(),param.toArray()));
+    		if (type == XS) {
+				setAttr("collist", new String[]{"商品编码","商品名称","基本单位","参考销价","品牌","产地","规格","条码"});
+			} else {
+				setAttr("collist", new String[]{"商品编码","商品名称","基本单位","参考进价","品牌","产地","规格","条码"});
+			}
 		}
 		render("lookup.html");
 	}
@@ -123,7 +133,7 @@ public class JbgoodsController extends BaseController {
 			} else {
 				m.save();
 			}
-			toDwzJson(200, "保存成功！", navTabId);
+			toDwzJson(200, "保存成功！", navTabId , "closeCurrent");
 		} catch (Exception e) {
 			log.error("保存系统表信息异常", e);
 			toDwzJson(300, "保存异常！");

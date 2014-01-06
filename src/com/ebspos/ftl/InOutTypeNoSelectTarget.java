@@ -9,6 +9,7 @@ import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import com.ebspos.model.Types;
+import com.util.BsUtil;
 /**
  * 入库类型
  * @author loyin
@@ -21,7 +22,7 @@ public class InOutTypeNoSelectTarget extends BaseTarget {
 	@Override
 	public void execute(Environment env, Map args, TemplateModel[] arg2,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
-		List<Types>	list=Types.dao.find("select t1.id,t1.name from types t1 where t1.pid=38 and t1.function='入库类型'");
+		List<Types>	list=Types.dao.find("select t1.id,t1.name from types t1 where t1.pid=" + BsUtil.IN_STORE_TYPE);
 		Writer out= env.getOut();
 		for(Types o:list){
 			out.append("<option value='"+o.getLong("id")+"'>");

@@ -27,7 +27,7 @@ $("#ckDetailTlb tr").each(function(){
 					<th>票据日期：</th><td><input type="text"  name="cKinitStore.OrderDate" class="date"  value="${ckt.OrderDate!}"><a class="inputDateButton" href="javascript:;">选择</a></td>
 				</tr>
 				<tr>                                                             
-					<th>仓库：</th><td><select name="cKinitStore.storeno" class="combox"  val="${ckt.storeno!}"><@storeSelect/></select></td>
+					<th>仓库：</th><td><select name="cKinitStore.storeCode" class="combox"  val="${ckt.storeCode!}"><@storeSelect/></select></td>
 					<th>部门：</th><td><select name="cKinitStore.DepartmentNo" class="combox"  val="${ckt.DepartmentNo!}"><@partSelect/></select></td>
 				</tr>
 				<tr>
@@ -46,7 +46,7 @@ $("#ckDetailTlb tr").each(function(){
 				<tr>
 					<th type="text" name="lineId" 
 						defaultval="#index#" size="5"  fieldclass="digits">行号</th>
-					<th type="lookup" name="CKinitStoreDetail#index#.goodsno"
+					<th type="lookup" name="CKinitStoreDetail#index#.goodsCode"
 						lookupgroup="CKinitStoreDetail#index#"
 						lookupurl="/jbgoods/lookuplst"
 	                    size="12">商品编号</th>
@@ -69,7 +69,7 @@ $("#ckDetailTlb tr").each(function(){
 				<#list page.list as d>
 				<tr target="sid_key"  rel="${d.id!}">
 				<td><input type="hidden"  name="CKinitStoreDetail${d_index}.id"  value="${d.id!}"><input type="checkbox" name="idds"  value="${d.id!}">${d_index+1}</td>
-				<td><input type="text" name="CKinitStoreDetail${d_index}.goodsno"  lookuppk="id"  size="12"
+				<td><input type="text" name="CKinitStoreDetail${d_index}.goodsCode"  lookuppk="id"  size="12"
 						class="textInput"  value="${d.商品编号!}"><a class="btnLook"
 						url="/jbgoods/lookuplst" lookupgroup="CKinitStoreDetail${d_index}" lookuppk="id"
 						title="查找带回">查找带回</a></td>

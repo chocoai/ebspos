@@ -54,7 +54,7 @@ public class CKinitStoreController extends BaseController {
 		setAttr("endTime", endTime);
 	//	setAttr(OrgSelectTarget.targetName,new OrgSelectTarget());
 	//	setAttr(PartmentSelectTarget.targetName,new PartmentSelectTarget());
-		String sql = "select a.id,a.orderno 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
+		String sql = "select a.id,a.OrderCode 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
 				+ "c.name 部门,d.usr_name 员工,a.operator 操作人,a.ckamount 库存数量,a.checkdate 审核日期,a.checkman 审核人,a.recordcount 记录数,a.Memo 备注,a.checkflag 审核";
 		String sqlSelect = "from ckinitstore a ";
 		sqlSelect += " inner join jbstore b on a.storecode = b.storecode ";
@@ -83,12 +83,12 @@ public class CKinitStoreController extends BaseController {
 			param.add(endTime);
 		}
 		setAttr("endTime", endTime);
-		String orderNo = getPara("orderNo");
-		if(orderNo!=null&&!"".equals(orderNo.trim())){
-			whee.append(" and a.orderNo = ?");
-			param.add(orderNo);
+		String OrderCode = getPara("OrderCode");
+		if(OrderCode!=null&&!"".equals(OrderCode.trim())){
+			whee.append(" and a.OrderCode = ?");
+			param.add(OrderCode);
 		}
-		setAttr("orderNo", orderNo);
+		setAttr("OrderCode", OrderCode);
 		String storecode = getPara("storecode");
 		if(storecode!=null&&!"".equals(storecode.trim())){
 			whee.append(" and a.storecode = ?");
@@ -96,7 +96,7 @@ public class CKinitStoreController extends BaseController {
 		}
 		setAttr("storecode", storecode);
         setAttr(StoreSelectTarget.targetName, new StoreSelectTarget());
-		String sql = "select a.id,a.orderno 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
+		String sql = "select a.id,a.OrderCode 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
 				+ "c.name 部门,d.usr_name 员工,a.operator 操作人,a.ckamount 库存数量,a.checkdate 审核日期,a.checkman 审核人,a.recordcount 记录数,a.Memo 备注";
 		String sqlSelect = "from ckinitstore a ";
 		sqlSelect += " inner join jbstore b on a.storecode = b.storecode ";
@@ -125,24 +125,24 @@ public class CKinitStoreController extends BaseController {
 			param.add(endTime);
 		}
 		setAttr("endTime", endTime);
-		String orderNo = getPara("orderNo");
-		if(orderNo!=null&&!"".equals(orderNo.trim())){
-			whee.append(" and a.orderNo = ?");
-			param.add(orderNo);
+		String OrderCode = getPara("OrderCode");
+		if(OrderCode!=null&&!"".equals(OrderCode.trim())){
+			whee.append(" and a.OrderCode = ?");
+			param.add(OrderCode);
 		}
-		setAttr("orderNo", orderNo);
+		setAttr("OrderCode", OrderCode);
 		String storecode = getPara("storecode");
 		if(storecode!=null&&!"".equals(storecode.trim())){
 			whee.append(" and a.storecode = ?");
 			param.add(storecode);
 		}
 		setAttr("storecode", storecode);
-		String goodsNo = getPara("goodsNo");
-		if(goodsNo!=null&&!"".equals(goodsNo.trim())){
-			whee.append(" and c.GoodsNo = ?");
-			param.add(goodsNo);
+		String goodsCode = getPara("goodsCode");
+		if(goodsCode!=null&&!"".equals(goodsCode.trim())){
+			whee.append(" and c.goodsCode = ?");
+			param.add(goodsCode);
 		}
-		setAttr("goodsNo", goodsNo);
+		setAttr("goodsCode", goodsCode);
 		String goodsName = getPara("goodsName");
 		if(goodsName!=null&&!"".equals(goodsName.trim())){
 			whee.append(" and c.goodsName = ?");
@@ -150,11 +150,11 @@ public class CKinitStoreController extends BaseController {
 		}
 		setAttr("goodsName", goodsName);
         setAttr(StoreSelectTarget.targetName, new StoreSelectTarget());
-		String sql = "select a.id,a.orderno 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
-				+ "c.GoodsNo 商品编号,c.GoodsName 商品名称,c.Unit 单位,c.Quantity 数量, c.CKPrice 成本价,c.memo 备注,a.operator 操作人,a.ckamount 库存数量,a.checkdate 审核日期,a.checkman 审核人,a.recordcount 记录数";
+		String sql = "select a.id,a.OrderCode 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
+				+ "c.goodsCode 商品编号,c.GoodsName 商品名称,c.Unit 单位,c.Quantity 数量, c.CKPrice 成本价,c.memo 备注,a.operator 操作人,a.ckamount 库存数量,a.checkdate 审核日期,a.checkman 审核人,a.recordcount 记录数";
 		String sqlSelect = "from ckinitstore a ";
 		sqlSelect += " inner join jbstore b on a.storecode = b.storecode ";
-		sqlSelect += " inner join ckinitstoredetail c on a.orderno = c.OrderNo where 1=1";
+		sqlSelect += " inner join ckinitstoredetail c on a.OrderCode = c.OrderCode where 1=1";
 		setAttr("page", Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
 				sql, sqlSelect + whee.toString(),param.toArray()));
 		setAttr("collist", new String[]{"订单号","订单日期","仓库","商品编号","商品名称","单位","数量","成本价","成本金额","备注"});
@@ -173,18 +173,18 @@ public class CKinitStoreController extends BaseController {
 			param.add(id);
 		} else {
 			Date cur = new Date();
-			String orderNo = "CK" + cur.getTime();
-			ckt.set("OrderNo", orderNo);
+			String OrderCode = "CK" + cur.getTime();
+			ckt.set("OrderCode", OrderCode);
 		}
         setAttr(StoreSelectTarget.targetName, new StoreSelectTarget());
 		 setAttr(PartmentSelectTarget.targetName, new PartmentSelectTarget());
 		 setAttr(EmployeeSelectTarget.targetName, new EmployeeSelectTarget());
 		setAttr("ckt", ckt);
-		String sql = "select c.id,a.orderno 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
-				+ "c.GoodsNo 商品编号,c.GoodsName 商品名称,c.Unit 单位,c.Quantity 数量, c.CKPrice 成本价,c.memo 备注,a.operator 操作人,a.ckamount 库存数量,a.checkdate 审核日期,a.checkman 审核人,a.recordcount 记录数";
+		String sql = "select c.id,a.OrderCode 订单号,a.orderdate 订单日期,b.StoreName 仓库,a.billorderno 票据号,a.relatedbillno 票据日期,"
+				+ "c.goodsCode 商品编号,c.GoodsName 商品名称,c.Unit 单位,c.Quantity 数量, c.CKPrice 成本价,c.memo 备注,a.operator 操作人,a.ckamount 库存数量,a.checkdate 审核日期,a.checkman 审核人,a.recordcount 记录数";
 		String sqlSelect = "from ckinitstore a ";
 		sqlSelect += " inner join jbstore b on a.storecode = b.storecode ";
-		sqlSelect += " inner join ckinitstoredetail c on a.orderno = c.OrderNo where 1=1";
+		sqlSelect += " inner join ckinitstoredetail c on a.OrderCode = c.OrderCode where 1=1";
 		Page<Record> redLst = Db.paginate(getParaToInt("pageNum", 1),getParaToInt("numPerPage", 20),
 				sql, sqlSelect + whee.toString(),param.toArray());
 		int size = redLst.getList().size();
@@ -208,12 +208,12 @@ public class CKinitStoreController extends BaseController {
 			} else {
 				m.save();
 			}
-			String orderNo = getPara("cKinitStore.OrderNo");
+			String OrderCode = getPara("cKinitStore.OrderCode");
 			// 保存明细
 			int size = 0;
 			// 通过按钮新追加记录
 			String[] index = getParaValues("lineId");
-			size = Db.queryLong("select count(*)  from ckinitstoredetail where orderNo = '" +  orderNo + "'").intValue();
+			size = Db.queryLong("select count(*)  from ckinitstoredetail where OrderCode = '" +  OrderCode + "'").intValue();
 			if (!(index == null || index.length == 0)) {
 				size = size + index.length;
 			}
@@ -223,16 +223,16 @@ public class CKinitStoreController extends BaseController {
 			}
 			for (int i=0; i<size; i++) {
 				CKinitStoreDetail md = getModel(CKinitStoreDetail.class, "CKinitStoreDetail" + i);
-				if (md.getStr("goodsno") != null) {
+				if (md.getStr("goodsCode") != null) {
 					if (md.getLong("id") != null) {
 						md.update();
 					} else {
-						md.set("orderNo", orderNo);
+						md.set("OrderCode", OrderCode);
 						md.save();
 					}
 				}
 			}
-			toDwzJson(200, "保存成功！", navTabId);
+			toDwzJson(200, "保存成功！", navTabId,"closeCurrent");
 		} catch (Exception e) {
 			log.error("保存仓库分类异常", e);
 			toDwzJson(300, "保存异常！");

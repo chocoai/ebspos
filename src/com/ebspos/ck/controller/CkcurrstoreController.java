@@ -6,7 +6,6 @@ import java.util.List;
 import net.loyin.jFinal.anatation.RouteBind;
 
 import com.ebspos.controller.BaseController;
-import com.ebspos.controller.JbsupplierController;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
 import com.jfinal.aop.Before;
 import com.jfinal.log.Logger;
@@ -22,8 +21,8 @@ public class CkcurrstoreController extends BaseController {
 		getPageInfo();
 		setAttr("collist", new String[]{"商品编号","商品名称","规格","单位","库存数量","成本单价","金额","仓库","备注"});
 		render("index.html");
-
 	}
+	
 	private void getPageInfo() {
 		StringBuffer whee=new StringBuffer();
 		List<Object> param = new ArrayList<Object>();

@@ -7,6 +7,8 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 public class BsUtil {
+	    // 入库类型
+	    public static int IN_STORE_TYPE = 38;
 	    // 应付款
 	    public static int NEED_PAY = 45;
 	    // 预付款
