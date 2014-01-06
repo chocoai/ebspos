@@ -1,0 +1,64 @@
+<#include "../inc/_layout.html"/>
+<@layout>
+<script type="text/javascript">
+initQueryForm();
+$("#ckxslisttable tr td:nth-child(11)").each(function(r,td){
+	var num=(new Number($(td).text()));
+	$(td).html(checkFlg[num]);
+});
+</script>
+<div class="pageHeader">
+		<form action="${root!}/ckxscheck/list" method="post" id="ckxscheckList_pagerForm"
+			onsubmit=" return dialogSearch(this)">
+			<input type="hidden" name="pageNum" value="${page.pageNumber!}" />
+			<input type="hidden" name="numPerPage" value="${page.pageSize!}" />
+			<div class="searchBar pageFormContent">
+					<table ><tr><th>开始日期：</th><td>
+						<input type="text" name="startTime" class="date" readonly="true"  value="${startTime!}"/>
+						<a class="inputDateButton" href="javascript:;">选择</a>
+					</td>
+					<th>结束日期：</th><td>
+						<input type="text" name="endTime" class="date" readonly="true"  value="${endTime!}"/>
+						<a class="inputDateButton" href="javascript:;">选择</a>
+					</td></tr>
+					<tr><th>客户</th><td>
+					    <input type="hidden" id="clientCode" name="client.ClientCode"  value="${ClientCode!}">
+					    <input type="text" name="client.ClientName"   lookuppk="ClientCode"  class="textInput"  value="${ClientName!}" />
+					    <a class="btnLook"  url="/jbclient/lookuplst"   lookupgroup="client"  lookuppk="ClientCode"  title="查找带回">查找带回</a>
+					</td>
+					<th>订货仓库</th><td>
+					    <input type="hidden" name="store.StoreCode"  value="${StoreCode!}">
+					    <input type="text"   name="store.StoreName"  lookuppk="StoreCode"  class="textInput"  value="${StoreName!}"/>
+					    <a class="btnLook"  url="/jbstore/lookuplst"  lookupgroup="store"  lookuppk="StoreCode"  title="查找带回" >查找带回</a>
+					</td></tr>
+					</table>
+					<div class="subBar">
+						<ul>
+							<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+							<li><div class="button buttonHover"><div class="buttonContent"><button type="button" multlookup="ordNo" warn="请选择部门" onclick="getBackVal()">选择带回</button></div></div></li>
+						</ul>
+					</div>
+			</div>
+			<script>
+			function getBackVal() {
+				var ordNos = '';
+				$.each($(".pageContent input[type=checkbox]").attr("disabled","disabled"),function(i,ck){
+					if ($(ck).attr("checked") == 'checked') {
+						ordNos += ',' + $(ck).val(); 
+					}
+				});
+				if (ordNos.substring(0, 1) == ',') {
+					ordNos = ordNos.substring(1);
+				}
+				//alert($("#clientCode").val());
+				$.pdialog.reload('/xsReceive/selected/'+ordNos, {data:{clientCode:$("#clientCode").val()}, dialogId:'xsReceiveadd', callback:null});
+				$.pdialog.closeCurrent();
+			}
+			</script>
+		</form>
+	</div>
+	<div class="pageContent">
+		<@lookupmulttbl layouth="150" width="1500" tid="ckxslisttable"/>
+	</div>
+<@paginate rel="ckxslistBox"/>
+</@layout>

@@ -17,6 +17,20 @@ public class BsUtil {
 	    public static int NEED_TO_ADV_PAY = 49;
 	    // 直接付款
 	    public static int DIR_PAY = 50;
+	    
+	    // 销售付款类型
+	    public static int RECEIVE_TYPE = 56;
+	    // 应收
+	    public static int NEED_RECEIVE = 57;
+	    // 预收
+	    public static int ADV_RECEIVE = 58;
+	    // 预收冲应收
+	    public static int ADV_TO_NEED_RECEIVE = 59;
+	    // 应收转预收
+	    public static int NEED_TO_ADV_RECEIVE = 60;
+	    // 直接收款
+	    public static int DIR_RECEIVE = 61;
+	    
 	    // 查看类型
 	    public static String VIEW_INDEX = "index";
 	    // 查看类型
