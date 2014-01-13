@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50145
+Source Server Version : 50600
 Source Host           : localhost:3306
 Source Database       : ebspos
 
 Target Server Type    : MYSQL
-Target Server Version : 50145
+Target Server Version : 50600
 File Encoding         : 65001
 
-Date: 2014-01-13 18:15:33
+Date: 2014-01-13 23:29:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -201,18 +201,19 @@ CREATE TABLE `ckcurrstore` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `StoreCode` varchar(20) NOT NULL COMMENT '仓库编号',
   `GoodsCode` varchar(20) NOT NULL COMMENT '商品编号',
-  `Quantity` decimal(10,2) DEFAULT NULL COMMENT '数量',
-  `CostPrice` decimal(10,2) DEFAULT NULL COMMENT '单价',
-  `Amount` decimal(10,2) DEFAULT NULL COMMENT '金额',
+  `Quantity` decimal(10,2) DEFAULT '0.00' COMMENT '数量',
+  `CostPrice` decimal(10,2) DEFAULT '0.00' COMMENT '单价',
+  `Amount` decimal(10,2) DEFAULT '0.00' COMMENT '金额',
   `remark` varchar(50) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`,`StoreCode`,`GoodsCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='库存表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='库存表';
 
 -- ----------------------------
 -- Records of ckcurrstore
 -- ----------------------------
 INSERT INTO `ckcurrstore` VALUES ('1', '1', '1111', '199.00', '5.47', null, '顶顶顶');
 INSERT INTO `ckcurrstore` VALUES ('3', '239', '1111', '100.00', '9.00', null, null);
+INSERT INTO `ckcurrstore` VALUES ('6', '239', 'dss', '10.00', '0.00', null, null);
 
 -- ----------------------------
 -- Table structure for `ckinitstore`
@@ -317,7 +318,7 @@ CREATE TABLE `ckjhcheck` (
 -- ----------------------------
 -- Records of ckjhcheck
 -- ----------------------------
-INSERT INTO `ckjhcheck` VALUES ('36', 'PK-20140113-001', '2014-01-13', null, '112', '239', '42', 'CGDD-20140113-001', null, '001', 'admin', 'admin', null, '117.00', '1', '2014-01-13 17:15:51', 'admin', null, '0');
+INSERT INTO `ckjhcheck` VALUES ('36', 'PK-20140113-001', '2014-01-13', null, '112', '239', '42', 'CGDD-20140113-001', null, '001', 'admin', 'admin', null, '117.00', '0', '2014-01-13 23:26:51', 'admin', null, '0');
 
 -- ----------------------------
 -- Table structure for `ckjhcheckdetail`
@@ -685,7 +686,7 @@ CREATE TABLE `jbsupplier` (
   `SplusAmount` decimal(10,2) DEFAULT '0.00' COMMENT '往来余额',
   `StopFlag` smallint(6) DEFAULT '0' COMMENT '停止业务标志',
   `remark` varchar(150) DEFAULT '0' COMMENT '备注',
-  `needpay` decimal(10,2) DEFAULT NULL COMMENT '应付款',
+  `needpay` decimal(10,2) DEFAULT '0.00' COMMENT '应付款',
   PRIMARY KEY (`id`),
   UNIQUE KEY `supplierCode` (`supplierCode`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='供应商资料';
@@ -693,7 +694,7 @@ CREATE TABLE `jbsupplier` (
 -- ----------------------------
 -- Records of jbsupplier
 -- ----------------------------
-INSERT INTO `jbsupplier` VALUES ('1', '112', '2222', '0', '22', '2', '2', '2', '2', null, null, '2', '2', '2', '2', '22.00', '22', '222', '2.00', '100.00', '0.00', '0.00', null, '2', null);
+INSERT INTO `jbsupplier` VALUES ('1', '112', '2222', '0', '22', '2', '2', '2', '2', null, null, '2', '2', '2', '2', '22.00', '22', '222', '2.00', '100.00', '0.00', '0.00', null, '2', '0.00');
 
 -- ----------------------------
 -- Table structure for `jhpay`
@@ -1401,8 +1402,8 @@ BEGIN
 
     DECLARE qtyTmp DECIMAL(10,2);
     DECLARE costpriceTmp DECIMAL(10, 2);
+    DECLARE idTmp INT DEFAULT 0;
     DECLARE done INT DEFAULT 0;
-    DECLARE upd INT DEFAULT 0;
     DECLARE l_GoodsCode VARCHAR(30);
     DECLARE l_OrigPrice DECIMAL(10, 2);
     DECLARE l_Quantity DECIMAL(10, 2);
@@ -1412,48 +1413,38 @@ DECLARE cur1 CURSOR FOR
         SELECT GoodsCode,Price,Quantity,Amount
         FROM ckjhcheckdetail   
         WHERE orderCode=ordcd for UPDATE; 
-DECLARE cur2 CURSOR FOR 
-        select Quantity,CostPrice 
-        from ckcurrstore 
-        where StoreCode=storeCd and GoodsCode=l_GoodsCode for UPDATE;
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=1; 
 
     OPEN cur1;   
     goods_loop: LOOP   
         FETCH cur1 INTO l_GoodsCode, l_OrigPrice, l_Quantity,l_Amount;   
-  
-
+        IF done=1 THEN   
+            LEAVE goods_loop;   
+        END IF;   
         SET costpriceTmp=0;
         SET qtyTmp=0;
-        SET upd = 0;
+        SET idTmp=0;
+				select id,Quantity,CostPrice into idTmp,qtyTmp,costpriceTmp from ckcurrstore where StoreCode=storeCd and GoodsCode=l_GoodsCode for UPDATE;
 
-        OPEN cur2;   
-
-        ckstore_loop: LOOP   
-            FETCH cur2 INTO qtyTmp, costpriceTmp;   
-    
-            IF done=1 THEN   
-                LEAVE goods_loop; 
-            END IF;   
-    
-    				if (qtyTmp IS NOT NULL AND costpriceTmp IS NOT NULL) then
-    					 /*review*/
-    					 if typecd = 2 THEN
-    						 SET l_Quantity = -l_Quantity;
-    						 SET l_Amount = -l_Amount;
-    					 end if;
-    					 set costpriceTmp=(costpriceTmp*qtyTmp+l_OrigPrice*l_Quantity)/(qtyTmp + l_Quantity);
-    					 set qtyTmp=qtyTmp+l_Quantity;
-    					 update ckcurrstore set Quantity = qtyTmp, CostPrice = costpriceTmp where StoreCode=storeCd and GoodsCode = l_GoodsCode;
-               update jbsupplier set needpay = needpay + l_Amount where supplierCode = supCd;
-               set upd = 1;
-    				ELSE
-    					INSERT INTO ckcurrstore (StoreCode, GoodsCode, Quantity, CostPrice) VALUES (storeCd, l_GoodsCode, l_Quantity, l_OrigPrice);
-    				end if;
-        END LOOP ckstore_loop;   
-        CLOSE cur2;
-    SET done = 0;
+				if (idTmp <> 0) then
+					 /*review*/
+					 if typecd = 2 THEN
+						 SET l_Quantity = -l_Quantity;
+						 SET l_Amount = -l_Amount;
+					 end if;
+           if (qtyTmp + l_Quantity) = 0 THEN
+              SET costpriceTmp = 0;
+           ELSE
+					    SET costpriceTmp = (costpriceTmp * qtyTmp + l_Amount) / (qtyTmp + l_Quantity);
+           end if;
+					 update ckcurrstore set Quantity = qtyTmp, CostPrice = costpriceTmp where StoreCode=storeCd and GoodsCode = l_GoodsCode;
+           update jbsupplier set needpay = needpay + l_Amount where supplierCode = supCd;
+				ELSE
+          set l_OrigPrice = l_Amount / l_Quantity;
+					INSERT INTO ckcurrstore (StoreCode, GoodsCode, Quantity, CostPrice) VALUES (storeCd, l_GoodsCode, l_Quantity, l_OrigPrice);
+          update jbsupplier set needpay = needpay + l_Amount where supplierCode = supCd;
+				end if;
     END LOOP goods_loop;   
     CLOSE cur1;
     
