@@ -9,7 +9,7 @@ import com.jfinal.plugin.activerecord.Model;
  * @author loyin
  * 2012-10-21
  */
-@TableBind(name="Calendar")
+@TableBind(name="calendar")
 public class Calendar extends Model<Calendar> {
 	private static final long serialVersionUID = -1239688315036891521L;
 	public static final Calendar dao=new Calendar();

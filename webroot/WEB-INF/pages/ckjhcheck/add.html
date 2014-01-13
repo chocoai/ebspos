@@ -148,7 +148,7 @@ $(function (){
 						defaultval="100"  numFmt="##.##%">折扣%</th>
 					<th type="text" name="ckjhcheckDetail#index#.Quantity"
 						defaultval="0" size="12"  fieldclass="number" >数量</th>
-					<th type="text" name="ckjhcheckDetail#index#.Amount" size="12"
+					<th type="text" name="AllAmount" size="12"
 						 fieldclass="readonly textInput valid" defaultval="0"  readonly="readonly" >订货金额</th>
 					<th type="text" name="ckjhcheckDetail#index#.TaxRate" size="12"
 						 fieldclass="number"  defaultval="17"  numFmt="##.##%">税率%</th>
@@ -184,7 +184,7 @@ $(function (){
 				  <!-- 数量 -->
 				  <td><input type="text" name="ckjhcheckDetail${d_index}.Quantity" value="${d.数量!}" size="12"  defaultValue="0"  class="number" ></td>
 				  <!-- 订货金额 -->
-				  <td><input type="text" name="ckjhcheckDetail${d_index}.Amount" value="${d.订货金额!}" size="12"  defaultval="0"  readonly="readonly" ></td>
+				  <td><input type="text" name="AllAmount" value="${d.订货金额!}" size="12"  defaultval="0"  readonly="readonly" ></td>
 				  	<!-- 税率 -->
 				  <td><input type="text" name="ckjhcheckDetail${d_index}.TaxRate" value="${d.税率!}"  size="12"  defaultValue="0" numFmt="##.##%" class="number" ></td>
 				  	<!-- 税额 -->
@@ -210,7 +210,7 @@ $(function (){
 		         <th>金额合计：</th><td width="120"><input type="hidden"   id="amount"   name="amount"><span id ="all" ></span></td>
 		         <th></th><td width="120">
 		         <input type="hidden"   id="typeFlg"   name="typeFlg"  value="${ckjhcheck.SettleTypeFlag!}"/>
-		         <input type="checkBox"  id="settleTypeFlag" onclick="if ($('#settleTypeFlag').prop('checked')==true) {$('#typeFlg').val(1);}"  <#if ckjhcheck.SettleTypeFlag??&&ckjhcheck.SettleTypeFlag==1> checked="checked"</#if> />当面付</td>
+		         <input type="checkBox"  id="settleTypeFlag" onclick="if ($('#settleTypeFlag').prop('checked')==true) {$('#typeFlg').val(1);} else {$('#typeFlg').val(0);}"  <#if ckjhcheck.SettleTypeFlag??&&ckjhcheck.SettleTypeFlag==1> checked="checked"</#if> />当面付</td>
 			</tr>
 			</tbody>
 		</table>

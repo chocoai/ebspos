@@ -7,7 +7,7 @@ import net.loyin.jFinal.anatation.TableBind;
 
 import com.jfinal.plugin.activerecord.Model;
 
-@TableBind(name="xsReceive")
+@TableBind(name="xsreceive")
 public class XsReceive extends Model<XsReceive> {
 	private static final long serialVersionUID = -9161551438192184714L;
 	public static final XsReceive dao=new XsReceive();

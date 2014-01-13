@@ -21,7 +21,8 @@ public static Map<String, Map<String,Object>> cfg=new HashMap<String, Map<String
  public static void load(){
 	 try{
 		 	String path = StaticCfg.class.getResource("/").getPath().replace("classes/", "platform.txt");
-			InputStreamReader isr=new InputStreamReader(new FileInputStream(path.substring(1)), "utf-8");
+//			InputStreamReader isr=new InputStreamReader(new FileInputStream(path.substring(1)), "utf-8");
+			InputStreamReader isr=new InputStreamReader(new FileInputStream(path), "utf-8");
 			BufferedReader reader = new BufferedReader(isr);
 			String line;
 			StringBuffer json=new StringBuffer();

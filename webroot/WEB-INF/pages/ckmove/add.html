@@ -1,0 +1,190 @@
+<#include "../inc/_layout.html"/><#include "../inc/_nation.html"/>
+<@layout>
+<script type="text/javascript">
+$(function (){
+		initQueryForm();
+		if ($("#CheckFlag").val() == 1) {
+			// 如果清货状态，各输入框不可改
+			for ( var i = 0; i < $("input").length; i++) {
+				$(".pageContent input[type=text]").attr("readonly","readonly");
+			}
+/* 		    $(".pageContent button[type=submit]").attr("disabled","disabled"); */
+		    $(".pageContent").removeClass("combox");
+/* 		    $(".pageContent select").attr("disabled","disabled").css({ "color":"#ccc"}); */
+		    $(".pageContent .btnDel").remove();
+		    $(".pageContent .btnLook").remove();
+		    $(".pageContent .inputDateButton").remove();
+		}
+	    reloadData();
+	});
+	//入库单初始
+	function reloadData() {
+		var total = 0, all = 0;
+		$("#ckmoveTbl tr")
+				.each(
+						function() {
+							var brefprice = 0, discount = 0, origprice = 0, quantity = 0, taxrate = 0, taxamount = 0, amount = 0,ckamount = 0;
+							if ($(this).find('td').eq(5).find('input').val()
+									&& $(this).find('td').eq(6).find('input').val()) {
+								origprice = (new Number($(this).find('td').eq(5).find('input').val()));
+								quantity = (new Number($(this).find('td').eq(6).find('input').val()));
+								amount = origprice * quantity;
+//								alert('单价:' + origprice + ' 折扣:' + discount + ' 数量:' + quantity);
+								$(this).find('td').eq(7).find('input').val(amount);
+							}
+							total += quantity;
+							all += amount;
+							// 数量
+							$(this).find('td').eq(5).find('input').attr(
+									"onblur", "reloadData();return false;");
+							/* alert("tr=" + $(this).index() + ";" + "num=" + num + ";" + "price=" + price + ";" + "total=" + total + ";" + "amount=" + amount +";");  */
+						});
+		$("#total").text(total);
+		$("#all").text(all.toFixed(2));
+		$("#amount").val(all.toFixed(2));
+	}
+</script>
+<div class="pageContent">
+	<form method="post" action="${root!}/ckmove/save"
+		id="ckmove_pagerForm" class="pageForm required-validate"
+		onsubmit="return validateCallback(this, dialogAjaxDone);">
+		<input name="ckmove.id" type="hidden" value="${ckmove.id!}">
+		<div class="pageFormContent" id="ckmoveSave" >	
+		<table style="margin-top:5px;margin-bottom:5px;border:0px;padding:5px;" >
+			<tbody><tr>
+			<th style="width:50px"></th>			
+			<th valign="top">
+			   <div style="width:90px;text-align:left;"><h1>调拨单</h1></div>
+			 </th>
+			 <th style="width:500px"></th>
+			  <th>单据编号</th><td><input type="text"  name="ckmove.ordercode"  readonly="readonly"  value="${ckmove.ordercode!}"></td>			  
+			 <th>单据日期</th><td><input type="text" name="ckmove.OrderDate" class="date" readonly="readonly"  dateFmt="yyyy-M-d"   value="${ckmove.OrderDate!}"/>
+						   <a class="inputDateButton" href="javascript:;">选择</a></td>
+			  <td>&nbsp;&nbsp;</td>
+			  <th>制单人</th><td><input type="text"  name="ckmove.Operator"  value="${ckmove.operator!}"  readonly="true" ></td>
+		 </tr></tbody>
+		 </table>
+		 <div style="border: 1px solid rgb(183, 183, 183);box-shadow: 1px 2px 2px rgb(255, 255, 255);margin-bottom: 5px;text-align: left;">
+		 <table style="margin-top:5px;margin-bottom:5px;padding:5px;">
+		 <tr height="30">
+					<th>调出仓库：</th><td><select name="ckmove.instoreCode" class="combox"  val="${ckmove.instoreCode!}"><@storeSelect/></select></td>
+					<th>调入仓库：</th><td><select name="ckmove.outStoreCode" class="combox"  val="${ckmove.outStoreCode!}"><@storeSelect/></select></td>
+		            <th></th><td></td>
+		</tr>
+		<tr>
+			<th>部门：</th><td><select name="ckmove.DeptCode" class="combox"  val="${ckmove.DepCode!}"><@partSelect/></select></td>
+			<th>业务员：</th><td><select name="ckmove.EmpCode" class="combox"  val="${ckmove.EmpCode!}"><@empSelect/></select></td>
+			<th>备注</th><td colspan="2"><input type="text" name="ckmove.remark" value="${ckmove.remark!}" ></td>
+		</tr>
+	</table>
+   </div>
+   <div inited="1000" style="height: 320px;overflow: auto;display: block;">
+		<table class="list nowrap itemDetail"  addbutton="新建商品明细" 
+			width="100%" style="clear: both;" id="ckmoveTbl">
+			<thead>
+				<tr>
+					<th type="text" name="lineId" 
+						defaultval="#index#" size="5"  fieldclass="digits">行号</th>
+					<th type="lookup" name="goods#index#.GoodsCode"
+						lookupgroup="goods#index#"
+						lookupurl="/jbgoods/lookuplst/2"
+	                    size="12">商品编号</th>
+					<th type="text" name="goods#index#.GoodsName" size="12" 
+						fieldclass="readonly textInput valid"  readonly="readonly"
+						fieldattrs="{remote:'validate_remote.html', maxlength:10}">商品名称</th>
+					<th type="text" name="goods#index#.Model" readonly="readonly" size="12"
+						>商品规格</th>
+					<th type="text" name="goods#index#.BaseUnit" readonly="readonly" size="12"
+						>单位</th>
+					<th type="text" name="ckmoveDetail#index#.Quantity"
+						defaultval="0" size="12"  fieldclass="number" >数量</th>
+					<th type="text" name="goods#index#.CostPrice" size="12"
+						 fieldclass="readonly textInput valid" defaultval="0"  readonly="readonly" >成本单价</th>
+					<th type="text" name="ckmoveDetail#index#.ckAmount" size="12"
+						 fieldclass="readonly textInput valid" defaultval="0"  readonly="readonly" >成本金额</th>
+					<th type="text" name="ckmoveDetail#index#.remark" size="12"
+						 fieldclass="readonly textInput valid" defaultval="0" >备注</th>
+					<th type="del" width="60">操作</th>
+				</tr>
+			</thead>
+			<#if page??&&page.list??>
+			<tbody>
+				<#list page.list as d>
+				<tr target="sid_key"  rel="${d.id!}">
+				<!-- 行号 -->
+				<td><input type="hidden"  name="ckmoveDetail${d_index}.id"  value="${d.id!}">
+					<input type="checkbox" name="idds"  value="${d.id!}">${d_index+1}</td>
+			    <!-- 商品编号 -->
+				<td><input type="text" name="goods${d_index}.GoodsCode"  lookuppk="GoodsCode" size="12"
+						class="textInput"  value="${d.商品编号!}"><a class="btnLook"
+						url="/jbgoods/lookuplst/2" lookupgroup="goods${d_index}" lookuppk="id"
+						title="查找带回">查找带回</a></td>
+				  <!-- 商品名称 -->
+				  <td><input type="text"  name="goods${d_index}.GoodsName"  value="${d.商品名称!}"  readonly="readonly"  size="12" ></td>
+				  <!-- 商品规格 -->
+				  <td><input type="text" name="goods${d_index}.Model" value="${d.商品规格!}"  size="12"  readonly="readonly" ></td>
+				  <!-- 单位 -->
+				  <td><input type="text" name="goods${d_index}.BaseUnit" value="${d.单位!}" size="12"  readonly="readonly" ></td>
+				  <!-- 数量 -->
+				  <td><input type="text" name="ckmoveDetail${d_index}.Quantity" value="${d.数量!}" size="12"  class="number" ></td>
+				  <!-- 成本单价 -->
+				  <td><input type="text" name="goods${d_index}.CostPrice" value="${d.成本价!}" size="12"  readonly="readonly" ></td>
+				  <!-- 成本金额 -->
+				  <td><input type="text" name="ckmoveDetail${d_index}.ckAmount" value="${d.成本金额!}" size="12"  readonly="readonly" ></td>
+				  <!-- 备注 -->
+				  <td><input type="text" name="ckmoveDetail${d_index}.remark" value="${d.备注!}" size="12" ></td>
+				  <td><a class="btnDel"  href="${path}/cgdOrd/delDetail/${d.id!}"  title="确定要删除该条记录吗？" target="ajaxTodo"><span>删除</span></a></td>
+				</tr>
+				</#list>
+			</tbody>
+			</#if>
+		</table>
+	</div>
+	<div style="background-color: #ebf0f5;height:30px">
+		<table>
+		<tbody>
+			<tr align="center">
+		         <th>审核人：</th><td width="120">${ckmove.CheckMan!}</td> 
+				<th>审核日期：</th><td width="120">${ckmove.CheckDate!}</td>
+		         <th>状态：</th><td width="120"><input type="hidden"   id="CheckFlag"   name="CheckFlag"  value="${ckmove.CheckFlag!}"/><#if ckmove.CheckFlag??&&ckmove.CheckFlag == 1>已审核<#else>未审核	</#if></td>
+		         <th>数量合计：</th><td width="120"><span id ="total" ></span></td>
+		         <th>金额合计：</th><td width="120"><input type="hidden"   id="amount"   name="amount"><span id ="all" ></span></td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+		<div class="formBar">
+			<ul>
+				<@btnPower safecode="partsave">
+				<li><div class="buttonActive">
+						<div class="buttonContent">
+							<button type="submit">保存</button>
+						</div>
+					</div></li>
+				<li><div class="buttonActive">
+						<div class="buttonContent">
+							<button type="Button">导出</button>
+						</div>
+					</div></li>
+					 </@btnPower>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="Button" class="close">打印</button>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="Button" class="close">关闭</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+</@layout>
+

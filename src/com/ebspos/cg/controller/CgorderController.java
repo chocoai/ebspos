@@ -23,6 +23,7 @@ import com.jfinal.log.Logger;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.util.BsUtil;
 /**
  * 采购订单资料
@@ -198,6 +199,7 @@ public class CgorderController extends BaseController {
 			Jbstore store = getModel(Jbstore.class,"store");
 			m.set("supplierCode", supplier.getStr("supplierCode"));
 			m.set("StoreCode", store.getStr("StoreCode"));
+			m.set("CheckFlag", getPara("CheckFlag"));
 			if (getPara("typeFlg").equals("2")){ //= null && !getPara("typeFlg").equals("")) {
 				m.set("SettleTypeFlag", getParaToInt("typeFlg"));
 				settleTypeFlag = true;
@@ -259,7 +261,8 @@ public class CgorderController extends BaseController {
 	}
 	
 	// 审核
-	public void review() {
+	@Before(Tx.class)
+	public void review() throws Exception {
 		Long id = getParaToLong(0, 0L);
 		try {
 			if (id != null) {
@@ -279,11 +282,13 @@ public class CgorderController extends BaseController {
 			}
 		} catch (Exception e) {
 			toDwzJson(300, "审核失败！");
+			throw e;
 		}
 	}
 	
 	// 未审核
-	public void unreview() {
+	@Before(Tx.class)
+	public void unreview() throws Exception {
 		Long id = getParaToLong(0, 0L);
 		try {
 			if (id != null) {
@@ -299,7 +304,8 @@ public class CgorderController extends BaseController {
 				toDwzJson(200, "反审核通过！", navTabId);
 			}
 		} catch (Exception e) {
-			toDwzJson(300, "删除失败！");
+			toDwzJson(300, "反审核失败！");
+			throw e;
 		}
 	}
 	

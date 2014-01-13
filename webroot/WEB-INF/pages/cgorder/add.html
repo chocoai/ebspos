@@ -112,7 +112,7 @@ $(function (){
 			 <th style="width:500px"></th>
 			  <th>单据编号：</th><td><input type="text"  name="cgOrd.ordercode"  readonly="readonly"  value="${cgOrd.ordercode!}"></td>
 			  <td>&nbsp;&nbsp;</td>
-			 <th>单据日期：</th><td><input type="text" name="cgOrd.orderDate" class="date" readonly="true"  dateFmt="yyyy-MM-dd"   value="${cgOrd.orderDate!}"/>
+			 <th>单据日期：</th><td><input type="text" name="cgOrd.orderDate" class="date" readonly="true"  dateFmt="yyyy-M-d"   value="${cgOrd.orderDate!}"/>
 						   <a class="inputDateButton" href="javascript:;">选择</a></td>
 			  <td>&nbsp;&nbsp;</td>
 			  <th>制单人：</th><td><input type="text"  readonly="readonly"  name="cgOrd.Operator"  value="${cgOrd.operator!}"></td>
@@ -223,7 +223,7 @@ $(function (){
 		         <th>审核人：</th><td width="120">${cgOrd.CheckMan!}</td> 
 				<th>审核日期：</th><td width="120">${cgOrd.CheckDate!}</td>
 		         <th>审核：</th><td width="120"><input type="hidden"   id="CheckFlag"   name="CheckFlag"  value="${cgOrd.CheckFlag!}"/>
-		         <input type="checkBox"  id="checkTypeFlag" onclick="if ($('#CheckFlag').prop('checked')==true) {$('#CheckFlag').val(1);}"  <#if cgOrd.CheckFlag??&&cgOrd.CheckFlag==1> checked="checked" disabled</#if> />
+		         <input type="checkBox"  id="checkTypeFlag"  name="checkTypeFlag"  onclick="if ($('#checkTypeFlag').prop('checked')==true) {$('#CheckFlag').val(1);} else {$('#CheckFlag').val(0);}"  <#if cgOrd.CheckFlag??&&cgOrd.CheckFlag==1> checked="checked" disabled</#if> />
 		         </td>
 		         <th>数量合计：</th><td width="120"><span id ="total" ></span></td>
 		         <th>金额合计：</th><td width="120"><input type="hidden"   id="amount"   name="cgOrd.Amount" value="${cgOrd.Amount!}"><span id ="all" ></span></td>

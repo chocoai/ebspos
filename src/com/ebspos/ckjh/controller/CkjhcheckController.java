@@ -7,6 +7,7 @@ import java.util.List;
 
 import net.loyin.jFinal.anatation.RouteBind;
 
+import com.ebspos.Proc.CkjhDbProc;
 import com.ebspos.cg.model.Cgorder;
 import com.ebspos.ckjh.model.Ckjhcheck;
 import com.ebspos.ckjh.model.Ckjhcheckdetail;
@@ -15,6 +16,8 @@ import com.ebspos.ftl.EmployeeSelectTarget;
 import com.ebspos.ftl.InOutTypeNoSelectTarget;
 import com.ebspos.ftl.PartmentSelectTarget;
 import com.ebspos.interceptor.ManagerPowerInterceptor;
+import com.ebspos.jhpay.model.Jhpay;
+import com.ebspos.jhpay.model.Jhpaydetail;
 import com.ebspos.model.Jbgoods;
 import com.ebspos.model.Jbstore;
 import com.ebspos.model.Jbsupplier;
@@ -23,7 +26,9 @@ import com.jfinal.log.Logger;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.util.BsUtil;
+import com.util.DateUtil;
 /**
  * 采购入库单
  * @author 熊涛
@@ -118,11 +123,12 @@ public class CkjhcheckController extends BaseController {
 		ckjhcheck.set("deptCode", cgOrd.getStr("deptcode"));
 		ckjhcheck.set("Empcode", cgOrd.getStr("Empcode"));
 		ckjhcheck.set("Operator", cgOrd.getStr("Operator"));
-		ckjhcheck.set("CheckFlag", 1);
+		ckjhcheck.set("CheckFlag", 0);
+		ckjhcheck.set("SettleTypeFlag", 0);
 		StringBuffer whee=new StringBuffer();
 		whee.append(" and a.orderCode = ?");
 		param.add(obj);
-		String sql = "select a.id,b.GoodsCode 商品编号,b.GoodsName 商品名称,b.Model 商品规格,b.BaseUnit 基本单位,b.BRefPrice 原价,a.Discount 折扣,a.OrigPrice 单价, a.Quantity 数量,";
+		String sql = "select a.id,b.GoodsCode 商品编号,b.GoodsName 商品名称,b.Model 商品规格,b.BaseUnit 基本单位,b.BRefPrice 原价,a.Discount 折扣, a.Quantity 数量,";
 		sql += " a.TaxRate 税率,a.TaxAmount 税额,a.Amount 税后金额";
 		String sqlSelect = " from cgorderdetail a"; 
 		sqlSelect += " left join jbgoods b on a.GoodsCode = b.GoodsCode where 1=1 ";
@@ -176,7 +182,7 @@ public class CkjhcheckController extends BaseController {
 			Record m=getCurrentUser();
 			ckjhcheck.set("operator",m.getStr("usr_name"));
 		}
-		String sql = "select a.id,b.GoodsCode 商品编号,b.GoodsName 商品名称,b.Model 商品规格,b.BaseUnit 基本单位,b.BRefPrice 原价,a.Discount 折扣,a.OrigPrice 单价, a.Quantity 数量,";
+		String sql = "select a.id,b.GoodsCode 商品编号,b.GoodsName 商品名称,b.Model 商品规格,b.BaseUnit 基本单位,b.BRefPrice 原价,a.Discount 折扣, a.Quantity 数量,";
 		sql += " a.TaxRate 税率,a.TaxAmount 税额,a.Amount 金额";
 		String sqlSelect = " from ckjhcheckdetail a"; 
 		sqlSelect += " left join jbgoods b on a.GoodsCode = b.GoodsCode where 1=1 ";
@@ -203,27 +209,54 @@ public class CkjhcheckController extends BaseController {
 	public void save() {
 		try {
 			boolean settleTypeFlag = false;
+			Jhpay jhpay = null;
 			Ckjhcheck m = getModel(Ckjhcheck.class,"ckjhcheck");
 			Jbsupplier supplier = getModel(Jbsupplier.class,"supplier");
 			Jbstore store = getModel(Jbstore.class,"store");
 			m.set("SupplierCode", supplier.getStr("supplierCode"));
 			m.set("StoreCode", store.getStr("StoreCode"));
-			if (getPara("typeFlg") != null && !getPara("typeFlg").equals("")) {
+			Double amount = Double.parseDouble(getPara("amount"));
+			m.set("CKAmount", amount);
+			if (getPara("typeFlg") != null && getParaToInt("typeFlg")==1) {
 				m.set("SettleTypeFlag", getParaToInt("typeFlg"));
 				settleTypeFlag = true;
 			}
 			if (m.getLong("id") != null) {
 				m.update();
 			} else {
-				// 自动审核
-				m.set("CheckMan", m.get("Operator"));
-				m.set("CheckDate", new Date());
-				m.set("CheckFlag", 1);
 				m.save();
 			}
-			// 单面付模式
+			// 当面付模式
 			if(settleTypeFlag) {
-				Double amount = Double.parseDouble(getPara("amount"));
+				jhpay = Jhpay.dao.findFirst("select * from jhpay where BillOrderNo = ?", m.getStr("OrderDate"));
+				if (jhpay == null) {
+					// 生成付款单信息
+					jhpay = new Jhpay();
+					synchronized(lock) {
+						String ordCdNw = BsUtil.getMaxOrdNo("OrderCode","CF","jhpay");
+						jhpay.set("OrderCode",ordCdNw);
+					}
+					jhpay.set("OrderDate",DateUtil.string2Date(DateUtil.date2String(new Date(), DateUtil.FORMAT_DATE), DateUtil.FORMAT_DATE));
+					jhpay.set("SupplierCode",m.get("SupplierCode"));
+					jhpay.set("DeptCode",m.get("DeptCode"));
+					jhpay.set("EmpCode",m.get("EmpCode"));
+					jhpay.set("PayType",BsUtil.DIR_PAY);
+					jhpay.set("BankNo",supplier.get("BankNo"));
+					jhpay.set("Amount",amount);
+					jhpay.set("BillOrderNo",m.get("OrderCode"));
+					Record man = getCurrentUser();
+					jhpay.set("checkman", man.getStr("usr_name"));
+					jhpay.set("CheckDate", new Date());
+					jhpay.set("CheckFlag", 1);
+					jhpay.save();
+					Jhpaydetail jhpaydetail = new Jhpaydetail();
+					jhpaydetail.set("OrderCode", m.get("OrderCode"));
+					jhpaydetail.set("PayOrderNo", jhpay.get("OrderCode"));
+					jhpaydetail.set("CollateType", "采购入库单");
+					jhpaydetail.set("NowCollated", amount);
+					jhpaydetail.set("Adjust", 0);
+					jhpaydetail.set("Amount", amount);
+				}
 			}
 			String orderCode = m.get("OrderCode");
 			// 保存明细
@@ -245,14 +278,12 @@ public class CkjhcheckController extends BaseController {
 					md.set("GoodsCode", goods.get("GoodsCode"));
 					Ckjhcheckdetail tmp = Ckjhcheckdetail.dao.findById(md.getLong("id"));
 					if (tmp != null ) {
+						md.set("price", goods.get("BRefPrice"));
 						md.update();
 					} else {
 						md.set("ordercode", orderCode);
+						md.set("price", goods.get("BRefPrice"));
 						md.save();
-					}
-					// 当面付模式
-					if(settleTypeFlag) {
-						
 					}
 				}
 			}
@@ -276,53 +307,65 @@ public class CkjhcheckController extends BaseController {
 			toDwzJson(300, "删除失败！");
 		}
 	}
+	
 	// 审核
-		public void review() {
-			Long id = getParaToLong(0, 0L);
-			try {
-				if (id != null) {
-					Ckjhcheck r = Ckjhcheck.dao.findById(id);
-					/*
-					if (r.getInt("SettleTypeFlag") == 2) {
-						toDwzJson(300, "已清货不能审核！", navTabId);
-						return;
-					}
-					*/
-					if (r.getInt("CheckFlag") != 1) {
-						r.set("CheckFlag",1);
-						//登录人即审核者
-						Record m=getCurrentUser();					
-						r.set("checkman", m.getStr("usr_name"));
-						r.update();
-					}
-					toDwzJson(200, "审核通过！", navTabId);
+	@Before(Tx.class)
+	public void review() throws Exception {
+		Long id = getParaToLong(0, 0L);
+		try {
+			if (id != null) {
+				Ckjhcheck r = Ckjhcheck.dao.findById(id);
+				/*
+				 * if (r.getInt("SettleTypeFlag") == 2) { toDwzJson(300,
+				 * "已清货不能审核！", navTabId); return; }
+				 */
+				if (r.getInt("CheckFlag") == null || r.getInt("CheckFlag") != 1) {
+					// 登录人即审核者
+					Record m = getCurrentUser();
+					r.set("checkman", m.getStr("usr_name"));
+					r.set("CheckDate", new Date());
+					r.set("CheckFlag", 1);
+					r.update();
+					// 审核后更新库存表及供应商表应付款
+					CkjhDbProc oracleDbK = new CkjhDbProc(r.getStr("StoreCode"),r.getStr("orderCode"),r.getStr("SupplierCode"),1);
+			        Db.execute(oracleDbK);
 				}
-			} catch (Exception e) {
-				toDwzJson(300, "审核失败！"+e.getMessage());
+				toDwzJson(200, "审核通过！", navTabId);
 			}
+		} catch (Exception e) {
+			toDwzJson(300, "审核失败！" + e.getMessage());
+			throw e;
 		}
+	}
 		
-		// 未审核
-		public void unreview() {
-			Long id = getParaToLong(0, 0L);
-			try {
-				if (id != null) {
-					Ckjhcheck r = Ckjhcheck.dao.findById(id);
-					/*
-					if (r.getInt("SettleTypeFlag") == 2) {
-						toDwzJson(300, "已清货不能反审核！", navTabId);
-						return;
-					}
-					*/
-					if (r.getInt("CheckFlag") != 0) {
-						r.set("CheckFlag",0);
-						r.update();
-					}
-					toDwzJson(200, "反审核通过！", navTabId);
+	// 未审核
+	@Before(Tx.class)
+	public void unreview() throws Exception {
+		Long id = getParaToLong(0, 0L);
+		try {
+			if (id != null) {
+				Ckjhcheck r = Ckjhcheck.dao.findById(id);
+				/*
+				 * if (r.getInt("SettleTypeFlag") == 2) { toDwzJson(300,
+				 * "已清货不能反审核！", navTabId); return; }
+				 */
+				if (r.getInt("CheckFlag") != null && r.getInt("CheckFlag") != 0) {
+					// 登录人即审核者
+					Record m = getCurrentUser();
+					r.set("CheckFlag", 0);
+					r.set("checkman", m.getStr("usr_name"));
+					r.set("CheckDate", new Date());
+					r.update();
+					// 审核后更新库存表及供应商表应付款
+					CkjhDbProc oracleDbK = new CkjhDbProc(r.getStr("StoreCode"),r.getStr("orderCode"),r.getStr("SupplierCode"),2);
+			        Db.execute(oracleDbK);
 				}
-			} catch (Exception e) {
-				toDwzJson(300, "删除失败！");
+				toDwzJson(200, "反审核通过！", navTabId);
 			}
+		} catch (Exception e) {
+			toDwzJson(300, "删除失败！");
+			throw e;
 		}
+	}
 
 }
